@@ -78,8 +78,7 @@
       transition: color 0.15s, background 0.3s;
       box-sizing: border-box;
       padding: 1vw 0 1vw 0;
-      /* Use clamp for responsive font size: min 32px, scales up to 21vw, max 250px */
-      font-size: clamp(250px, 210vw, 400px);
+      font-size: clamp(250px, 210vw, 300px);
     }
     #number {
       color: #185bff;
@@ -130,8 +129,7 @@
       position: absolute;
       left: 0; right: 0; top: 50%;
       transform: translateY(-50%);
-      /* Clamp for full question size: min 20px, scales up to 8vw, max 80px */
-      font-size: clamp(70px, 8vw, 80px);
+      font-size: clamp(100px, 200vw, 100px);
       font-family: inherit;
       color: #3b15a3;
       font-weight: bold;
@@ -165,7 +163,6 @@
       height: auto;
       pointer-events: none;
       user-select: none;
-      /* Animation: floating and waving combo */
       animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
       will-change: transform;
       filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
@@ -288,13 +285,15 @@
       transform: scale(0.98);
     }
     #showAnswerButton {
-      background: linear-gradient(90deg,#349afd 0,#185bff 100%);
+      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
       color: #fff;
       margin-top: 1vw;
-      box-shadow: 0 2px 18px rgba(30,85,175,0.13);
+      box-shadow: 0 2px 18px rgba(120,40,255,0.13);
+      font-weight: bold;
+      border: none;
     }
     #showAnswerButton:hover {
-      background: linear-gradient(90deg,#2b83df 0,#133a91 100%);
+      background: linear-gradient(90deg,#9448db 0,#461196 100%);
       color: #fff;
     }
     ::-webkit-scrollbar { width: 0 !important }
@@ -416,6 +415,10 @@
       numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
       numberDisplay.innerHTML = ""; // Reset
 
+      // Always hide next and show answer until ready
+      document.getElementById('showAnswerButton').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'none';
+
       if (currentNumberIndex < numbersToShow) {
         let number, numberHtml;
         // For multiplication/division: show operator (×/÷) to the left except for first token
@@ -454,7 +457,9 @@
         clearInterval(countdownInterval);
         showFullEquation();
         waitingForEnter = true;
+        // Only show the showAnswer button now (next stays hidden)
         document.getElementById('showAnswerButton').style.display = 'inline-block';
+        document.getElementById('nextButton').style.display = 'none';
       }
     }
 
@@ -488,6 +493,9 @@
       equationDisplay.style.animation = 'none';
       void equationDisplay.offsetWidth; // Force reflow for animation restart
       equationDisplay.style.animation = null;
+      // Show only Show Answer
+      document.getElementById('showAnswerButton').style.display = 'inline-block';
+      document.getElementById('nextButton').style.display = 'none';
     }
 
     function showAnswer() {
@@ -517,6 +525,7 @@
       answerDisplay.style.top = "50%";
       answerDisplay.style.transform = "translateY(-50%)";
       document.getElementById('showAnswerButton').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'inline-block';
       waitingForEnter = false;
     }
 
@@ -538,6 +547,8 @@
         currentNumberIndex = 0;
         document.getElementById('answer').style.display = 'none';
         document.getElementById('equation').style.display = 'none';
+        document.getElementById('nextButton').style.display = 'none';
+        document.getElementById('showAnswerButton').style.display = 'none';
         displayNumber();
         countdownInterval = setInterval(displayNumber, speed);
       } else {
@@ -558,6 +569,8 @@
       document.getElementById('number').innerHTML = '';
       document.getElementById('answer').style.display = 'none';
       document.getElementById('equation').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'none';
+      document.getElementById('showAnswerButton').style.display = 'none';
       const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
       clearInterval(countdownInterval);
       displayNumber();
