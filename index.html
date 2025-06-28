@@ -21,21 +21,6 @@
       height: 100vh;
       width: 100vw;
     }
-    #logoContainer {
-      text-align: center;
-      padding: 1.5vw 0 0.5vw 0;
-      flex: 0 0 auto;
-      background: #fff;
-      z-index: 2;
-    }
-    #logo {
-      width: 15vw; min-width: 120px; max-width: 240px;
-      filter: drop-shadow(0 4px 8px rgba(80,180,255,0.1));
-      border-radius: 2vw;
-      background: #eaf6ff;
-      padding: 0.8vw;
-      vertical-align: middle;
-    }
     .main-content {
       flex: 1 1 0%;
       min-height: 0;
@@ -57,6 +42,115 @@
       transform: translateY(-15vh);
       transition: transform 0.2s;
     }
+    /* --- PANEL STYLES --- */
+    .settings-panel {
+      width: 80%;
+      max-width: 530px;
+      margin: 0 auto;
+      background: linear-gradient(120deg,#fafdff 65%,#eaf5fe 100%);
+      box-shadow: 0 8px 48px 0 rgba(20,82,255,0.09), 0 1.5px 10px 0 rgba(120,180,255,0.13);
+      border-radius: 2.4em;
+      padding: 2.3em 1.4em 1.5em 1.4em;
+      display: flex;
+      flex-direction: column;
+      gap: 1.4em;
+      border: 1px solid #dbeffe;
+      position: relative;
+      z-index: 2;
+      min-width: 240px;
+      align-items: center;
+    }
+    .panel-logo {
+      width: 15vw;
+      min-width: 120px;
+      max-width: 180px;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(80,180,255,0.1));
+      border-radius: 2vw;
+      background: #eaf6ff;
+      padding: 0.7vw;
+      margin-bottom: 1.3em;
+      display: block;
+    }
+    .panel-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.2em;
+      padding: 0.85em 0;
+      border-bottom: 1.5px solid #e3e9fc;
+      font-size: 1.23em;
+      width: 100%;
+    }
+    .panel-section:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .panel-label {
+      font-size: 1.13em;
+      color: #3270db;
+      font-weight: bold;
+      letter-spacing: 0.01em;
+      margin-right: 0.2em;
+      flex: 1 1 auto;
+      min-width: 80px;
+    }
+    .panel-input, .panel-select {
+      font-size: 1.1em;
+      padding: 0.44em 1.3em;
+      border-radius: 1.5em;
+      border: none;
+      background: #eaf6ff;
+      color: #185bff;
+      font-family: inherit;
+      font-weight: 700;
+      box-shadow: 0 1px 4px rgba(160,200,255,0.09);
+      outline: none;
+      min-width: 65px;
+      transition: background 0.2s;
+    }
+    .panel-input:focus, .panel-select:focus { background: #d6ecff; }
+    .panel-radio-group {
+      display: flex; gap: 1.4em; align-items: center; margin-left: 0.3em;
+    }
+    .panel-radio-group label {
+      font-size: 1em;
+      color: #185bff;
+      font-weight: 600;
+      margin: 0 0.2em 0 0;
+      cursor: pointer;
+    }
+    .panel-radio-group input[type="radio"] {
+      accent-color: #56c7fa;
+      width: 1.19em; height: 1.19em;
+      vertical-align: middle;
+      margin-right: 0.23em;
+    }
+    .panel-action {
+      margin-top: 1.2em;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .panel-action button {
+      width: 85%;
+      max-width: 270px;
+      min-width: 120px;
+      font-size: 1.32em;
+      border-radius: 3em;
+      padding: 0.6em 2.2em;
+    }
+    @media (max-width: 650px) {
+      .panel-logo { width: 36vw; min-width: 80px; }
+      .settings-panel { max-width: 97vw; padding: 1.1em 0.4em 1.1em 0.4em; }
+    }
+    @media (max-width: 430px) {
+      .panel-logo { width: 45vw; min-width: 60px; }
+      label, select, input[type="number"], button {
+        font-size: 1.1em;
+      }
+    }
+    /* --- END PANEL --- */
     .number-wrapper {
       flex: 1;
       display: flex;
@@ -185,23 +279,6 @@
       80% { transform: rotate(-2deg);}
       90% { transform: rotate(1deg);}
     }
-    @media (max-width: 650px) {
-      #logo { width: 36vw; }
-      #nadamascot { width: 22vw; min-width: 70px;}
-      .mascot-box { min-width: 40px;}
-    }
-    @media (max-width: 430px) {
-      label, select, input[type="number"], button {
-        font-size: 1.1em;
-      }
-      #logo { width: 45vw; }
-      #nadamascot { width: 26vw; min-width: 48px;}
-      .mascot-box { min-width: 35px;}
-      .settings-table td, .settings-table th {
-        font-size: 1em;
-        padding: 0.28em 0.2em;
-      }
-    }
     .controls {
       width: 100vw;
       background: rgba(250,255,255,0.96);
@@ -223,84 +300,6 @@
       justify-content: center;
       margin-bottom: 0.7vw;
     }
-    .settings-table {
-      margin: 0 auto 1.3em auto;
-      border-collapse: separate;
-      border-spacing: 0 0.55em;
-      background: rgba(225,245,255,0.11);
-      border-radius: 1em;
-      box-shadow: 0 2px 18px rgba(90,180,255,0.11);
-      padding: 1.6em 2.1em;
-      min-width: 280px;
-      max-width: 99vw;
-    }
-    .settings-table td, .settings-table th {
-      font-size: 1.14em;
-      color: #3270db;
-      padding: 0.33em 1.2em;
-      font-weight: 700;
-      text-align: left;
-      border-radius: 1.2em;
-      vertical-align: middle;
-    }
-    .settings-table input[type="number"], .settings-table select {
-      font-size: 1.12em;
-      padding: 0.44em 1em;
-      border-radius: 2em;
-      border: none;
-      background: #eaf6ff;
-      color: #185bff;
-      font-family: inherit;
-      box-shadow: 0 1px 5px rgba(160,200,255,0.10);
-      min-width: 52px;
-      outline: none;
-      transition: background 0.2s;
-      margin: 0;
-    }
-    .settings-table input[type="number"]:focus, .settings-table select:focus {
-      background: #d6ecff;
-    }
-    .settings-table .radio-group {
-      display: flex;
-      align-items: center;
-      gap: 0.8em;
-      margin: 0;
-    }
-    .settings-table input[type="radio"] {
-      accent-color: #56c7fa;
-      width: 1.18em; height: 1.18em;
-    }
-    .settings-table .start-cell {
-      text-align: center;
-      padding-top: 0.9em;
-      padding-bottom: 0.15em;
-      vertical-align: bottom;
-    }
-    .settings-table button#toggleButton {
-      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white;
-      border: none;
-      padding: 0.75em 2.6em;
-      border-radius: 3em;
-      font-size: 1.25em;
-      font-family: inherit;
-      font-weight: 700;
-      box-shadow: 0 2px 14px rgba(90,180,255,0.11);
-      cursor: pointer;
-      margin: 0.18em 0.3em;
-      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
-      outline: none;
-      letter-spacing: 0.03em;
-    }
-    .settings-table button#toggleButton:hover, .settings-table button#toggleButton:focus {
-      background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);
-      box-shadow: 0 7px 20px rgba(85,180,255,0.16);
-      transform: translateY(-2px) scale(1.035);
-    }
-    .settings-table button#toggleButton:active {
-      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
-      transform: scale(0.98);
-    }
     label {
       font-size: 1.3em;
       color: #3270db;
@@ -308,7 +307,39 @@
       margin-right: 0.4em;
       letter-spacing: 0.05em;
     }
-    /* ... rest remains unchanged ... */
+    input[type="number"], select {
+      font-size: 1.2em;
+      padding: 0.5em 1.2em;
+      border-radius: 2em;
+      border: none;
+      background: #eaf6ff;
+      color: #185bff;
+      font-family: inherit;
+      box-shadow: 0 1px 5px rgba(160,200,255,0.11);
+      margin: 0 0.4em 0 0;
+      min-width: 60px;
+      outline: none;
+      transition: background 0.2s;
+    }
+    input[type="number"]:focus, select:focus {
+      background: #d6ecff;
+    }
+    select, .radio-group {
+      font-weight: 700;
+    }
+    select {
+      border: 2px solid #aad4ff;
+    }
+    .radio-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8em;
+      margin-left: 1em;
+    }
+    .radio-group input[type="radio"] {
+      accent-color: #56c7fa;
+      width: 1.3em; height: 1.3em;
+    }
     button {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
       color: white;
@@ -351,54 +382,38 @@
   </style>
 </head>
 <body>
-  <div id="logoContainer">
-    <img src="nada.png" alt="Logo" id="logo">
-  </div>
   <div class="main-content">
     <div class="main-centerer">
       <div id="firstPage" style="width:100%;">
-        <table class="settings-table">
-          <tr>
-            <td><label for="speedInput">Speed</label></td>
-            <td>
-              <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
-            </td>
-          </tr>
-          <tr>
-            <td><label for="countInput">Num/set</label></td>
-            <td>
-              <input type="number" id="countInput" value="5" min="1" max="20"/>
-            </td>
-          </tr>
-          <tr>
-            <td><label for="operation">Operation</label></td>
-            <td>
-              <select id="operation">
-                <option value="addsub" selected>Add / Subtract</option>
-                <option value="multi">Multiply (×)</option>
-                <option value="divide">Divide (÷)</option>
-              </select>
-            </td>
-          </tr>
-          <tr id="digitTypeRow">
-            <td>Digits</td>
-            <td>
-              <div class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
-                <label style="margin:0; color:#185bff;">
-                  <input type="radio" name="digitType" value="single" checked>Single Digit
-                </label>
-                <label style="margin:0; color:#185bff;">
-                  <input type="radio" name="digitType" value="double">2 Digits
-                </label>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="start-cell">
-              <button id="toggleButton">START</button>
-            </td>
-          </tr>
-        </table>
+        <div class="settings-panel">
+          <img src="nada.png" alt="Logo" class="panel-logo">
+          <div class="panel-section">
+            <span class="panel-label" for="speedInput">Speed</span>
+            <input class="panel-input" type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
+          </div>
+          <div class="panel-section">
+            <span class="panel-label" for="countInput">Num/set</span>
+            <input class="panel-input" type="number" id="countInput" value="5" min="1" max="20"/>
+          </div>
+          <div class="panel-section">
+            <span class="panel-label" for="operation">Operation</span>
+            <select class="panel-select" id="operation">
+              <option value="addsub" selected>Add / Subtract</option>
+              <option value="multi">Multiply (×)</option>
+              <option value="divide">Divide (÷)</option>
+            </select>
+          </div>
+          <div class="panel-section" id="digitTypeGroup" style="display:flex;">
+            <span class="panel-label">Digits</span>
+            <div class="panel-radio-group">
+              <label><input type="radio" name="digitType" value="single" checked>Single Digit</label>
+              <label><input type="radio" name="digitType" value="double">2 Digits</label>
+            </div>
+          </div>
+          <div class="panel-action">
+            <button id="toggleButton">START</button>
+          </div>
+        </div>
       </div>
       <div id="secondPage" style="display: none; width:100%;">
         <div class="number-wrapper" style="position:relative;">
@@ -484,7 +499,7 @@
       answerDisplay.style.display = 'none';
       equationDisplay.style.display = 'none';
       numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
-      numberDisplay.innerHTML = ""; // Reset
+      numberDisplay.innerHTML = "";
 
       document.getElementById('showAnswerButton').style.display = 'none';
       document.getElementById('nextButton').style.display = 'none';
@@ -647,13 +662,10 @@
     document.getElementById('operation').addEventListener('change', function() {
       const modeVal = this.value;
       const group = document.getElementById('digitTypeGroup');
-      const digitRow = document.getElementById('digitTypeRow');
       if (modeVal === "addsub") {
-        group.style.display = "inline-flex";
-        digitRow.style.display = "";
+        group.style.display = "flex";
       } else {
         group.style.display = "none";
-        digitRow.style.display = "none";
       }
     });
 
