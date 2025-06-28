@@ -197,6 +197,10 @@
       #logo { width: 45vw; }
       #nadamascot { width: 26vw; min-width: 48px;}
       .mascot-box { min-width: 35px;}
+      .settings-table td, .settings-table th {
+        font-size: 1em;
+        padding: 0.28em 0.2em;
+      }
     }
     .controls {
       width: 100vw;
@@ -219,6 +223,84 @@
       justify-content: center;
       margin-bottom: 0.7vw;
     }
+    .settings-table {
+      margin: 0 auto 1.3em auto;
+      border-collapse: separate;
+      border-spacing: 0 0.55em;
+      background: rgba(225,245,255,0.11);
+      border-radius: 1em;
+      box-shadow: 0 2px 18px rgba(90,180,255,0.11);
+      padding: 1.6em 2.1em;
+      min-width: 280px;
+      max-width: 99vw;
+    }
+    .settings-table td, .settings-table th {
+      font-size: 1.14em;
+      color: #3270db;
+      padding: 0.33em 1.2em;
+      font-weight: 700;
+      text-align: left;
+      border-radius: 1.2em;
+      vertical-align: middle;
+    }
+    .settings-table input[type="number"], .settings-table select {
+      font-size: 1.12em;
+      padding: 0.44em 1em;
+      border-radius: 2em;
+      border: none;
+      background: #eaf6ff;
+      color: #185bff;
+      font-family: inherit;
+      box-shadow: 0 1px 5px rgba(160,200,255,0.10);
+      min-width: 52px;
+      outline: none;
+      transition: background 0.2s;
+      margin: 0;
+    }
+    .settings-table input[type="number"]:focus, .settings-table select:focus {
+      background: #d6ecff;
+    }
+    .settings-table .radio-group {
+      display: flex;
+      align-items: center;
+      gap: 0.8em;
+      margin: 0;
+    }
+    .settings-table input[type="radio"] {
+      accent-color: #56c7fa;
+      width: 1.18em; height: 1.18em;
+    }
+    .settings-table .start-cell {
+      text-align: center;
+      padding-top: 0.9em;
+      padding-bottom: 0.15em;
+      vertical-align: bottom;
+    }
+    .settings-table button#toggleButton {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white;
+      border: none;
+      padding: 0.75em 2.6em;
+      border-radius: 3em;
+      font-size: 1.25em;
+      font-family: inherit;
+      font-weight: 700;
+      box-shadow: 0 2px 14px rgba(90,180,255,0.11);
+      cursor: pointer;
+      margin: 0.18em 0.3em;
+      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
+      outline: none;
+      letter-spacing: 0.03em;
+    }
+    .settings-table button#toggleButton:hover, .settings-table button#toggleButton:focus {
+      background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);
+      box-shadow: 0 7px 20px rgba(85,180,255,0.16);
+      transform: translateY(-2px) scale(1.035);
+    }
+    .settings-table button#toggleButton:active {
+      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
+      transform: scale(0.98);
+    }
     label {
       font-size: 1.3em;
       color: #3270db;
@@ -226,39 +308,7 @@
       margin-right: 0.4em;
       letter-spacing: 0.05em;
     }
-    input[type="number"], select {
-      font-size: 1.2em;
-      padding: 0.5em 1.2em;
-      border-radius: 2em;
-      border: none;
-      background: #eaf6ff;
-      color: #185bff;
-      font-family: inherit;
-      box-shadow: 0 1px 5px rgba(160,200,255,0.11);
-      margin: 0 0.4em 0 0;
-      min-width: 60px;
-      outline: none;
-      transition: background 0.2s;
-    }
-    input[type="number"]:focus, select:focus {
-      background: #d6ecff;
-    }
-    select, .radio-group {
-      font-weight: 700;
-    }
-    select {
-      border: 2px solid #aad4ff;
-    }
-    .radio-group {
-      display: flex;
-      align-items: center;
-      gap: 0.8em;
-      margin-left: 1em;
-    }
-    .radio-group input[type="radio"] {
-      accent-color: #56c7fa;
-      width: 1.3em; height: 1.3em;
-    }
+    /* ... rest remains unchanged ... */
     button {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
       color: white;
@@ -307,27 +357,48 @@
   <div class="main-content">
     <div class="main-centerer">
       <div id="firstPage" style="width:100%;">
-        <div class="setting-row">
-          <label for="speedInput">Speed</label>
-          <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
-          <label for="countInput">Num/set</label>
-          <input type="number" id="countInput" value="5" min="1" max="20"/>
-          <label for="operation">Operation</label>
-          <select id="operation">
-            <option value="addsub" selected>Add / Subtract</option>
-            <option value="multi">Multiply (×)</option>
-            <option value="divide">Divide (÷)</option>
-          </select>
-          <div class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
-            <label style="margin:0; color:#185bff;">
-              <input type="radio" name="digitType" value="single" checked>Single Digit
-            </label>
-            <label style="margin:0; color:#185bff;">
-              <input type="radio" name="digitType" value="double">2 Digits
-            </label>
-          </div>
-          <button id="toggleButton">START</button>
-        </div>
+        <table class="settings-table">
+          <tr>
+            <td><label for="speedInput">Speed</label></td>
+            <td>
+              <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
+            </td>
+          </tr>
+          <tr>
+            <td><label for="countInput">Num/set</label></td>
+            <td>
+              <input type="number" id="countInput" value="5" min="1" max="20"/>
+            </td>
+          </tr>
+          <tr>
+            <td><label for="operation">Operation</label></td>
+            <td>
+              <select id="operation">
+                <option value="addsub" selected>Add / Subtract</option>
+                <option value="multi">Multiply (×)</option>
+                <option value="divide">Divide (÷)</option>
+              </select>
+            </td>
+          </tr>
+          <tr id="digitTypeRow">
+            <td>Digits</td>
+            <td>
+              <div class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
+                <label style="margin:0; color:#185bff;">
+                  <input type="radio" name="digitType" value="single" checked>Single Digit
+                </label>
+                <label style="margin:0; color:#185bff;">
+                  <input type="radio" name="digitType" value="double">2 Digits
+                </label>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2" class="start-cell">
+              <button id="toggleButton">START</button>
+            </td>
+          </tr>
+        </table>
       </div>
       <div id="secondPage" style="display: none; width:100%;">
         <div class="number-wrapper" style="position:relative;">
@@ -415,13 +486,11 @@
       numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
       numberDisplay.innerHTML = ""; // Reset
 
-      // Always hide next and show answer until ready
       document.getElementById('showAnswerButton').style.display = 'none';
       document.getElementById('nextButton').style.display = 'none';
 
       if (currentNumberIndex < numbersToShow) {
         let number, numberHtml;
-        // For multiplication/division: show operator (×/÷) to the left except for first token
         if (mode === "multi" || mode === "divide") {
           let [a, b] = currentSet[currentNumberIndex];
           if (currentNumberIndex === 0) {
@@ -457,7 +526,6 @@
         clearInterval(countdownInterval);
         showFullEquation();
         waitingForEnter = true;
-        // Only show the showAnswer button now (next stays hidden)
         document.getElementById('showAnswerButton').style.display = 'inline-block';
         document.getElementById('nextButton').style.display = 'none';
       }
@@ -491,9 +559,8 @@
       equationDisplay.style.display = 'block';
       equationDisplay.style.opacity = 0;
       equationDisplay.style.animation = 'none';
-      void equationDisplay.offsetWidth; // Force reflow for animation restart
+      void equationDisplay.offsetWidth;
       equationDisplay.style.animation = null;
-      // Show only Show Answer
       document.getElementById('showAnswerButton').style.display = 'inline-block';
       document.getElementById('nextButton').style.display = 'none';
     }
@@ -580,10 +647,13 @@
     document.getElementById('operation').addEventListener('change', function() {
       const modeVal = this.value;
       const group = document.getElementById('digitTypeGroup');
+      const digitRow = document.getElementById('digitTypeRow');
       if (modeVal === "addsub") {
         group.style.display = "inline-flex";
+        digitRow.style.display = "";
       } else {
         group.style.display = "none";
+        digitRow.style.display = "none";
       }
     });
 
