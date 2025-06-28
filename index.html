@@ -78,9 +78,10 @@
       transition: color 0.15s, background 0.3s;
       box-sizing: border-box;
       padding: 1vw 0 1vw 0;
+      /* Use clamp for responsive font size: min 32px, scales up to 21vw, max 250px */
+      font-size: clamp(32px, 21vw, 250px);
     }
     #number {
-      font-size: 21vw;
       color: #185bff;
       background: rgba(220,235,255,0.15);
       box-shadow: 0 8px 60px rgba(100,180,255,0.06);
@@ -114,7 +115,6 @@
       100% { transform: scale(1); opacity: 1;}
     }
     #answer {
-      font-size: 21vw;
       color: #ff0000;
       background: rgba(255,235,235,0.13);
       box-shadow: 0 2px 12px rgba(255, 80, 80, 0.10);
@@ -130,7 +130,8 @@
       position: absolute;
       left: 0; right: 0; top: 50%;
       transform: translateY(-50%);
-      font-size: 8vw;
+      /* Clamp for full question size: min 20px, scales up to 8vw, max 80px */
+      font-size: clamp(20px, 8vw, 80px);
       font-family: inherit;
       color: #3b15a3;
       font-weight: bold;
@@ -188,22 +189,15 @@
       90% { transform: rotate(1deg);}
     }
     @media (max-width: 650px) {
-      #number, #answer {
-        font-size: 18vw;
-      }
-      .controls { padding-bottom: 3vh; }
       #logo { width: 36vw; }
       #nadamascot { width: 22vw; min-width: 70px;}
       .mascot-box { min-width: 40px;}
     }
     @media (max-width: 430px) {
-      #number, #answer {
-        font-size: 13vw;
-      }
       label, select, input[type="number"], button {
         font-size: 1.1em;
       }
-      .controls { padding: 3vw 0 7vw 0; }
+      #logo { width: 45vw; }
       #nadamascot { width: 26vw; min-width: 48px;}
       .mascot-box { min-width: 35px;}
     }
