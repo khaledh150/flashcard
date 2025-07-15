@@ -10,57 +10,68 @@
       margin: 0; padding: 0; height: 100%;
       background: #fff;
       font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
-      overflow: hidden;
       width: 100vw; height: 100vh;
       box-sizing: border-box;
       user-select: none;
+      overflow: hidden;
     }
-    body {
+    body, .main-content, .main-centerer {
+      width: 100vw;
+      height: 100vh;
+      min-height: 0; min-width: 0;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 100vh;
-      width: 100vw;
+      align-items: stretch;
+      justify-content: stretch;
     }
+    /* Floating logos and mascot */
     .logo-fixed {
       position: fixed;
-      top: 2vw;
-      left: 2vw;
+      top: 2vw; left: 2vw;
       z-index: 100;
       background: none;
       border-radius: 2vw;
-      width: 18vw;
-      min-width: 110px;
-      max-width: 260px;
+      width: 18vw; min-width: 60px; max-width: 110px;
       height: auto;
       pointer-events: none;
       box-shadow: 0 2px 7px rgba(80,180,255,0.07);
-      transition: width 0.2s;
     }
     .logo-wk {
       position: fixed;
-      top: 2vw;
-      right: 2vw;
+      top: 2vw; right: 2vw;
       z-index: 100;
       background: none;
       border-radius: 2vw;
-      width: 18vw;
-      min-width: 110px;
-      max-width: 260px;
+      width: 18vw; min-width: 60px; max-width: 110px;
       height: auto;
       pointer-events: none;
       box-shadow: 0 2px 7px rgba(80,180,255,0.07);
-      transition: width 0.2s;
-      /* Force display always */
-      display: block;
+    }
+    .mascot-box {
+      position: fixed;
+      left: 1vw; bottom: 1vw;
+      z-index: 99;
+      pointer-events: none;
+      user-select: none;
+      width: auto; height: auto;
+      min-width: 55px;
+    }
+    #nadamascot {
+      width: 10vw; min-width: 55px; max-width: 90px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
+      will-change: transform;
+      filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
     }
     @media (max-width: 900px) {
-      .logo-fixed { width: 27vw; min-width: 65px; max-width: 110px;}
-      .logo-wk { width: 27vw; min-width: 65px; max-width: 110px;}
+      .logo-fixed, .logo-wk { width: 26vw; min-width: 36px; max-width: 65px;}
+      .mascot-box { min-width: 35px;}
+      #nadamascot { width: 15vw; min-width: 35px; max-width: 65px;}
     }
-    @media (max-width: 500px) {
-      .logo-fixed { width: 37vw; min-width: 46px; max-width: 68px;}
-      .logo-wk { width: 37vw; min-width: 46px; max-width: 68px;}
-    }
+    /* The most important content stays centered */
     .main-content {
       flex: 1 1 0%;
       min-height: 0;
@@ -69,17 +80,18 @@
       align-items: stretch;
       justify-content: stretch;
       position: relative;
-      overflow: visible;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
     }
     .main-centerer {
       flex: 1 1 0%;
-      min-height: 0;
-      width: 100vw;
-      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      min-height: 0; min-width: 0;
+      width: 100vw; height: 100vh;
       position: relative;
+      overflow: hidden;
     }
     .number-wrapper {
       flex: 1;
@@ -91,6 +103,7 @@
       height: 100%;
       min-height: 0;
       position: relative;
+      overflow: visible;
     }
     #number, #answer {
       text-align: center;
@@ -102,20 +115,48 @@
       transition: color 0.15s, background 0.3s;
       box-sizing: border-box;
       padding: 1vw 0 1vw 0;
-      font-size: clamp(250px, 210vw, 300px);
+      font-size: clamp(120px, 21vw, 280px);
+      z-index: 10;
     }
     #number {
       color: #185bff;
-      background: rgba(220,235,255,0.15);
-      box-shadow: 0 8px 60px rgba(100,180,255,0.06);
-      text-shadow: 0 8px 24px rgba(120,170,255,0.07);
-      min-height: 1.2em;
+      background: rgba(220,235,255,0.13);
+      box-shadow: 0 8px 60px rgba(100,180,255,0.05);
+      min-height: 1.1em;
       margin-bottom: 1vw;
       border-radius: 3vw;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
+    }
+    #answer {
+      color: #ff0000;
+      background: none !important;
+      box-shadow: none !important;
+      display: none;
+      position: absolute;
+      left: 0; right: 0;
+      margin: auto;
+      border-radius: 3vw;
+      z-index: 12;
+      font-size: clamp(120px, 21vw, 280px);
+      font-weight: bold;
+    }
+    #equation {
+      display: none;
+      position: absolute;
+      left: 0; right: 0; top: 50%;
+      transform: translateY(-50%);
+      font-size: clamp(30px, 4vw, 48px);
+      color: #3b15a3;
+      font-weight: bold;
+      letter-spacing: 1vw;
+      z-index: 11;
+      opacity: 0;
+      animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
+      text-align: center;
+      pointer-events: none;
     }
     .with-equal {
       display: flex;
@@ -132,65 +173,19 @@
       line-height: 1;
       display: inline-block;
     }
-    @keyframes pop {
-      0% { transform: scale(0.7); opacity: 0.4;}
-      70% { transform: scale(1.3); opacity: 1;}
-      100% { transform: scale(1); opacity: 1;}
-    }
-    #answer {
-      color: #ff0000;
-      background: none !important;
-      box-shadow: none !important;
-      display: none;
-      position: absolute;
-      left: 0; right: 0;
-      margin: auto;
-      border-radius: 3vw;
-      z-index: 2;
-      font-size: clamp(250px, 210vw, 300px);
-      font-weight: bold;
-    }
-    #equation {
-      display: none;
-      position: absolute;
-      left: 0; right: 0; top: 50%;
-      transform: translateY(-50%);
-      font-size: clamp(100px, 200vw, 100px);
-      font-family: inherit;
-      color: #3b15a3;
-      font-weight: bold;
-      letter-spacing: 1vw;
-      z-index: 3;
-      opacity: 0;
-      animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
-      text-align: center;
-      pointer-events: none;
-    }
-    @keyframes eq-pop {
-      0% { transform: scale(0.8) translateY(-50%); opacity: 0; }
-      60% { transform: scale(1.12) translateY(-50%); opacity: 1; }
-      100% { transform: scale(1) translateY(-50%); opacity: 1; }
-    }
-
+    @keyframes pop { 0% { transform: scale(0.7); opacity: 0.4;} 70% { transform: scale(1.3); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
+    @keyframes eq-pop { 0% { transform: scale(0.8) translateY(-50%); opacity: 0; } 60% { transform: scale(1.12) translateY(-50%); opacity: 1; } 100% { transform: scale(1) translateY(-50%); opacity: 1; } }
     /* Get Ready Overlay Modern Glass Style */
     .getready-overlay {
       position: fixed;
       inset: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center;
       z-index: 9999;
       flex-direction: column;
       background: rgba(245,248,255,0.86);
       backdrop-filter: blur(9px) saturate(1.6) brightness(1.06);
-      box-shadow: 0 6px 60px 0 rgba(120,130,230,0.17);
       animation: fadein 0.3s;
-    }
-    @keyframes fadein {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
     }
     .getready-text {
       font-family: 'Nunito', 'Quicksand', Arial, sans-serif;
@@ -199,7 +194,6 @@
       font-weight: 900;
       letter-spacing: 0.08em;
       margin-bottom: 0.3em;
-      text-shadow: 0 6px 30px rgba(140,180,255,0.13);
       background: linear-gradient(94deg,#6fc9ff 0%,#4364f7 80%);
       background-clip: text;
       -webkit-background-clip: text;
@@ -220,174 +214,116 @@
       user-select: none;
       transition: color 0.21s;
     }
-    @keyframes popready {
-      0% { transform: scale(0.55); opacity: 0.1;}
-      70% { transform: scale(1.10); opacity: 1;}
-      100% { transform: scale(1); opacity: 1;}
-    }
-    @keyframes popcount {
-      0% { transform: scale(0.7); opacity: 0.13;}
-      70% { transform: scale(1.13); opacity: 1;}
-      100% { transform: scale(1); opacity: 1;}
-    }
-    .mascot-box {
-      position: fixed;
-      left: 0; bottom: 0;
-      z-index: 30;
-      padding: 1vw 0.6vw;
-      pointer-events: none;
-      user-select: none;
-      width: auto;
-      height: auto;
-      min-width: 80px;
-    }
-    #nadamascot {
-      width: 12vw;
-      min-width: 90px;
-      max-width: 140px;
-      height: auto;
-      pointer-events: none;
-      user-select: none;
-      animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
-      will-change: transform;
-      filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
-    }
-    @keyframes mascotFloat {
-      0% { transform: translateY(0) scale(1);}
-      40% { transform: translateY(-10px) scale(1.03);}
-      60% { transform: translateY(-16px) scale(1.02);}
-      100% { transform: translateY(0) scale(1);}
-    }
-    @keyframes mascotWave {
-      0%, 100% { transform: rotate(-2deg);}
-      10% { transform: rotate(3deg);}
-      20% { transform: rotate(-3deg);}
-      30% { transform: rotate(2deg);}
-      40% { transform: rotate(-2deg);}
-      50% { transform: rotate(2deg);}
-      60% { transform: rotate(-2deg);}
-      70% { transform: rotate(2deg);}
-      80% { transform: rotate(-2deg);}
-      90% { transform: rotate(1deg);}
-    }
+    @keyframes fadein { 0% { opacity: 0; } 100% { opacity: 1; } }
+    @keyframes popready { 0% { transform: scale(0.55); opacity: 0.1;} 70% { transform: scale(1.10); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
+    @keyframes popcount { 0% { transform: scale(0.7); opacity: 0.13;} 70% { transform: scale(1.13); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
+
+    /* Controls: floating, NO background, always at bottom, always on one line, never stack */
     .controls {
-      width: 100vw;
-      background: rgba(250,255,255,0.96);
-      box-shadow: 0 -4px 32px rgba(160,180,240,0.11);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-end;
       position: fixed;
-      bottom: 0; left: 0;
-      z-index: 10;
-      padding: 4vw 0 6vw 0;
-      border-top-left-radius: 3vw;
-      border-top-right-radius: 3vw;
-      gap: 2.6vw;
-    }
-    @media (max-width: 800px) {
-      .controls {
-        padding: 6vw 0 11vw 0;
-        gap: 4vw;
-      }
+      left: 0; bottom: 1vw;
+      width: 100vw;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 999;
+      background: none !important;
+      box-shadow: none !important;
+      pointer-events: none;
+      padding: 0;
     }
     .button-group {
-      display: flex; flex-wrap: wrap; align-items: center; gap: 2vw;
-      justify-content: center;
-      margin-bottom: 0.7vw;
-    }
-    label {
-      font-size: 1.3em;
-      color: #3270db;
-      font-weight: bold;
-      margin-right: 0.4em;
-      letter-spacing: 0.05em;
-    }
-    input[type="number"], select {
-      font-size: 1.2em;
-      padding: 0.5em 1.2em;
-      border-radius: 2em;
-      border: none;
-      background: #eaf6ff;
-      color: #185bff;
-      font-family: inherit;
-      box-shadow: 0 1px 5px rgba(160,200,255,0.11);
-      margin: 0 0.4em 0 0;
-      min-width: 60px;
-      outline: none;
-      transition: background 0.2s;
-    }
-    input[type="number"]:focus, select:focus {
-      background: #d6ecff;
-    }
-    select, .radio-group {
-      font-weight: 700;
-    }
-    select {
-      border: 2px solid #aad4ff;
-    }
-    .radio-group {
-      display: flex;
-      align-items: center;
-      gap: 0.8em;
-      margin-left: 1em;
-    }
-    .radio-group input[type="radio"] {
-      accent-color: #56c7fa;
-      width: 1.3em; height: 1.3em;
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 2vw !important;
+      margin: 0 !important;
+      background: none !important;
+      pointer-events: auto;
     }
     button {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
       color: white;
       border: none;
-      padding: 0.7em 2.3em;
+      padding: 0.48em 1.5em;
       border-radius: 3em;
-      font-size: 1.45em;
+      font-size: 1.1em;
       font-family: inherit;
       font-weight: 700;
-      box-shadow: 0 2px 18px rgba(90,180,255,0.15);
+      box-shadow: 0 2px 10px rgba(90,180,255,0.10);
       cursor: pointer;
-      margin: 0.2em 0.5em;
+      margin: 0;
       transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
       outline: none;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
+      min-width: 80px;
     }
     button:hover, button:focus {
       background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);
-      box-shadow: 0 8px 24px rgba(85,180,255,0.25);
-      transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 8px 18px rgba(85,180,255,0.16);
+      transform: translateY(-1.5px) scale(1.035);
     }
     button:active {
       background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
-      transform: scale(0.98);
+      transform: scale(0.97);
     }
     #showAnswerButton {
       background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
       color: #fff;
-      margin-top: 1vw;
-      box-shadow: 0 2px 18px rgba(120,40,255,0.13);
+      box-shadow: 0 2px 12px rgba(120,40,255,0.12);
       font-weight: bold;
       border: none;
+      min-width: 110px;
     }
     #showAnswerButton:hover {
       background: linear-gradient(90deg,#9448db 0,#461196 100%);
       color: #fff;
+    }
+    @media (max-width: 700px) {
+      .controls { bottom: 0.5vw; }
+      .button-group { gap: 3vw !important; }
+      button { font-size: 0.98em; min-width: 72px; padding: 0.38em 1.1em; }
+    }
+    @media (max-width: 500px) {
+      .controls { bottom: 0; }
+      .button-group { gap: 2vw !important; }
+      button { font-size: 0.93em; min-width: 58px; padding: 0.29em 0.8em; }
+    }
+    /* First page settings styling (still modern/cute) */
+    #firstPage {
+      width: 100%;
+      min-height: 0;
+      text-align: center;
+      margin-top: 7vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1vw;
+    }
+    #firstPage label, #firstPage select, #firstPage input[type="number"], #firstPage .radio-group, #firstPage button {
+      margin-bottom: 0.8vw;
+      font-size: 1.06em;
+    }
+    @media (max-width: 600px) {
+      #firstPage { margin-top: 10vw; gap: 2vw; }
+      #firstPage label, #firstPage select, #firstPage input[type="number"], #firstPage .radio-group, #firstPage button { margin-bottom: 2vw; }
     }
     ::-webkit-scrollbar { width: 0 !important }
     body { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
-  <img src="nada.png" alt="Logo" class="logo-fixed">
-  <img src="./wonderkids.png" alt="" class="logo-wk">
+  <img src="nada.png" alt="NADA Logo" class="logo-fixed">
+  <img src="wonderkids.png" alt="Wonder Kids Logo" class="logo-wk">
   <div id="getreadyOverlay" class="getready-overlay" style="display:none;">
     <div class="getready-text" id="getreadyText">Get Ready</div>
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <div class="main-content">
     <div class="main-centerer">
-      <div id="firstPage" style="width:100%;text-align:center;">
+      <div id="firstPage">
         <label for="speedInput">Speed</label>
         <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
         <label for="countInput">Num/set</label>
@@ -409,7 +345,7 @@
         <button id="toggleButton">START</button>
       </div>
       <div id="secondPage" style="display: none; width:100%;">
-        <div class="number-wrapper" style="position:relative;">
+        <div class="number-wrapper">
           <div id="number"></div>
           <div id="answer"></div>
           <div id="equation"></div>
@@ -486,18 +422,10 @@
     const getready321 = document.getElementById('getready321');
     const startbuzz = document.getElementById('startbuzz');
 
-    function playTickSound() {
-      try { tickSound.currentTime = 0; tickSound.play(); } catch (e) { }
-    }
-    function playDingSound() {
-      try { dingSound.currentTime = 0; dingSound.play(); } catch (e) { }
-    }
-    function playGetReadySound() {
-      try { getready321.currentTime = 0; getready321.play(); } catch (e) { }
-    }
-    function playStartBuzz() {
-      try { startbuzz.currentTime = 0; startbuzz.play(); } catch (e) { }
-    }
+    function playTickSound() { try { tickSound.currentTime = 0; tickSound.play(); } catch (e) { } }
+    function playDingSound() { try { dingSound.currentTime = 0; dingSound.play(); } catch (e) { } }
+    function playGetReadySound() { try { getready321.currentTime = 0; getready321.play(); } catch (e) { } }
+    function playStartBuzz() { try { startbuzz.currentTime = 0; startbuzz.play(); } catch (e) { } }
 
     function displayNumber(isFirstRound) {
       if (controlsLocked) return;
@@ -509,24 +437,15 @@
       equationDisplay.style.display = 'none';
       numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
       numberDisplay.innerHTML = "";
-
       document.getElementById('showAnswerButton').style.display = 'none';
       document.getElementById('nextButton').style.display = 'none';
-
       if (typeof isFirstRound === 'undefined') isFirstRound = false;
-
       if (currentNumberIndex < numbersToShow) {
         let number, numberHtml;
         if (mode === "multi" || mode === "divide") {
           let [a, b] = currentSet[currentNumberIndex];
-          if (currentNumberIndex === 0) {
-            number = a;
-            numberHtml = number;
-          } else {
-            let op = mode === "multi" ? "×" : "÷";
-            number = b;
-            numberHtml = `<span style="opacity:0.7;font-size:0.7em;margin-right:1vw;">${op}</span> ${number}`;
-          }
+          if (currentNumberIndex === 0) { number = a; numberHtml = number; }
+          else { let op = mode === "multi" ? "×" : "÷"; number = b; numberHtml = `<span style="opacity:0.7;font-size:0.7em;margin-right:1vw;">${op}</span> ${number}`; }
         } else {
           number = currentSet[currentNumberIndex];
           numberHtml = number;
@@ -535,18 +454,15 @@
           numberHtml = `<span class="with-equal">${numberHtml}<span class="equal-sign">=</span></span>`;
         }
         numberDisplay.innerHTML = numberHtml;
-
         lastNumber = number;
         lastDisplay = numberHtml;
         lastIndex = currentNumberIndex;
-
         currentNumberIndex++;
         numberDisplay.animate([
           { transform: 'scale(0.91)', opacity: 0.7 },
           { transform: 'scale(1.1)', opacity: 1 },
           { transform: 'scale(1)', opacity: 1 }
         ], { duration: 270, easing: "cubic-bezier(.22,.93,.38,.99)" });
-
         playTickSound();
       } else {
         clearInterval(countdownInterval);
@@ -599,13 +515,9 @@
       const currentSet = sets[currentSetIndex];
       let result = 0;
       if (mode === "multi") {
-        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => {
-          return i === 0 ? b : a * c;
-        }, null);
+        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a * c; }, null);
       } else if (mode === "divide") {
-        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => {
-          return i === 0 ? b : a / c;
-        }, null);
+        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a / c; }, null);
       } else {
         result = currentSet.slice(0, numbersToShow).reduce((a, b) => a + b, 0);
       }
@@ -643,12 +555,7 @@
       text.textContent = 'Get Ready';
       count.textContent = '';
       playGetReadySound();
-
-      getReadyTimeouts.push(setTimeout(() => {
-        text.style.display = 'none';
-        count.style.display = '';
-        count.textContent = '3';
-      }, 850));
+      getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850));
       getReadyTimeouts.push(setTimeout(() => { count.textContent = '2'; }, 1850));
       getReadyTimeouts.push(setTimeout(() => { count.textContent = '1'; }, 2850));
       getReadyTimeouts.push(setTimeout(() => {
@@ -668,7 +575,6 @@
       mode = document.getElementById('operation').value;
       digitType = document.querySelector('input[name="digitType"]:checked').value;
       sets = generateRandomSets(30, numbersToShow, mode, digitType);
-
       if (firstPage.style.display !== 'none') {
         controlsLocked = true;
         startGetReadySequence(() => {
@@ -700,13 +606,11 @@
       if (controlsLocked) return;
       controlsLocked = true;
       playStartBuzz();
-
       document.getElementById('number').innerHTML = '';
       document.getElementById('answer').style.display = 'none';
       document.getElementById('equation').style.display = 'none';
       document.getElementById('nextButton').style.display = 'none';
       document.getElementById('showAnswerButton').style.display = 'none';
-
       nextSetTimeout = setTimeout(() => {
         currentSetIndex++;
         if (currentSetIndex >= sets.length) {
@@ -725,13 +629,9 @@
     document.getElementById('operation').addEventListener('change', function() {
       const modeVal = this.value;
       const group = document.getElementById('digitTypeGroup');
-      if (modeVal === "addsub") {
-        group.style.display = "inline-flex";
-      } else {
-        group.style.display = "none";
-      }
+      if (modeVal === "addsub") { group.style.display = "inline-flex"; }
+      else { group.style.display = "none"; }
     });
-
     document.getElementById('toggleButton').addEventListener('click', switchPage);
     document.getElementById('returnButton').addEventListener('click', switchPage);
     document.getElementById('nextButton').addEventListener('click', nextSet);
