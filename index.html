@@ -8,340 +8,275 @@
   <style>
     html, body {
       margin: 0; padding: 0; height: 100%;
+      width: 100vw; height: 100vh;
       background: #fff;
       font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
-      width: 100vw; height: 100vh;
       box-sizing: border-box;
       user-select: none;
       overflow: hidden;
     }
-    body, .main-content, .main-centerer {
-      width: 100vw;
-      height: 100vh;
-      min-height: 0; min-width: 0;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: stretch;
+    body { position: relative; }
+
+    /* Floating Logos */
+    .logo-fixed, .logo-wk {
+      position: fixed; z-index: 20;
+      background: none !important; border-radius: 2vw;
+      min-width: 54px; max-width: 120px; width: 13vw; height: auto;
+      pointer-events: none; box-shadow: none !important;
+      top: 2vw;
     }
-    /* Floating logos and mascot */
-    .logo-fixed {
-      position: fixed;
-      top: 2vw; left: 2vw;
-      z-index: 100;
-      background: none;
-      border-radius: 2vw;
-      width: 18vw; min-width: 60px; max-width: 110px;
-      height: auto;
-      pointer-events: none;
-      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
+    .logo-fixed { left: 2vw; }
+    .logo-wk { right: 2vw; }
+    @media (max-width: 700px) {
+      .logo-fixed, .logo-wk { width: 20vw; min-width: 44px; max-width: 64px;}
     }
-    .logo-wk {
-      position: fixed;
-      top: 2vw; right: 2vw;
-      z-index: 100;
-      background: none;
-      border-radius: 2vw;
-      width: 18vw; min-width: 60px; max-width: 110px;
-      height: auto;
-      pointer-events: none;
-      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
-    }
+
+    /* Mascot (Floating Bottom Left) */
     .mascot-box {
-      position: fixed;
-      left: 1vw; bottom: 1vw;
-      z-index: 99;
-      pointer-events: none;
-      user-select: none;
-      width: auto; height: auto;
-      min-width: 55px;
+      position: fixed; left: 0; bottom: 0; z-index: 19;
+      padding: 0.5vw 0.3vw;
+      pointer-events: none; user-select: none;
+      background: none !important; box-shadow: none !important;
     }
     #nadamascot {
-      width: 10vw; min-width: 55px; max-width: 90px;
-      height: auto;
-      pointer-events: none;
-      user-select: none;
+      width: 10vw; min-width: 40px; max-width: 72px;
+      height: auto; pointer-events: none;
       animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
-      will-change: transform;
-      filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
+      filter: drop-shadow(0 3px 10px rgba(120,180,255,0.08));
     }
-    @media (max-width: 900px) {
-      .logo-fixed, .logo-wk { width: 26vw; min-width: 36px; max-width: 65px;}
-      .mascot-box { min-width: 35px;}
-      #nadamascot { width: 15vw; min-width: 35px; max-width: 65px;}
-    }
-    /* The most important content stays centered */
+    @keyframes mascotFloat { 0%{transform:translateY(0);} 50%{transform:translateY(-7px);} 100%{transform:translateY(0);} }
+    @keyframes mascotWave  { 0%,100%{transform:rotate(-2deg);} 50%{transform:rotate(3deg);} }
+
+    /* Main Centered Content */
     .main-content {
-      flex: 1 1 0%;
-      min-height: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      justify-content: stretch;
-      position: relative;
       width: 100vw; height: 100vh;
-      overflow: hidden;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      position: relative; z-index: 1;
+      background: none !important; box-shadow: none !important;
     }
     .main-centerer {
-      flex: 1 1 0%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 0; min-width: 0;
-      width: 100vw; height: 100vh;
-      position: relative;
-      overflow: hidden;
+      flex: 1 1 0%; width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center; position: relative;
+      background: none !important; box-shadow: none !important;
     }
     .number-wrapper {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 100vw;
-      height: 100%;
-      min-height: 0;
-      position: relative;
-      overflow: visible;
+      flex: 1; width: 100vw; height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      position: relative; pointer-events: none;
+      background: none !important; box-shadow: none !important;
     }
+
+    /* Flashing Numbers & Answer */
     #number, #answer {
-      text-align: center;
-      width: 96vw;
-      font-weight: bold;
-      line-height: 1;
-      letter-spacing: 2vw;
-      border-radius: 2vw;
-      transition: color 0.15s, background 0.3s;
+      text-align: center; width: 100vw; max-width: 100vw; 
+      font-weight: bold; line-height: 1.04;
+      letter-spacing: 1vw; border-radius: 2vw;
+      transition: color 0.13s;
       box-sizing: border-box;
-      padding: 1vw 0 1vw 0;
-      font-size: clamp(120px, 21vw, 280px);
-      z-index: 10;
+      padding: 0.5vw 0; margin: 0;
+      background: none !important; box-shadow: none !important;
+      min-height: 1.1em; user-select: none;
+      position: relative;
+      left: 0; right: 0;
+      top: 0; bottom: 0;
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
     }
     #number {
-      color: #185bff;
-      background: rgba(220,235,255,0.13);
-      box-shadow: 0 8px 60px rgba(100,180,255,0.05);
-      min-height: 1.1em;
-      margin-bottom: 1vw;
-      border-radius: 3vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      color: #3a21b3;
+      font-size: clamp(250px, 1200vw, 40vw); /* GIANT */
+      text-shadow: 0 3px 16px rgba(120,170,255,0.09);
+      min-height: 1em; pointer-events: none;
     }
+    .with-equal { display: flex; align-items: center; font-size: inherit;}
+    .equal-sign {
+      font-size: 1em; color: #ff0000; margin-left: 2vw; font-weight: 900; line-height: 1; display: inline-block;
+      animation: pop 0.3s;
+    }
+    @keyframes pop { 0%{transform:scale(0.7);opacity:0.4;} 70%{transform:scale(1.3);opacity:1;} 100%{transform:scale(1);opacity:1;} }
+
     #answer {
       color: #ff0000;
-      background: none !important;
-      box-shadow: none !important;
       display: none;
+      font-size: clamp(50px, 20vw, 23vw); /* HUGE */
+      font-weight: 1100;
+      z-index: 3;
       position: absolute;
+      top: 60%;
       left: 0; right: 0;
       margin: auto;
-      border-radius: 3vw;
-      z-index: 12;
-      font-size: clamp(120px, 21vw, 280px);
-      font-weight: bold;
+      transform: translateY(-40%);
+      background: none !important; box-shadow: none !important;
+      pointer-events: none;
     }
     #equation {
       display: none;
-      position: absolute;
-      left: 0; right: 0; top: 50%;
-      transform: translateY(-50%);
-      font-size: clamp(30px, 4vw, 48px);
-      color: #3b15a3;
-      font-weight: bold;
-      letter-spacing: 1vw;
-      z-index: 11;
-      opacity: 0;
-      animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
-      text-align: center;
-      pointer-events: none;
+      position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-55%);
+      font-size: clamp(32px, 5vw, 80px);
+      font-family: inherit; color: #3b15a3; font-weight: bold; letter-spacing: 1vw;
+      z-index: 3; opacity: 0; animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
+      text-align: center; pointer-events: none; line-height: 1.1;
+      width: 100vw; max-width: 100vw;
     }
-    .with-equal {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: inherit;
-    }
-    .equal-sign {
-      font-size: 1em;
-      color: #ff0000;
-      margin-left: 2vw;
-      font-weight: 900;
-      animation: pop 0.3s;
-      line-height: 1;
-      display: inline-block;
-    }
-    @keyframes pop { 0% { transform: scale(0.7); opacity: 0.4;} 70% { transform: scale(1.3); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
-    @keyframes eq-pop { 0% { transform: scale(0.8) translateY(-50%); opacity: 0; } 60% { transform: scale(1.12) translateY(-50%); opacity: 1; } 100% { transform: scale(1) translateY(-50%); opacity: 1; } }
-    /* Get Ready Overlay Modern Glass Style */
-    .getready-overlay {
-      position: fixed;
-      inset: 0;
-      width: 100vw; height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-      flex-direction: column;
-      background: rgba(245,248,255,0.86);
-      backdrop-filter: blur(9px) saturate(1.6) brightness(1.06);
-      animation: fadein 0.3s;
-    }
-    .getready-text {
-      font-family: 'Nunito', 'Quicksand', Arial, sans-serif;
-      font-size: clamp(40px, 8vw, 108px);
-      color: #2a3c7c;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.3em;
-      background: linear-gradient(94deg,#6fc9ff 0%,#4364f7 80%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: popready 0.62s;
-      user-select: none;
-    }
-    .getready-count {
-      font-family: 'Nunito', 'Quicksand', Arial, sans-serif;
-      font-size: clamp(120px, 19vw, 270px);
-      color: #ff2d5b;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      margin-top: 0.2em;
-      margin-bottom: 0;
-      text-shadow: 0 10px 44px rgba(255, 80, 80, 0.14);
-      animation: popcount 0.43s;
-      user-select: none;
-      transition: color 0.21s;
-    }
-    @keyframes fadein { 0% { opacity: 0; } 100% { opacity: 1; } }
-    @keyframes popready { 0% { transform: scale(0.55); opacity: 0.1;} 70% { transform: scale(1.10); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
-    @keyframes popcount { 0% { transform: scale(0.7); opacity: 0.13;} 70% { transform: scale(1.13); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
+    @keyframes eq-pop { 0%{transform:scale(0.8)translateY(-50%);opacity:0;} 60%{transform:scale(1.12)translateY(-55%);opacity:1;} 100%{transform:scale(1)translateY(-55%);opacity:1;} }
 
-    /* Controls: floating, NO background, always at bottom, always on one line, never stack */
-    .controls {
-      position: fixed;
-      left: 0; bottom: 1vw;
-      width: 100vw;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 999;
-      background: none !important;
-      box-shadow: none !important;
-      pointer-events: none;
-      padding: 0;
-    }
-    .button-group {
-      display: flex !important;
-      flex-direction: row !important;
-      flex-wrap: nowrap !important;
-      align-items: center !important;
-      justify-content: center !important;
-      gap: 2vw !important;
-      margin: 0 !important;
-      background: none !important;
-      pointer-events: auto;
-    }
-    button {
-      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white;
-      border: none;
-      padding: 0.48em 1.5em;
-      border-radius: 3em;
-      font-size: 1.1em;
-      font-family: inherit;
-      font-weight: 700;
-      box-shadow: 0 2px 10px rgba(90,180,255,0.10);
-      cursor: pointer;
-      margin: 0;
-      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
-      outline: none;
-      letter-spacing: 0.03em;
-      min-width: 80px;
-    }
-    button:hover, button:focus {
-      background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);
-      box-shadow: 0 8px 18px rgba(85,180,255,0.16);
-      transform: translateY(-1.5px) scale(1.035);
-    }
-    button:active {
-      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
-      transform: scale(0.97);
-    }
-    #showAnswerButton {
-      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
-      color: #fff;
-      box-shadow: 0 2px 12px rgba(120,40,255,0.12);
-      font-weight: bold;
-      border: none;
-      min-width: 110px;
-    }
-    #showAnswerButton:hover {
-      background: linear-gradient(90deg,#9448db 0,#461196 100%);
-      color: #fff;
-    }
-    @media (max-width: 700px) {
-      .controls { bottom: 0.5vw; }
-      .button-group { gap: 3vw !important; }
-      button { font-size: 0.98em; min-width: 72px; padding: 0.38em 1.1em; }
-    }
-    @media (max-width: 500px) {
-      .controls { bottom: 0; }
-      .button-group { gap: 2vw !important; }
-      button { font-size: 0.93em; min-width: 58px; padding: 0.29em 0.8em; }
-    }
-    /* First page settings styling (still modern/cute) */
+    /* Settings Page (rounded blue, soft style) */
     #firstPage {
-      width: 100%;
-      min-height: 0;
-      text-align: center;
-      margin-top: 7vw;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1vw;
+      width: 100vw; text-align: center; margin-top: 10vh;
+      margin-bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2vw;
     }
-    #firstPage label, #firstPage select, #firstPage input[type="number"], #firstPage .radio-group, #firstPage button {
-      margin-bottom: 0.8vw;
-      font-size: 1.06em;
+    #firstPage label {
+      font-size: 1.2em; color: #2d49a3; font-weight: 700; margin: 0 0.5em 0 0;
     }
-    @media (max-width: 600px) {
-      #firstPage { margin-top: 10vw; gap: 2vw; }
-      #firstPage label, #firstPage select, #firstPage input[type="number"], #firstPage .radio-group, #firstPage button { margin-bottom: 2vw; }
+    #firstPage input[type="number"], #firstPage select {
+      border: none;
+      border-radius: 2em;
+      padding: 0.42em 1.3em;
+      font-size: 1.18em;
+      font-family: inherit;
+      font-weight: 600;
+      margin: 0 1vw;
+      background: #f0f8ff;
+      box-shadow: 0 2px 16px rgba(85,180,255,0.06);
+      color: #313169;
+      transition: box-shadow 0.15s;
+      outline: none;
     }
+    #firstPage .radio-group label {
+      color: #185bff; font-weight: 700; font-size: 1.04em; margin: 0 1vw;
+    }
+    #toggleButton {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white; border: none; border-radius: 2.2em;
+      font-size: 1.35em; font-weight: 700; padding: 0.38em 2.8em;
+      box-shadow: 0 4px 28px rgba(90,180,255,0.18);
+      cursor: pointer; transition: background 0.13s, box-shadow 0.15s, transform 0.09s;
+      margin-top: 2vw; letter-spacing: 0.04em;
+    }
+    #toggleButton:hover, #toggleButton:focus {
+      background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);
+      box-shadow: 0 8px 26px rgba(85,180,255,0.19);
+      transform: translateY(-3px) scale(1.03);
+    }
+
+    /* --- Floating BOTTOM BUTTONS --- */
+    .bottom-buttons {
+      position: fixed; left: 0; right: 0; bottom: 2vw; z-index: 300;
+      display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 2vw;
+      pointer-events: none; /* only children active */
+      background: none !important; box-shadow: none !important; border: none !important;
+      width: 100vw; padding: 0; margin: 0; height: auto; min-height: 0;
+    }
+    .bottom-btn {
+      pointer-events: all;
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white; border: none; border-radius: 2.2em;
+      font-size: 1.24em; font-family: inherit; font-weight: 700;
+      box-shadow: none !important; outline: none;
+      letter-spacing: 0.04em; min-width: 86px; padding: 0.46em 2.3em;
+      margin: 0; cursor: pointer; transition: background 0.14s, transform 0.12s;
+      display: none; /* show only when active */
+    }
+    .bottom-btn.purple {
+      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
+    }
+    .bottom-btn.red {
+      background: linear-gradient(90deg,#ff6060 0,#d32a2a 100%);
+    }
+    .bottom-btn:active { transform: scale(0.97);}
+    .bottom-btn:focus, .bottom-btn:hover { filter: brightness(0.97); }
+    @media (max-width: 700px) {
+      .bottom-buttons { gap: 1.2vw; bottom: 1vw;}
+      .bottom-btn { font-size: 1.07em; min-width: 61px; padding: 0.29em 1.2em;}
+    }
+
+    /* Get Ready Overlay */
+.getready-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255,255,255,0.88);
+  z-index: 9000;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity 0.18s;
+}
+.getready-text, .getready-count {
+  width: 100vw;
+  text-align: center;
+  font-family: 'Nunito', 'Quicksand', Arial, sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+}
+.getready-text {
+  font-size: clamp(3rem, 10vw, 7rem);
+  color: #8035d7;
+  margin-bottom: 0.5em;
+  margin-top: 0;
+  transition: color 0.2s;
+}
+.getready-count {
+  font-size: clamp(5rem, 18vw, 13rem);
+  color: #2338e9;
+  margin-top: 0;
+  margin-bottom: 0;
+  animation: pop 0.2s;
+}
+.getready-go {
+  color: #23b15a;
+  font-size: clamp(5rem, 18vw, 13rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  margin-top: 0;
+  margin-bottom: 0;
+  animation: pop 0.4s;
+}
+@keyframes pop {
+  0% { transform: scale(0.7); opacity: 0.5;}
+  60% { transform: scale(1.18); opacity: 1;}
+  100% { transform: scale(1); opacity: 1;}
+}
+
+
+    /* Hide scrollbars */
     ::-webkit-scrollbar { width: 0 !important }
     body { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
 <body>
-  <img src="nada.png" alt="NADA Logo" class="logo-fixed">
+  <!-- Floating Logos -->
+  <img src="nada.png" alt="Logo" class="logo-fixed">
   <img src="wonderkids.png" alt="Wonder Kids Logo" class="logo-wk">
-  <div id="getreadyOverlay" class="getready-overlay" style="display:none;">
-    <div class="getready-text" id="getreadyText">Get Ready</div>
-    <div class="getready-count" id="getreadyCount"></div>
-  </div>
+  <!-- Centered Main Content -->
   <div class="main-content">
     <div class="main-centerer">
       <div id="firstPage">
-        <label for="speedInput">Speed</label>
-        <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
-        <label for="countInput">Num/set</label>
-        <input type="number" id="countInput" value="5" min="1" max="20"/>
-        <label for="operation">Operation</label>
-        <select id="operation">
-          <option value="addsub" selected>Add / Subtract</option>
-          <option value="multi">Multiply (×)</option>
-          <option value="divide">Divide (÷)</option>
-        </select>
-        <span class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
-          <label style="margin:0; color:#185bff;">
-            <input type="radio" name="digitType" value="single" checked>Single Digit
-          </label>
-          <label style="margin:0; color:#185bff;">
-            <input type="radio" name="digitType" value="double">2 Digits
-          </label>
-        </span>
+        <div style="margin-bottom:2vw;">
+          <label for="speedInput">Speed</label>
+          <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
+          <label for="countInput">Num/set</label>
+          <input type="number" id="countInput" value="5" min="1" max="20"/>
+        </div>
+        <div style="margin-bottom:2vw;">
+          <label for="operation">Operation</label>
+          <select id="operation">
+            <option value="addsub" selected>Add / Subtract</option>
+            <option value="multi">Multiply (×)</option>
+            <option value="divide">Divide (÷)</option>
+          </select>
+          <span class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
+            <label style="margin:0; color:#185bff;">
+              <input type="radio" name="digitType" value="single" checked>Single Digit
+            </label>
+            <label style="margin:0; color:#185bff;">
+              <input type="radio" name="digitType" value="double">2 Digits
+            </label>
+          </span>
+        </div>
         <button id="toggleButton">START</button>
       </div>
       <div id="secondPage" style="display: none; width:100%;">
@@ -353,292 +288,263 @@
       </div>
     </div>
   </div>
-  <div class="controls" id="bottomControls" style="display: none;">
-    <div class="button-group">
-      <button id="nextButton">Next Set</button>
-      <button id="returnButton">Back</button>
-      <button id="showAnswerButton" style="display: none;">Show Answer</button>
-    </div>
+  <!-- Floating Bottom Buttons -->
+  <div class="bottom-buttons">
+    <button id="backButton" class="bottom-btn">Back</button>
+    <button id="showAnswerButton" class="bottom-btn purple">Show Answer</button>
+    <button id="nextButton" class="bottom-btn">Next Set</button>
   </div>
+  <!-- Mascot floating -->
   <div class="mascot-box">
     <img src="nadamascot.png" id="nadamascot" alt="Mascot">
   </div>
+  <!-- Sounds -->
   <audio id="tickSound" src="tick.wav" preload="auto"></audio>
   <audio id="dingSound" src="ding.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
   <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
+  <!-- Overlay -->
+  <div id="getreadyOverlay" class="getready-overlay">
+    <div class="getready-text" id="getreadyText">Get Ready</div>
+    <div class="getready-count" id="getreadyCount"></div>
+  </div>
   <script>
-    function randomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    function generateRandomSets(numSets = 30, numbersPerSet = 9, mode = 'addsub', digitType = 'single') {
-      const sets = [];
-      for (let i = 0; i < numSets; i++) {
-        let set = [];
-        let runningTotal = 0;
-        if (mode === 'addsub') {
-          let minN = digitType === "single" ? 1 : 10, maxN = digitType === "single" ? 9 : 99;
-          for (let j = 0; j < numbersPerSet; j++) {
-            let num;
-            if (j === 0) {
-              num = randomInt(minN, maxN);
-              runningTotal += num;
-              set.push(num);
-              continue;
-            }
-            const op = Math.random() < 0.5 ? 1 : -1;
-            num = op * randomInt(minN, maxN);
-            if (op === -1 && runningTotal + num < 0) num = randomInt(minN, maxN);
-            runningTotal += num;
-            set.push(num);
-          }
-        } else if (mode === 'multi') {
-          for (let j = 0; j < numbersPerSet; j++) {
-            const a = randomInt(2, 9);
-            const b = randomInt(2, 9);
-            set.push([a, b]);
-          }
-        } else if (mode === 'divide') {
-          for (let j = 0; j < numbersPerSet; j++) {
-            const b = randomInt(2, 9);
-            const a = b * randomInt(2, 9);
-            set.push([a, b]);
-          }
-        }
-        sets.push(set);
+    // --- DATA ---
+    // --- DATA ---
+function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+function generateRandomSets(numSets = 30, numbersPerSet = 9, mode = 'addsub', digitType = 'single') {
+  const sets = [];
+  for (let i = 0; i < numSets; i++) {
+    let set = [], runningTotal = 0;
+    if (mode === 'addsub') {
+      let minN = digitType === "single" ? 1 : 10, maxN = digitType === "single" ? 9 : 99;
+      for (let j = 0; j < numbersPerSet; j++) {
+        let num;
+        if (j === 0) { num = randomInt(minN, maxN); runningTotal += num; set.push(num); continue; }
+        const op = Math.random() < 0.5 ? 1 : -1;
+        num = op * randomInt(minN, maxN);
+        if (op === -1 && runningTotal + num < 0) num = randomInt(minN, maxN);
+        runningTotal += num; set.push(num);
       }
-      return sets;
+    } else if (mode === 'multi') {
+      for (let j = 0; j < numbersPerSet; j++) { const a = randomInt(2, 9), b = randomInt(2, 9); set.push([a, b]); }
+    } else if (mode === 'divide') {
+      for (let j = 0; j < numbersPerSet; j++) { const b = randomInt(2, 9), a = b * randomInt(2, 9); set.push([a, b]); }
     }
-
-    let sets = [], currentSetIndex = 0, currentNumberIndex = 0;
-    let countdownInterval;
-    let waitingForEnter = false, numbersToShow = 5, mode = 'addsub', digitType = 'single';
-    let lastNumber = null, lastDisplay = '', lastIndex = -1;
-    let getReadyTimeouts = [];
-    let nextSetTimeout = null;
-    let controlsLocked = false;
-    const tickSound = document.getElementById('tickSound');
-    const dingSound = document.getElementById('dingSound');
-    const getready321 = document.getElementById('getready321');
-    const startbuzz = document.getElementById('startbuzz');
-
-    function playTickSound() { try { tickSound.currentTime = 0; tickSound.play(); } catch (e) { } }
-    function playDingSound() { try { dingSound.currentTime = 0; dingSound.play(); } catch (e) { } }
-    function playGetReadySound() { try { getready321.currentTime = 0; getready321.play(); } catch (e) { } }
-    function playStartBuzz() { try { startbuzz.currentTime = 0; startbuzz.play(); } catch (e) { } }
-
-    function displayNumber(isFirstRound) {
-      if (controlsLocked) return;
-      const numberDisplay = document.getElementById('number');
-      const answerDisplay = document.getElementById('answer');
-      const equationDisplay = document.getElementById('equation');
-      const currentSet = sets[currentSetIndex];
-      answerDisplay.style.display = 'none';
-      equationDisplay.style.display = 'none';
-      numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
-      numberDisplay.innerHTML = "";
-      document.getElementById('showAnswerButton').style.display = 'none';
-      document.getElementById('nextButton').style.display = 'none';
-      if (typeof isFirstRound === 'undefined') isFirstRound = false;
-      if (currentNumberIndex < numbersToShow) {
-        let number, numberHtml;
-        if (mode === "multi" || mode === "divide") {
-          let [a, b] = currentSet[currentNumberIndex];
-          if (currentNumberIndex === 0) { number = a; numberHtml = number; }
-          else { let op = mode === "multi" ? "×" : "÷"; number = b; numberHtml = `<span style="opacity:0.7;font-size:0.7em;margin-right:1vw;">${op}</span> ${number}`; }
-        } else {
-          number = currentSet[currentNumberIndex];
-          numberHtml = number;
-        }
-        if (currentNumberIndex === numbersToShow - 1) {
-          numberHtml = `<span class="with-equal">${numberHtml}<span class="equal-sign">=</span></span>`;
-        }
-        numberDisplay.innerHTML = numberHtml;
-        lastNumber = number;
-        lastDisplay = numberHtml;
-        lastIndex = currentNumberIndex;
-        currentNumberIndex++;
-        numberDisplay.animate([
-          { transform: 'scale(0.91)', opacity: 0.7 },
-          { transform: 'scale(1.1)', opacity: 1 },
-          { transform: 'scale(1)', opacity: 1 }
-        ], { duration: 270, easing: "cubic-bezier(.22,.93,.38,.99)" });
-        playTickSound();
-      } else {
-        clearInterval(countdownInterval);
-        showFullEquation();
-        waitingForEnter = true;
-        document.getElementById('showAnswerButton').style.display = 'inline-block';
-        document.getElementById('nextButton').style.display = 'none';
-      }
+    sets.push(set);
+  }
+  return sets;
+}
+// --- AUDIO ---
+const tickSound = document.getElementById('tickSound');
+const dingSound = document.getElementById('dingSound');
+const getready321 = document.getElementById('getready321');
+const startbuzz = document.getElementById('startbuzz');
+function playTickSound() { try { tickSound.currentTime = 0; tickSound.play(); } catch (e) { } }
+function playDingSound() { try { dingSound.currentTime = 0; dingSound.play(); } catch (e) { } }
+function playGetReadySound() { try { getready321.currentTime = 0; getready321.play(); } catch (e) { } }
+function playStartBuzz() { try { startbuzz.currentTime = 0; startbuzz.play(); } catch (e) { } }
+// --- APP STATE ---
+let sets = [], currentSetIndex = 0, currentNumberIndex = 0;
+let countdownInterval, waitingForEnter = false, numbersToShow = 5, mode = 'addsub', digitType = 'single';
+let lastNumber = null, lastDisplay = '', lastIndex = -1;
+let getReadyTimeouts = [], nextSetTimeout = null, controlsLocked = false;
+// --- DISPLAY ---
+function displayNumber(isFirstRound) {
+  if (controlsLocked) return;
+  const numberDisplay = document.getElementById('number');
+  const answerDisplay = document.getElementById('answer');
+  const equationDisplay = document.getElementById('equation');
+  const showAnswerButton = document.getElementById('showAnswerButton');
+  const nextButton = document.getElementById('nextButton');
+  answerDisplay.style.display = 'none'; equationDisplay.style.display = 'none';
+  numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
+  numberDisplay.innerHTML = ""; showAnswerButton.style.display = 'none'; nextButton.style.display = 'none';
+  if (typeof isFirstRound === 'undefined') isFirstRound = false;
+  if (currentNumberIndex < numbersToShow) {
+    let number, numberHtml;
+    if (mode === "multi" || mode === "divide") {
+      let [a, b] = sets[currentSetIndex][currentNumberIndex];
+      if (currentNumberIndex === 0) { number = a; numberHtml = number; }
+      else { let op = mode === "multi" ? "×" : "÷"; number = b; numberHtml = `<span style="opacity:0.7;font-size:0.7em;margin-right:1vw;">${op}</span> ${number}`; }
+    } else { number = sets[currentSetIndex][currentNumberIndex]; numberHtml = number; }
+    if (currentNumberIndex === numbersToShow - 1) {
+      numberHtml = `<span class="with-equal">${numberHtml}<span class="equal-sign">=</span></span>`;
     }
-
-    function showFullEquation() {
-      const equationDisplay = document.getElementById('equation');
-      const currentSet = sets[currentSetIndex];
-      let eqStr = '';
-      if (mode === "addsub") {
-        for (let i = 0; i < numbersToShow; i++) {
-          let n = currentSet[i];
-          if (i === 0) eqStr += n;
-          else eqStr += (n >= 0 ? ' + ' : ' - ') + Math.abs(n);
-        }
-        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
-      } else if (mode === "multi") {
-        for (let i = 0; i < numbersToShow; i++) {
-          if (i === 0) eqStr += currentSet[i][0];
-          else eqStr += ' × ' + currentSet[i][1];
-        }
-        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
-      } else if (mode === "divide") {
-        for (let i = 0; i < numbersToShow; i++) {
-          if (i === 0) eqStr += currentSet[i][0];
-          else eqStr += ' ÷ ' + currentSet[i][1];
-        }
-        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
-      }
-      equationDisplay.innerHTML = eqStr;
-      equationDisplay.style.display = 'block';
-      equationDisplay.style.opacity = 0;
-      equationDisplay.style.animation = 'none';
-      void equationDisplay.offsetWidth;
-      equationDisplay.style.animation = null;
-      document.getElementById('showAnswerButton').style.display = 'inline-block';
-      document.getElementById('nextButton').style.display = 'none';
+    numberDisplay.innerHTML = numberHtml;
+    lastNumber = number; lastDisplay = numberHtml; lastIndex = currentNumberIndex;
+    currentNumberIndex++;
+    numberDisplay.animate([
+      { transform: 'scale(0.88)', opacity: 0.7 },
+      { transform: 'scale(1.14)', opacity: 1 },
+      { transform: 'scale(1)', opacity: 1 }
+    ], { duration: 280, easing: "cubic-bezier(.22,.93,.38,.99)" });
+    playTickSound();
+  } else {
+    clearInterval(countdownInterval); showFullEquation();
+    waitingForEnter = true; showAnswerButton.style.display = 'inline-block'; nextButton.style.display = 'none';
+  }
+}
+function showFullEquation() {
+  const equationDisplay = document.getElementById('equation');
+  let eqStr = '';
+  if (mode === "addsub") {
+    for (let i = 0; i < numbersToShow; i++) {
+      let n = sets[currentSetIndex][i];
+      if (i === 0) eqStr += n; else eqStr += (n >= 0 ? ' + ' : ' - ') + Math.abs(n);
     }
-
-    function showAnswer() {
-      playDingSound();
-      const numberDisplay = document.getElementById('number');
-      const answerDisplay = document.getElementById('answer');
-      const equationDisplay = document.getElementById('equation');
-      const currentSet = sets[currentSetIndex];
-      let result = 0;
-      if (mode === "multi") {
-        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a * c; }, null);
-      } else if (mode === "divide") {
-        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a / c; }, null);
-      } else {
-        result = currentSet.slice(0, numbersToShow).reduce((a, b) => a + b, 0);
-      }
-      answerDisplay.textContent = result;
-      answerDisplay.style.display = 'block';
-      numberDisplay.innerHTML = "";
-      equationDisplay.style.display = 'none';
-      answerDisplay.style.position = "absolute";
-      answerDisplay.style.left = 0;
-      answerDisplay.style.right = 0;
-      answerDisplay.style.top = "50%";
-      answerDisplay.style.transform = "translateY(-50%)";
-      document.getElementById('showAnswerButton').style.display = 'none';
-      document.getElementById('nextButton').style.display = 'inline-block';
-      waitingForEnter = false;
+    eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+  } else if (mode === "multi") {
+    for (let i = 0; i < numbersToShow; i++) {
+      if (i === 0) eqStr += sets[currentSetIndex][i][0]; else eqStr += ' × ' + sets[currentSetIndex][i][1];
     }
-
-    function clearGetReady() {
-      getReadyTimeouts.forEach(t => clearTimeout(t));
-      getReadyTimeouts = [];
-      document.getElementById('getreadyOverlay').style.display = 'none';
-      document.getElementById('getreadyText').style.display = '';
-      document.getElementById('getreadyCount').style.display = '';
-      document.getElementById('getreadyCount').textContent = '';
+    eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+  } else if (mode === "divide") {
+    for (let i = 0; i < numbersToShow; i++) {
+      if (i === 0) eqStr += sets[currentSetIndex][i][0]; else eqStr += ' ÷ ' + sets[currentSetIndex][i][1];
     }
+    eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+  }
+  equationDisplay.innerHTML = eqStr;
+  equationDisplay.style.display = 'block';
+  equationDisplay.style.opacity = 0;
+  equationDisplay.style.animation = 'none'; void equationDisplay.offsetWidth;
+  equationDisplay.style.animation = null;
+  document.getElementById('showAnswerButton').style.display = 'inline-block';
+  document.getElementById('nextButton').style.display = 'none';
+}
+function showAnswer() {
+  playDingSound();
+  const numberDisplay = document.getElementById('number');
+  const answerDisplay = document.getElementById('answer');
+  const equationDisplay = document.getElementById('equation');
+  let result = 0;
+  if (mode === "multi") {
+    result = sets[currentSetIndex].slice(0, numbersToShow).reduce((a, [b, c], i) => i === 0 ? b : a * c, null);
+  } else if (mode === "divide") {
+    result = sets[currentSetIndex].slice(0, numbersToShow).reduce((a, [b, c], i) => i === 0 ? b : a / c, null);
+  } else {
+    result = sets[currentSetIndex].slice(0, numbersToShow).reduce((a, b) => a + b, 0);
+  }
+  answerDisplay.textContent = result;
+  answerDisplay.style.display = 'block';
+  numberDisplay.innerHTML = "";
+  equationDisplay.style.display = 'none';
+  document.getElementById('showAnswerButton').style.display = 'none';
+  document.getElementById('nextButton').style.display = 'inline-block';
+  waitingForEnter = false;
+}
+// --- GET READY SEQUENCE ---
+function clearGetReady() {
+  getReadyTimeouts.forEach(t => clearTimeout(t));
+  getReadyTimeouts = [];
+  document.getElementById('getreadyOverlay').style.display = 'none';
+  document.getElementById('getreadyText').style.display = '';
+  document.getElementById('getreadyCount').style.display = '';
+  document.getElementById('getreadyCount').textContent = '';
+}
+function startGetReadySequence(onDone) {
+  clearGetReady();
+  const overlay = document.getElementById('getreadyOverlay');
+  const text = document.getElementById('getreadyText');
+  const count = document.getElementById('getreadyCount');
+  overlay.style.display = 'flex';
+  text.style.display = '';
+  count.style.display = '';
+  text.textContent = 'Get Ready';
+  count.textContent = '';
+  playGetReadySound();
+  getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 900));
+  getReadyTimeouts.push(setTimeout(() => { count.textContent = '2'; }, 1900));
+  getReadyTimeouts.push(setTimeout(() => { count.textContent = '1'; }, 2900));
+  getReadyTimeouts.push(setTimeout(() => {
+    overlay.style.display = 'none';
+    count.textContent = '';
+    if (typeof onDone === 'function') onDone();
+  }, 5500));
+}
+// --- NAV / PAGE LOGIC ---
+function showFirstPage() {
+  document.getElementById('firstPage').style.display = '';
+  document.getElementById('secondPage').style.display = 'none';
+  setBottomButtons(['none','none','none']);
+}
+function showSecondPage() {
+  document.getElementById('firstPage').style.display = 'none';
+  document.getElementById('secondPage').style.display = 'block';
+  setBottomButtons(['back','none','none']);
+}
+function setBottomButtons(showList) {
+  // showList = [back, showAnswer, next]
+  document.getElementById('backButton').style.display = showList[0]==='back'?'inline-block':'none';
+  document.getElementById('showAnswerButton').style.display = showList[1]==='show'?'inline-block':'none';
+  document.getElementById('nextButton').style.display = showList[2]==='next'?'inline-block':'none';
+}
+// --- MAIN LOGIC ---
+// Start button:
+document.getElementById('toggleButton').addEventListener('click', () => {
+  document.getElementById('firstPage').style.display = 'none';
+  document.getElementById('secondPage').style.display = 'none';
+  setBottomButtons(['none','none','none']);
+  clearInterval(countdownInterval);
+  clearGetReady();
+  document.getElementById('getreadyOverlay').style.display = 'flex';
 
-    function startGetReadySequence(onDone) {
-      clearGetReady();
-      const overlay = document.getElementById('getreadyOverlay');
-      const text = document.getElementById('getreadyText');
-      const count = document.getElementById('getreadyCount');
-      overlay.style.display = 'flex';
-      text.style.display = '';
-      count.style.display = '';
-      text.textContent = 'Get Ready';
-      count.textContent = '';
-      playGetReadySound();
-      getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850));
-      getReadyTimeouts.push(setTimeout(() => { count.textContent = '2'; }, 1850));
-      getReadyTimeouts.push(setTimeout(() => { count.textContent = '1'; }, 2850));
-      getReadyTimeouts.push(setTimeout(() => {
-        overlay.style.display = 'none';
-        count.textContent = '';
-        if (typeof onDone === 'function') onDone();
-      }, 4900));
-    }
+  numbersToShow = parseInt(document.getElementById('countInput').value);
+  mode = document.getElementById('operation').value;
+  digitType = document.querySelector('input[name="digitType"]:checked').value;
+  sets = generateRandomSets(30, numbersToShow, mode, digitType);
 
-    function switchPage() {
-      if (controlsLocked) return;
-      const firstPage = document.getElementById('firstPage');
-      const secondPage = document.getElementById('secondPage');
-      const bottomControls = document.getElementById('bottomControls');
-      const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
-      numbersToShow = parseInt(document.getElementById('countInput').value);
-      mode = document.getElementById('operation').value;
-      digitType = document.querySelector('input[name="digitType"]:checked').value;
+  startGetReadySequence(() => {
+    document.getElementById('getreadyOverlay').style.display = 'none';
+    document.getElementById('secondPage').style.display = 'block';
+    setBottomButtons(['back','none','none']);
+    currentSetIndex = 0; currentNumberIndex = 0;
+    document.getElementById('answer').style.display = 'none';
+    document.getElementById('equation').style.display = 'none';
+    document.getElementById('nextButton').style.display = 'none';
+    document.getElementById('showAnswerButton').style.display = 'none';
+    clearInterval(countdownInterval); currentNumberIndex = 0;
+    displayNumber(true);
+    countdownInterval = setInterval(displayNumber, parseFloat(document.getElementById('speedInput').value) * 1000);
+    controlsLocked = false;
+  });
+});
+function goBackToFirstPage() {
+  clearGetReady(); clearInterval(countdownInterval);
+  showFirstPage();
+}
+function nextSet() {
+  if (controlsLocked) return;
+  controlsLocked = true; playStartBuzz();
+  document.getElementById('number').innerHTML = '';
+  document.getElementById('answer').style.display = 'none';
+  document.getElementById('equation').style.display = 'none';
+  document.getElementById('nextButton').style.display = 'none';
+  document.getElementById('showAnswerButton').style.display = 'none';
+  nextSetTimeout = setTimeout(() => {
+    currentSetIndex++;
+    if (currentSetIndex >= sets.length) {
       sets = generateRandomSets(30, numbersToShow, mode, digitType);
-      if (firstPage.style.display !== 'none') {
-        controlsLocked = true;
-        startGetReadySequence(() => {
-          firstPage.style.display = 'none';
-          secondPage.style.display = 'block';
-          bottomControls.style.display = 'flex';
-          currentSetIndex = 0;
-          currentNumberIndex = 0;
-          document.getElementById('answer').style.display = 'none';
-          document.getElementById('equation').style.display = 'none';
-          document.getElementById('nextButton').style.display = 'none';
-          document.getElementById('showAnswerButton').style.display = 'none';
-          clearInterval(countdownInterval);
-          currentNumberIndex = 0;
-          displayNumber(true);
-          countdownInterval = setInterval(displayNumber, speed);
-          controlsLocked = false;
-        });
-      } else {
-        clearGetReady();
-        firstPage.style.display = '';
-        secondPage.style.display = 'none';
-        bottomControls.style.display = 'none';
-        clearInterval(countdownInterval);
-      }
+      currentSetIndex = 0;
     }
-
-    function nextSet() {
-      if (controlsLocked) return;
-      controlsLocked = true;
-      playStartBuzz();
-      document.getElementById('number').innerHTML = '';
-      document.getElementById('answer').style.display = 'none';
-      document.getElementById('equation').style.display = 'none';
-      document.getElementById('nextButton').style.display = 'none';
-      document.getElementById('showAnswerButton').style.display = 'none';
-      nextSetTimeout = setTimeout(() => {
-        currentSetIndex++;
-        if (currentSetIndex >= sets.length) {
-          sets = generateRandomSets(30, numbersToShow, mode, digitType);
-          currentSetIndex = 0;
-        }
-        currentNumberIndex = 0;
-        const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
-        clearInterval(countdownInterval);
-        displayNumber(true);
-        countdownInterval = setInterval(displayNumber, speed);
-        controlsLocked = false;
-      }, 1000);
-    }
-
-    document.getElementById('operation').addEventListener('change', function() {
-      const modeVal = this.value;
-      const group = document.getElementById('digitTypeGroup');
-      if (modeVal === "addsub") { group.style.display = "inline-flex"; }
-      else { group.style.display = "none"; }
-    });
-    document.getElementById('toggleButton').addEventListener('click', switchPage);
-    document.getElementById('returnButton').addEventListener('click', switchPage);
-    document.getElementById('nextButton').addEventListener('click', nextSet);
-    document.getElementById('showAnswerButton').addEventListener('click', showAnswer);
-    document.addEventListener('keydown', function (event) {
-      if (waitingForEnter && event.key === 'Enter') showAnswer();
-    });
+    currentNumberIndex = 0;
+    clearInterval(countdownInterval);
+    displayNumber(true);
+    countdownInterval = setInterval(displayNumber, parseFloat(document.getElementById('speedInput').value) * 1000);
+    controlsLocked = false;
+  }, 950);
+}
+document.getElementById('backButton').addEventListener('click', goBackToFirstPage);
+document.getElementById('nextButton').addEventListener('click', nextSet);
+document.getElementById('showAnswerButton').addEventListener('click', showAnswer);
+document.getElementById('operation').addEventListener('change', function() {
+  document.getElementById('digitTypeGroup').style.display = this.value === "addsub" ? "inline-flex" : "none";
+});
+document.addEventListener('keydown', function (event) {
+  if (waitingForEnter && event.key === 'Enter') showAnswer();
+});
+showFirstPage();
   </script>
 </body>
 </html>
