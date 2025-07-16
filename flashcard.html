@@ -1,1 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mental Arithmetic System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: #fff;
+      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+      overflow: hidden;
+      width: 100vw; height: 100vh;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body {
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .logo-fixed {
+      position: fixed;
+      top: 2vw;
+      left: 2vw;
+      z-index: 100;
+      background: none;
+      border-radius: 2vw;
+      width: 12vw;
+      min-width: 66px;
+      max-width: 120px;
+      height: auto;
+      pointer-events: none;
+      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
+    }
+    .logo-wk {
+      position: fixed;
+      top: 2vw;
+      right: 2vw;
+      z-index: 100;
+      background: none;
+      border-radius: 2vw;
+      width: 12vw;
+      min-width: 66px;
+      max-width: 120px;
+      height: auto;
+      pointer-events: none;
+      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
+      display: block;
+    }
+    @media (max-width: 700px) {
+      .logo-fixed, .logo-wk { width: 21vw; min-width: 48px; max-width: 68px;}
+    }
+    .mascot-box {
+      position: fixed;
+      left: 0; bottom: 0;
+      z-index: 30;
+      padding: 1vw 0.6vw;
+      pointer-events: none;
+      user-select: none;
+      width: auto;
+      height: auto;
+      min-width: 48px;
+    }
+    #nadamascot {
+      width: 11vw;
+      min-width: 44px;
+      max-width: 76px;
+      height: auto;
+      pointer-events: none;
+      user-select: none;
+      animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
+      filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
+    }
+    @keyframes mascotFloat {
+      0% { transform: translateY(0) scale(1);}
+      40% { transform: translateY(-10px) scale(1.03);}
+      60% { transform: translateY(-16px) scale(1.02);}
+      100% { transform: translateY(0) scale(1);}
+    }
+    @keyframes mascotWave {
+      0%, 100% { transform: rotate(-2deg);}
+      10% { transform: rotate(3deg);}
+      20% { transform: rotate(-3deg);}
+      30% { transform: rotate(2deg);}
+      40% { transform: rotate(-2deg);}
+      50% { transform: rotate(2deg);}
+      60% { transform: rotate(-2deg);}
+      70% { transform: rotate(2deg);}
+      80% { transform: rotate(-2deg);}
+      90% { transform: rotate(1deg);}
+    }
+    .main-content {
+      height: 100vh;
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+      z-index: 1;
+    }
+    .main-centerer {
+      flex: 1 1 0%;
+      min-height: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .number-wrapper {
+      flex: 1;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      pointer-events: none;
+    }
+    #number, #answer {
+      text-align: center;
+      width: 98vw;
+      font-weight: bold;
+      line-height: 1.15;
+      letter-spacing: 2vw;
+      border-radius: 2vw;
+      transition: color 0.15s, background 0.3s;
+      box-sizing: border-box;
+      padding: 2vw 0 2vw 0;
+      font-size: clamp(60px, 19vw, 330px);
+    }
+    #number {
+      color: #3a21b3;
+      background: none !important;
+      box-shadow: none !important;
+      text-shadow: 0 8px 24px rgba(120,170,255,0.07);
+      min-height: 1.2em;
+      margin-bottom: 1vw;
+      border-radius: 3vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      pointer-events: none;
+    }
+    .with-equal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: inherit;
+    }
+    .equal-sign {
+      font-size: 1em;
+      color: #ff0000;
+      margin-left: 2vw;
+      font-weight: 900;
+      animation: pop 0.3s;
+      line-height: 1;
+      display: inline-block;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.7); opacity: 0.4;}
+      70% { transform: scale(1.3); opacity: 1;}
+      100% { transform: scale(1); opacity: 1;}
+    }
+    #answer {
+      color: #ff0000;
+      background: none !important;
+      box-shadow: none !important;
+      display: none;
+      position: absolute;
+      left: 0; right: 0;
+      margin: auto;
+      border-radius: 3vw;
+      z-index: 2;
+      font-size: clamp(90px, 20vw, 380px);
+      font-weight: bold;
+      pointer-events: none;
+    }
+    #equation {
+      display: none;
+      position: absolute;
+      left: 0; right: 0; top: 48%;
+      transform: translateY(-50%);
+      font-size: clamp(18px, 6vw, 56px);
+      font-family: inherit;
+      color: #3b15a3;
+      font-weight: bold;
+      letter-spacing: 1vw;
+      z-index: 3;
+      opacity: 0;
+      animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
+      text-align: center;
+      pointer-events: none;
+      line-height: 1.24;
+    }
+    @keyframes eq-pop {
+      0% { transform: scale(0.8) translateY(-50%); opacity: 0; }
+      60% { transform: scale(1.12) translateY(-50%); opacity: 1; }
+      100% { transform: scale(1) translateY(-50%); opacity: 1; }
+    }
+    .controls {
+      position: fixed;
+      left: 0; right: 0; bottom: 2.5vw;
+      width: 100vw;
+      z-index: 300;
+      background: none !important;
+      box-shadow: none !important;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 2vw;
+      pointer-events: none;
+    }
+    .button-group {
+      display: flex;
+      flex-direction: row;
+      gap: 2vw;
+      justify-content: center;
+      align-items: center;
+      pointer-events: all;
+      margin: 0;
+    }
+    .action-btn {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white;
+      border: none;
+      padding: 0.5em 2em;
+      border-radius: 3em;
+      font-size: 1.25em;
+      font-family: inherit;
+      font-weight: 700;
+      box-shadow: 0 2px 18px rgba(90,180,255,0.13);
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
+      outline: none;
+      letter-spacing: 0.04em;
+      min-width: 88px;
+      margin: 0;
+    }
+    .action-btn:active {
+      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
+      transform: scale(0.98);
+    }
+    #showAnswerButton {
+      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
+      font-weight: bold;
+      border: none;
+    }
+    #showAnswerButton:active {
+      background: linear-gradient(90deg,#9448db 0,#461196 100%);
+    }
+    @media (max-width: 700px) {
+      #number, #answer { font-size: clamp(40px, 18vw, 180px);}
+      .action-btn { font-size: 1em; min-width: 64px; padding: 0.35em 1.1em;}
+    }
+    #getreadyOverlay {
+      position: fixed;
+      left: 0; right: 0; top: 0; bottom: 0;
+      background: rgba(255,255,255,0.88);
+      z-index: 999;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: clamp(2.3em, 8vw, 6.6em);
+      font-family: inherit;
+      font-weight: bold;
+      color: #6747cc;
+      text-align: center;
+      letter-spacing: 0.03em;
+      transition: background 0.33s;
+      user-select: none;
+    }
+    .getready-text {
+      color: #4881ff;
+      margin-bottom: 0.2em;
+      font-size: 1.1em;
+      width: 100%;
+      text-align: center;
+      font-family: inherit;
+      font-weight: bold;
+      background: none;
+    }
+    .getready-count {
+      color: #6747cc;
+      font-size: 1.3em;
+      margin: 0.2em 0;
+      width: 100%;
+      text-align: center;
+      font-family: inherit;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      background: none;
+    }
+    ::-webkit-scrollbar { width: 0 !important }
+    body { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Settings panel and controls */
+    #firstPage label {
+      font-size: 1.25em;
+      margin: 0.22em 0.4em;
+      color: #273c78;
+      border-radius: 0;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      font-weight: 700;
+      background: none !important;
+    }
+    #firstPage select, #firstPage input[type="number"] {
+      border-radius: 2em;
+      border: none;
+      padding: 0.18em 0.9em;
+      background: #e9f4fd;
+      font-family: inherit;
+      font-weight: 700;
+    }
+    #firstPage input[type="number"] { width: 3.5em; text-align: center; }
+    #firstPage select { padding: 0.2em 1em;}
+    #firstPage .radio-group label {
+      font-size: 1.12em;
+      color: #185bff;
+      margin-right: 1em;
+      margin-left: 0.5em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      background: #e2e8fc;
+      border-radius: 2em;
+      padding: 0.22em 0.75em;
+    }
+    #firstPage .radio-group input[type="radio"] { margin-right: 0.3em;}
+    #firstPage .options-group label {
+      font-size: 1.04em;
+      color: #2c37b7;
+      margin-right: 1em;
+      margin-left: 0.3em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      background: #e2e8fc;
+      border-radius: 2em;
+      padding: 0.21em 0.7em;
+      margin-bottom: 0.4em;
+      display: inline-block;
+    }
+    #firstPage .options-group input[type="radio"] { margin-right: 0.3em;}
+    #firstPage button#toggleButton {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white;
+      border: none;
+      border-radius: 3em;
+      font-size: 1.25em;
+      font-family: inherit;
+      font-weight: 700;
+      padding: 0.7em 2.8em;
+      margin-top: 1.1em;
+      cursor: pointer;
+      transition: background 0.14s;
+      box-shadow: 0 2px 16px rgba(90,180,255,0.11);
+      letter-spacing: 0.04em;
+    }
+    #firstPage button#toggleButton:active {
+      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
+    }
+    #firstPage { width: 100vw; text-align: center; margin-top: 12vh; margin-bottom: 0; }
+    .main-centerer { flex: 1 1 0%; min-height: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;}
+  </style>
+</head>
+<body>
+  <img src="nada.png" alt="Logo" class="logo-fixed">
+  <img src="wonderkids.png" alt="" class="logo-wk">
+  <div class="main-content">
+    <div class="main-centerer">
+      <div id="firstPage">
+        <label for="speedInput">Speed</label>
+        <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
+        <label for="countInput">Num/set</label>
+        <input type="number" id="countInput" value="5" min="1" max="20"/>
+        <label for="operation">Operation</label>
+        <select id="operation">
+          <option value="addsub" selected>Add / Subtract</option>
+          <option value="multi">Multiply (×)</option>
+          <option value="divide">Divide (÷)</option>
+        </select>
+        <span class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
+          <label style="margin:0; color:#185bff;">
+            <input type="radio" name="digitType" value="single" checked>Single Digit
+          </label>
+          <label style="margin:0; color:#185bff;">
+            <input type="radio" name="digitType" value="double">2 Digits
+          </label>
+        </span>
+        <!-- Multiplication options -->
+        <div class="options-group" id="multiOptions" style="display:none; margin:1.2em 0 0.6em 0;">
+          <label><input type="radio" name="multiType" value="2x1" checked> 2 digit × 1 digit</label>
+          <label><input type="radio" name="multiType" value="2x2"> 2 digit × 2 digit</label>
+          <label><input type="radio" name="multiType" value="3x2"> 3 digit × 2 digit</label>
+        </div>
+        <!-- Division options -->
+        <div class="options-group" id="divOptions" style="display:none; margin:1.2em 0 0.6em 0;">
+          <label><input type="radio" name="divType" value="2d1" checked> 2 digit ÷ 1 digit</label>
+          <label><input type="radio" name="divType" value="3d2"> 3 digit ÷ 2 digit</label>
+          <label><input type="radio" name="divType" value="4d2"> 4 digit ÷ 2 digit</label>
+        </div>
+        <br>
+        <button id="toggleButton">START</button>
+      </div>
+      <div id="secondPage" style="display: none; width:100%;">
+        <div class="number-wrapper">
+          <div id="number"></div>
+          <div id="answer"></div>
+          <div id="equation"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="controls" id="bottomControls" style="display: none;">
+    <div class="button-group">
+      <button id="nextButton" class="action-btn">Next Set</button>
+      <button id="returnButton" class="action-btn">Back</button>
+      <button id="showAnswerButton" class="action-btn" style="display: none;">Show Answer</button>
+    </div>
+  </div>
+  <div class="mascot-box">
+    <img src="nadamascot.png" id="nadamascot" alt="Mascot">
+  </div>
+  <!-- Sounds -->
+  <audio id="tickSound" src="tick.wav" preload="auto"></audio>
+  <audio id="dingSound" src="ding.wav" preload="auto"></audio>
+  <audio id="getready321" src="getready321.wav" preload="auto"></audio>
+  <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
+  <div id="getreadyOverlay" class="getready-overlay">
+    <div class="getready-text" id="getreadyText">Get Ready</div>
+    <div class="getready-count" id="getreadyCount"></div>
+  </div>
+  <script>
+    // Show/hide extra options and disable num/set for multi/div
+    const operationSelect = document.getElementById('operation');
+    const multiOptions = document.getElementById('multiOptions');
+    const divOptions = document.getElementById('divOptions');
+    const digitTypeGroup = document.getElementById('digitTypeGroup');
+    const countInput = document.getElementById('countInput');
 
+    function updateSettingsUI() {
+      const modeVal = operationSelect.value;
+      multiOptions.style.display = "none";
+      divOptions.style.display = "none";
+      digitTypeGroup.style.display = "none";
+      countInput.disabled = false;
+      if (modeVal === "multi") {
+        multiOptions.style.display = "block";
+        countInput.value = 2;
+        countInput.disabled = true;
+      } else if (modeVal === "divide") {
+        divOptions.style.display = "block";
+        countInput.value = 2;
+        countInput.disabled = true;
+      } else if (modeVal === "addsub") {
+        digitTypeGroup.style.display = "inline-flex";
+        countInput.disabled = false;
+      }
+    }
+    operationSelect.addEventListener('change', updateSettingsUI);
+    window.addEventListener('DOMContentLoaded', updateSettingsUI);
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    // Generate question sets based on selected operation and options
+    function generateRandomSets(numSets = 30, numbersPerSet = 9, mode = 'addsub', digitType = 'single', multiType = '2x1', divType = '2d1') {
+      const sets = [];
+      for (let i = 0; i < numSets; i++) {
+        let set = [];
+        if (mode === 'addsub') {
+          let minN = digitType === "single" ? 1 : 10, maxN = digitType === "single" ? 9 : 99;
+          let runningTotal = 0;
+          for (let j = 0; j < numbersPerSet; j++) {
+            let num;
+            if (j === 0) {
+              num = randomInt(minN, maxN);
+              runningTotal += num;
+              set.push(num);
+              continue;
+            }
+            const op = Math.random() < 0.5 ? 1 : -1;
+            num = op * randomInt(minN, maxN);
+            if (op === -1 && runningTotal + num < 0) num = randomInt(minN, maxN);
+            runningTotal += num;
+            set.push(num);
+          }
+        } else if (mode === 'multi') {
+          for (let j = 0; j < numbersPerSet; j++) {
+            let a, b;
+            if (multiType === "2x1") {
+              a = randomInt(10, 99); b = randomInt(2, 9);
+            } else if (multiType === "2x2") {
+              a = randomInt(10, 99); b = randomInt(10, 99);
+            } else if (multiType === "3x2") {
+              a = randomInt(100, 999); b = randomInt(10, 99);
+            }
+            set.push([a, b]);
+          }
+        } else if (mode === 'divide') {
+          for (let j = 0; j < numbersPerSet; j++) {
+            let b, a;
+            if (divType === "2d1") {
+              b = randomInt(2, 9);
+              a = b * randomInt(10, 99);
+            } else if (divType === "3d2") {
+              b = randomInt(10, 99);
+              a = b * randomInt(10, 99);
+            } else if (divType === "4d2") {
+              b = randomInt(10, 99);
+              a = b * randomInt(100, 999);
+            }
+            set.push([a, b]);
+          }
+        }
+        sets.push(set);
+      }
+      return sets;
+    }
+
+    let sets = [], currentSetIndex = 0, currentNumberIndex = 0;
+    let countdownInterval;
+    let waitingForEnter = false, numbersToShow = 5, mode = 'addsub', digitType = 'single';
+    let lastNumber = null, lastDisplay = '', lastIndex = -1;
+    let getReadyTimeouts = [];
+    let nextSetTimeout = null;
+    let controlsLocked = false;
+    const tickSound = document.getElementById('tickSound');
+    const dingSound = document.getElementById('dingSound');
+    const getready321 = document.getElementById('getready321');
+    const startbuzz = document.getElementById('startbuzz');
+
+    function playTickSound() { try { tickSound.currentTime = 0; tickSound.play(); } catch (e) { } }
+    function playDingSound() { try { dingSound.currentTime = 0; dingSound.play(); } catch (e) { } }
+    function playGetReadySound() { try { getready321.currentTime = 0; getready321.play(); } catch (e) { } }
+    function playStartBuzz() { try { startbuzz.currentTime = 0; startbuzz.play(); } catch (e) { } }
+
+    function displayNumber(isFirstRound) {
+      if (controlsLocked) return;
+      const numberDisplay = document.getElementById('number');
+      const answerDisplay = document.getElementById('answer');
+      const equationDisplay = document.getElementById('equation');
+      const currentSet = sets[currentSetIndex];
+      answerDisplay.style.display = 'none';
+      equationDisplay.style.display = 'none';
+      numberDisplay.style.color = (mode === "multi" || mode === "divide") ? "#a02de0" : "#185bff";
+      numberDisplay.innerHTML = "";
+      document.getElementById('showAnswerButton').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'none';
+      if (typeof isFirstRound === 'undefined') isFirstRound = false;
+      if (currentNumberIndex < numbersToShow) {
+        let number, numberHtml;
+        if (mode === "multi" || mode === "divide") {
+          let [a, b] = currentSet[currentNumberIndex];
+          if (currentNumberIndex === 0) { number = a; numberHtml = number; }
+          else {
+            let op = mode === "multi" ? "×" : "÷";
+            number = b;
+            numberHtml = `<span style="opacity:0.7;font-size:0.7em;margin-right:1vw;">${op}</span> ${number}`;
+          }
+        } else {
+          number = currentSet[currentNumberIndex];
+          numberHtml = number;
+        }
+        if (currentNumberIndex === numbersToShow - 1) {
+          numberHtml = `<span class="with-equal">${numberHtml}<span class="equal-sign">=</span></span>`;
+        }
+        numberDisplay.innerHTML = numberHtml;
+        lastNumber = number;
+        lastDisplay = numberHtml;
+        lastIndex = currentNumberIndex;
+        currentNumberIndex++;
+        numberDisplay.animate([
+          { transform: 'scale(0.91)', opacity: 0.7 },
+          { transform: 'scale(1.1)', opacity: 1 },
+          { transform: 'scale(1)', opacity: 1 }
+        ], { duration: 270, easing: "cubic-bezier(.22,.93,.38,.99)" });
+        playTickSound();
+      } else {
+        clearInterval(countdownInterval);
+        showFullEquation();
+        waitingForEnter = true;
+        document.getElementById('showAnswerButton').style.display = 'inline-block';
+        document.getElementById('nextButton').style.display = 'none';
+      }
+    }
+
+    function showFullEquation() {
+      const equationDisplay = document.getElementById('equation');
+      const currentSet = sets[currentSetIndex];
+      let eqStr = '';
+      if (mode === "addsub") {
+        for (let i = 0; i < numbersToShow; i++) {
+          let n = currentSet[i];
+          if (i === 0) eqStr += n;
+          else eqStr += (n >= 0 ? ' + ' : ' - ') + Math.abs(n);
+        }
+        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+      } else if (mode === "multi") {
+        for (let i = 0; i < numbersToShow; i++) {
+          if (i === 0) eqStr += currentSet[i][0];
+          else eqStr += ' × ' + currentSet[i][1];
+        }
+        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+      } else if (mode === "divide") {
+        for (let i = 0; i < numbersToShow; i++) {
+          if (i === 0) eqStr += currentSet[i][0];
+          else eqStr += ' ÷ ' + currentSet[i][1];
+        }
+        eqStr += ' <span style="color:#ff0000;font-size:1.2em;font-weight:900;">=</span>';
+      }
+      equationDisplay.innerHTML = eqStr;
+      equationDisplay.style.display = 'block';
+      equationDisplay.style.opacity = 0;
+      equationDisplay.style.animation = 'none';
+      void equationDisplay.offsetWidth;
+      equationDisplay.style.animation = null;
+      document.getElementById('showAnswerButton').style.display = 'inline-block';
+      document.getElementById('nextButton').style.display = 'none';
+    }
+
+    function showAnswer() {
+      playDingSound();
+      const numberDisplay = document.getElementById('number');
+      const answerDisplay = document.getElementById('answer');
+      const equationDisplay = document.getElementById('equation');
+      const currentSet = sets[currentSetIndex];
+      let result = 0;
+      if (mode === "multi") {
+        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a * c; }, null);
+      } else if (mode === "divide") {
+        result = currentSet.slice(0, numbersToShow).reduce((a, [b, c], i) => { return i === 0 ? b : a / c; }, null);
+      } else {
+        result = currentSet.slice(0, numbersToShow).reduce((a, b) => a + b, 0);
+      }
+      answerDisplay.textContent = result;
+      answerDisplay.style.display = 'block';
+      numberDisplay.innerHTML = "";
+      equationDisplay.style.display = 'none';
+      answerDisplay.style.position = "absolute";
+      answerDisplay.style.left = 0;
+      answerDisplay.style.right = 0;
+      answerDisplay.style.top = "50%";
+      answerDisplay.style.transform = "translateY(-50%)";
+      document.getElementById('showAnswerButton').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'inline-block';
+      waitingForEnter = false;
+    }
+
+    function clearGetReady() {
+      getReadyTimeouts.forEach(t => clearTimeout(t));
+      getReadyTimeouts = [];
+      document.getElementById('getreadyOverlay').style.display = 'none';
+      document.getElementById('getreadyText').style.display = '';
+      document.getElementById('getreadyCount').style.display = '';
+      document.getElementById('getreadyCount').textContent = '';
+    }
+
+    function startGetReadySequence(onDone) {
+      clearGetReady();
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = 'Get Ready';
+      count.textContent = '';
+      playGetReadySound();
+      getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = '2'; }, 1850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = '1'; }, 2850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = 'Go!'; }, 3850));
+      getReadyTimeouts.push(setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        if (typeof onDone === 'function') onDone();
+      }, 4950));
+    }
+
+    function switchPage() {
+      if (controlsLocked) return;
+      const firstPage = document.getElementById('firstPage');
+      const secondPage = document.getElementById('secondPage');
+      const bottomControls = document.getElementById('bottomControls');
+      const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
+      numbersToShow = parseInt(document.getElementById('countInput').value);
+      mode = document.getElementById('operation').value;
+      digitType = document.querySelector('input[name="digitType"]:checked')?.value || "single";
+      let multiType = document.querySelector('input[name="multiType"]:checked')?.value || "2x1";
+      let divType = document.querySelector('input[name="divType"]:checked')?.value || "2d1";
+      sets = generateRandomSets(30, numbersToShow, mode, digitType, multiType, divType);
+      if (firstPage.style.display !== 'none') {
+        controlsLocked = true;
+        startGetReadySequence(() => {
+          firstPage.style.display = 'none';
+          secondPage.style.display = 'block';
+          bottomControls.style.display = 'flex';
+          currentSetIndex = 0;
+          currentNumberIndex = 0;
+          document.getElementById('answer').style.display = 'none';
+          document.getElementById('equation').style.display = 'none';
+          document.getElementById('nextButton').style.display = 'none';
+          document.getElementById('showAnswerButton').style.display = 'none';
+          clearInterval(countdownInterval);
+          currentNumberIndex = 0;
+          displayNumber(true);
+          countdownInterval = setInterval(displayNumber, speed);
+          controlsLocked = false;
+        });
+      } else {
+        clearGetReady();
+        firstPage.style.display = '';
+        secondPage.style.display = 'none';
+        bottomControls.style.display = 'none';
+        clearInterval(countdownInterval);
+      }
+    }
+
+    function nextSet() {
+      if (controlsLocked) return;
+      controlsLocked = true;
+      playStartBuzz();
+      document.getElementById('number').innerHTML = '';
+      document.getElementById('answer').style.display = 'none';
+      document.getElementById('equation').style.display = 'none';
+      document.getElementById('nextButton').style.display = 'none';
+      document.getElementById('showAnswerButton').style.display = 'none';
+      nextSetTimeout = setTimeout(() => {
+        currentSetIndex++;
+        if (currentSetIndex >= sets.length) {
+          mode = document.getElementById('operation').value;
+          digitType = document.querySelector('input[name="digitType"]:checked')?.value || "single";
+          let multiType = document.querySelector('input[name="multiType"]:checked')?.value || "2x1";
+          let divType = document.querySelector('input[name="divType"]:checked')?.value || "2d1";
+          sets = generateRandomSets(30, numbersToShow, mode, digitType, multiType, divType);
+          currentSetIndex = 0;
+        }
+        currentNumberIndex = 0;
+        const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
+        clearInterval(countdownInterval);
+        displayNumber(true);
+        countdownInterval = setInterval(displayNumber, speed);
+        controlsLocked = false;
+      }, 1000);
+    }
+
+    document.getElementById('toggleButton').addEventListener('click', switchPage);
+    document.getElementById('returnButton').addEventListener('click', switchPage);
+    document.getElementById('nextButton').addEventListener('click', nextSet);
+    document.getElementById('showAnswerButton').addEventListener('click', showAnswer);
+    document.addEventListener('keydown', function (event) {
+      if (waitingForEnter && event.key === 'Enter') showAnswer();
+    });
+  </script>
+</body>
+</html>
