@@ -1,1 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nada Calendar Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: #fff;
+      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+      overflow: hidden;
+      width: 100vw; height: 100vh;
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
+    .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
+    .logo-wk { position: fixed; top: 2vw; right: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
+    .mascot-box { position: fixed; left: 0; bottom: 0; z-index: 30; padding: 1vw 0.6vw; pointer-events: none; user-select: none; min-width: 48px;}
+    #nadamascot { width: 11vw; min-width: 44px; max-width: 76px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
+    @keyframes mascotFloat { 0% { transform: translateY(0) scale(1);} 40% { transform: translateY(-10px) scale(1.03);} 60% { transform: translateY(-16px) scale(1.02);} 100% { transform: translateY(0) scale(1);} }
+    @keyframes mascotWave { 0%, 100% { transform: rotate(-2deg);} 10% { transform: rotate(3deg);} 20% { transform: rotate(-3deg);} 30% { transform: rotate(2deg);} 40% { transform: rotate(-2deg);} 50% { transform: rotate(2deg);} 60% { transform: rotate(-2deg);} 70% { transform: rotate(2deg);} 80% { transform: rotate(-2deg);} 90% { transform: rotate(1deg);} }
+    .main-centerer { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;}
+    #settingsBox { margin-top: 11vh; width: 100vw; text-align: center; }
+    #settingsBox label { font-size: 1.27em; margin: 0.22em 0.4em; color: #273c78; font-weight: 700; background: none;}
+    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center;}
+    #settingsBox button { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;}
+    #settingsBox button:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
+    #lotteryQuestion { font-size: clamp(48px,12vw,140px); color: #3a21b3; font-weight: bold; letter-spacing: 0.16em; margin: 2vh 0; width: 100vw; text-align: center; }
+    #calendarBox { display: none; justify-content: center; align-items: center; height: 72vh; width: 100vw; }
+    #calendarView { margin: auto; width: 92vw; max-width: 600px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
+    .calendar-month-title { text-align: center; font-size: 2em; font-weight: bold; color: #6640d6; margin: 0.3em 0 0.5em 0;}
+    .calendar-table { width: 100%; border-spacing: 0.23em; border-collapse: separate; }
+    .calendar-table th, .calendar-table td { font-size: 1.22em; text-align: center; border-radius: 0.6em; padding: 0.55em 0.3em; }
+    .calendar-table th { color: #4b26ae; font-weight: bold;}
+    .calendar-table td { color: #222; font-weight: bold; background: #f5f6fd; transition: background 0.33s;}
+    .calendar-today { background: #ff3535 !important; color: #fff !important; font-weight: 900; font-size: 1.2em; box-shadow: 0 2px 14px #ff353533; }
+    .calendar-animate { transform: scale(1.18) rotate(-2deg); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
+    .calendar-day-label { text-align: center; font-size: 2.1em; color: #e32155; font-weight: 900; margin: 0.2em 0 0.35em 0;}
+    .controls { position: fixed; left: 0; right: 0; bottom: 2.5vw; width: 100vw; z-index: 300; background: none; box-shadow: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 2vw; pointer-events: none;}
+    .button-group { display: flex; flex-direction: row; gap: 2vw; justify-content: center; align-items: center; pointer-events: all; margin: 0;}
+    .action-btn { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; padding: 0.5em 2em; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; box-shadow: 0 2px 18px rgba(90,180,255,0.13); cursor: pointer; transition: background 0.15s, box-shadow 0.23s, transform 0.13s; outline: none; letter-spacing: 0.04em; min-width: 88px; margin: 0;}
+    .action-btn:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%); transform: scale(0.98);}
+    #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
+    .getready-text { color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
+    .getready-count { color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
+    @media (max-width: 700px) { #calendarView { max-width: 97vw; } }
+  </style>
+</head>
+<body>
+  <img src="nada.png" alt="Logo" class="logo-fixed">
+  <img src="wonderkids.png" alt="" class="logo-wk">
+  <div class="main-centerer">
+    <div id="settingsBox">
+      <label for="calendarSpeedInput">Speed</label>
+      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> seconds
+      <br><button id="calendarStartBtn">START</button>
+    </div>
+    <div id="lotteryQuestion" style="display:none;"></div>
+    <div id="calendarBox">
+      <div id="calendarView"></div>
+    </div>
+  </div>
+  <div class="controls" id="bottomControls" style="display: none;">
+    <div class="button-group">
+      <button id="calendarBackBtn" class="action-btn">Back</button>
+      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;">Show Answer</button>
+      <button id="calendarNextBtn" class="action-btn" style="display:none;">Next Round</button>
+    </div>
+  </div>
+  <div class="mascot-box">
+    <img src="nadamascot.png" id="nadamascot" alt="Mascot">
+  </div>
+  <!-- Sounds -->
+  <audio id="tickSound" src="tick.wav" preload="auto"></audio>
+  <audio id="dingSound" src="ding.wav" preload="auto"></audio>
+  <audio id="getready321" src="getready321.wav" preload="auto"></audio>
+  <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
+  <!-- Ready Overlay -->
+  <div id="getreadyOverlay" class="getready-overlay">
+    <div class="getready-text" id="getreadyText">Get Ready</div>
+    <div class="getready-count" id="getreadyCount"></div>
+  </div>
+  <script>
+    // Helper functions for date & calendar
+    function randomDate() {
+      // Random year 2000-2024, month 1-12, day valid for month
+      const year = Math.floor(Math.random() * 25) + 2000;
+      const month = Math.floor(Math.random() * 12) + 1;
+      let day = 1 + Math.floor(Math.random() * 28); // Always valid for any month
+      // For months with 30/31 days:
+      if ([4,6,9,11].includes(month)) day = Math.min(day, 30);
+      if (month === 2) {
+        const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+        day = Math.min(day, leap ? 29 : 28);
+      }
+      else if ([1,3,5,7,8,10,12].includes(month)) day = Math.min(day, 31);
+      return { year, month, day };
+    }
+    function getDayOfWeek(year, month, day) {
+      // month is 1-based (Jan=1)
+      const d = new Date(year, month-1, day);
+      const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      return weekdays[d.getDay()];
+    }
+    function monthName(month) {
+      return ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1];
+    }
+    function playTickSound() { try { document.getElementById('tickSound').currentTime = 0; document.getElementById('tickSound').play(); } catch (e) {} }
+    function playDingSound() { try { document.getElementById('dingSound').currentTime = 0; document.getElementById('dingSound').play(); } catch (e) {} }
+    function playGetReadySound() { try { document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play(); } catch (e) {} }
+    function playStartBuzz() { try { document.getElementById('startbuzz').currentTime = 0; document.getElementById('startbuzz').play(); } catch (e) {} }
+    // Animation helpers
+    function animateLottery(element, finalValue, rollingTime=1400) {
+      // Show rolling numbers for day/month/year for 1.4s, then show the real question
+      let rolling = true;
+      const interval = 75, tEnd = Date.now() + rollingTime;
+      let timer = setInterval(() => {
+        if (Date.now() > tEnd) {
+          clearInterval(timer);
+          rolling = false;
+          element.innerHTML = `<span style="margin:0 0.3em;">${finalValue.day}</span>
+            <span style="margin:0 0.3em;">/</span>
+            <span style="margin:0 0.3em;">${finalValue.month}</span>
+            <span style="margin:0 0.3em;">/</span>
+            <span style="margin:0 0.3em;">${finalValue.year}</span>`;
+          playDingSound();
+        } else {
+          let d = 1+Math.floor(Math.random()*28);
+          let m = 1+Math.floor(Math.random()*12);
+          let y = 2000+Math.floor(Math.random()*25);
+          element.innerHTML = `<span style="margin:0 0.3em;">${d}</span>
+            <span style="margin:0 0.3em;">/</span>
+            <span style="margin:0 0.3em;">${m}</span>
+            <span style="margin:0 0.3em;">/</span>
+            <span style="margin:0 0.3em;">${y}</span>`;
+          playTickSound();
+        }
+      }, interval);
+    }
+    function createCalendar(year, month, day) {
+      // Build HTML table for calendar, highlight the date
+      let d = new Date(year, month-1, 1);
+      const firstDay = d.getDay();
+      d.setMonth(month, 0); // go to last day of month
+      const lastDate = d.getDate();
+      let html = `<div class="calendar-month-title">${monthName(month)} ${year}</div>
+      <div class="calendar-day-label"></div>
+      <table class="calendar-table"><thead><tr>
+        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
+        <th>Thu</th><th>Fri</th><th>Sat</th>
+      </tr></thead><tbody><tr>`;
+      let dayCount = 1;
+      for (let i=0; i<firstDay; i++) html += "<td></td>";
+      for (let i=firstDay; i<7; i++) {
+        html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+        dayCount++;
+      }
+      html += "</tr>";
+      while (dayCount <= lastDate) {
+        html += "<tr>";
+        for (let i=0; i<7; i++) {
+          if (dayCount > lastDate) html += "<td></td>";
+          else html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+          dayCount++;
+        }
+        html += "</tr>";
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+
+    // --- Main Logic ---
+    let currentQuestion = null;
+    let currentDayName = "";
+    function showSettings() {
+      document.getElementById('settingsBox').style.display = "";
+      document.getElementById('lotteryQuestion').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('bottomControls').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+    }
+    function startGetReady(onDone) {
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = 'Get Ready';
+      count.textContent = '';
+      playGetReadySound();
+      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
+      setTimeout(() => { count.textContent = '2'; }, 1850);
+      setTimeout(() => { count.textContent = '1'; }, 2850);
+      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        onDone();
+      }, 4950);
+    }
+    function startGame() {
+      document.getElementById('settingsBox').style.display = "none";
+      startGetReady(() => {
+        let q = randomDate();
+        currentQuestion = q;
+        currentDayName = getDayOfWeek(q.year, q.month, q.day);
+        document.getElementById('lotteryQuestion').style.display = "";
+        document.getElementById('calendarBox').style.display = "none";
+        document.getElementById('bottomControls').style.display = "";
+        document.getElementById('calendarShowAnswerBtn').style.display = "";
+        document.getElementById('calendarNextBtn').style.display = "none";
+        // Animate rolling
+        animateLottery(document.getElementById('lotteryQuestion'), q, 1700);
+        // After the set speed, hide the question (force after lottery done)
+        const sec = Math.max(2, +document.getElementById('calendarSpeedInput').value||4);
+        setTimeout(() => {
+          document.getElementById('lotteryQuestion').style.display = "none";
+        }, sec * 1000 + 1800);
+      });
+    }
+    function showAnswer() {
+      playDingSound();
+      document.getElementById('lotteryQuestion').style.display = "none";
+      const q = currentQuestion;
+      const calendar = document.getElementById('calendarView');
+      calendar.innerHTML = createCalendar(q.year, q.month, q.day);
+      calendar.querySelector('.calendar-month-title').insertAdjacentHTML("afterend",
+        `<div class="calendar-day-label">${currentDayName}</div>`);
+      document.getElementById('calendarBox').style.display = "flex";
+      calendar.classList.add("calendar-animate");
+      setTimeout(()=>calendar.classList.remove("calendar-animate"),500);
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "";
+    }
+    function nextRound() {
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      startGame();
+    }
+    // --- Events
+    document.getElementById('calendarStartBtn').onclick = startGame;
+    document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
+    document.getElementById('calendarNextBtn').onclick = nextRound;
+    document.getElementById('calendarBackBtn').onclick = showSettings;
+    showSettings();
+  </script>
+</body>
+</html>
 
