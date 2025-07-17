@@ -6,10 +6,11 @@
   <title>Mental Arithmetic System</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0; padding: 0; background: #fff;
-      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
+    html, body {
+      margin: 0; padding: 0;
       width: 100vw; height: 100vh; overflow: hidden;
+      background: #fff;
+      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
     }
     .logo-fixed {
       position: fixed; top: 2vw; left: 2vw; z-index: 100;
@@ -51,43 +52,135 @@
       90% { transform: rotate(1deg);}
     }
     .main-centerer {
-      width: 100vw; height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; position: relative;
-    }
-    .tabs-row {
-      display: flex; gap: 2.2em; margin-bottom: 3.8em;
-      justify-content: center; align-items: flex-end;
-    }
-    .tab-btn {
-      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: #fff; border: none; border-radius: 2.5em; font-size: 2.1em;
-      padding: 0.8em 2.5em; font-family: inherit; font-weight: 700;
-      cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11);
-      letter-spacing: 0.03em; margin: 0;
-      transition: background 0.13s, transform 0.15s;
-    }
-    .tab-btn:hover, .tab-btn:focus { background: linear-gradient(90deg,#44b4fc 0,#2352c9 100%);}
-    @media (max-width: 700px) {
-      .tab-btn { font-size: 1.2em; padding: 0.5em 1.5em;}
-      .tabs-row { margin-bottom: 2.5em;}
+      width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      position: relative;
     }
     .choose-title {
-      font-size: 2.6em; color: #342087; margin-bottom: 1.2em; font-weight: bold;
+      font-size: 2.6em; color: #342087;
+      margin-bottom: 1.8em; font-weight: bold;
+      letter-spacing: 0.03em;
+      text-align: center;
+    }
+    .tabs-row {
+      display: flex; gap: 2.2em; margin-bottom: 2.6em;
+      justify-content: center; align-items: flex-end;
+      width: 100%;
+    }
+    .tab-btn {
+      border: none;
+      border-radius: 2.5em;
+      font-size: 2.1em;
+      padding: 0.9em 2.8em;
+      font-family: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 16px rgba(90,180,255,0.11);
+      letter-spacing: 0.03em; margin: 0;
+      transition: background 0.13s, transform 0.15s;
+      text-decoration: none !important;
+      outline: none;
+      display: inline-block;
+    }
+    .tab-flashcard {
+      background: linear-gradient(90deg,#43e8e1 0,#349afd 100%);
+      color: #fff;
+    }
+    .tab-flashcard:hover, .tab-flashcard:focus {
+      background: linear-gradient(90deg,#21cac3 0,#1a77c9 100%);
+    }
+    .tab-calendar {
+      background: linear-gradient(90deg,#fa8b56 0,#fd349a 100%);
+      color: #fff;
+    }
+    .tab-calendar:hover, .tab-calendar:focus {
+      background: linear-gradient(90deg,#e07b4b 0,#c02177 100%);
+    }
+    .lang-switcher-row {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width: 100%; margin-top: 1em;
+    }
+    .lang-label {
+      font-size: 1.25em; color: #2d197d;
+      font-weight: 700; margin-bottom: 0.6em;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+    .lang-btn-group {
+      display: flex; gap: 0.7em; justify-content: center;
+      align-items: center;
+    }
+    .lang-btn {
+      border: none; background: #eaeafc;
+      border-radius: 2em;
+      font-size: 1.17em;
+      padding: 0.43em 1.55em;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      color: #312184;
+      transition: background 0.18s, color 0.18s;
+    }
+    .lang-btn.active, .lang-btn:focus {
+      background: #a4e2fc;
+      color: #0f427f;
+    }
+    @media (max-width: 700px) {
+      .tab-btn { font-size: 1.1em; padding: 0.7em 1.3em;}
+      .tabs-row { margin-bottom: 1.5em;}
+      .choose-title { font-size: 1.6em; margin-bottom: 1.2em;}
+      .lang-label { font-size: 1em; }
     }
   </style>
 </head>
 <body>
   <img src="nada.png" alt="Logo" class="logo-fixed">
-  <img src="wonderkids.png" alt="" class="logo-wk">
+  <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
   <div class="main-centerer">
-    <div class="choose-title">Choose Game</div>
+    <div class="choose-title" data-i18n="choose_game"></div>
     <div class="tabs-row">
-      <a href="flashcard.html" class="tab-btn">Flashcard</a>
-      <a href="nada-calendar.html" class="tab-btn">Nada Calendar</a>
+      <a href="flashcard.html" class="tab-btn tab-flashcard" data-i18n="flashcard_btn"></a>
+      <a href="nada-calendar.html" class="tab-btn tab-calendar" data-i18n="calendar_btn"></a>
+    </div>
+    <div class="lang-switcher-row">
+      <div class="lang-label" data-i18n="select_lang"></div>
+      <div class="lang-btn-group">
+        <button class="lang-btn" id="lang-en">EN</button>
+        <button class="lang-btn" id="lang-th">TH</button>
+      </div>
     </div>
   </div>
   <div class="mascot-box">
     <img src="nadamascot.png" id="nadamascot" alt="Mascot">
   </div>
+  <script>
+    const translations = {
+      title:        { en:"Mental Arithmetic System", th:"ระบบคำนวณจิต (Mental Arithmetic)" },
+      choose_game:  { en:"Choose Game", th:"เลือกเกม" },
+      flashcard_btn:{ en:"Flashcard", th:"แฟลชการ์ด" },
+      calendar_btn: { en:"Nada Calendar", th:"ปฏิทินนดา" },
+      select_lang:  { en:"Select Language", th:"เลือกภาษา" }
+    };
+    let lang = localStorage.getItem('lang') || 'en';
+    function setLang(l) {
+      lang = l;
+      localStorage.setItem('lang', lang);
+      applyLang();
+    }
+    function applyLang() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key]) el.innerHTML = translations[key][lang];
+      });
+      document.title = translations.title[lang];
+      document.getElementById('lang-en').classList.toggle('active', lang==='en');
+      document.getElementById('lang-th').classList.toggle('active', lang==='th');
+    }
+    document.getElementById('lang-en').onclick = () => setLang('en');
+    document.getElementById('lang-th').onclick = () => setLang('th');
+    applyLang();
+  </script>
 </body>
 </html>
