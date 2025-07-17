@@ -301,34 +301,36 @@
         }, 70);
       });
     }
-    function createCalendar(year, month, day) {
-      let d = new Date(typeof year==='string'?parseInt(year):year, month-1, 1);
-      const firstDay = d.getDay();
-      d.setMonth(month, 0);
-      const lastDate = d.getDate();
-      let html = `<table class="calendar-table"><thead><tr>`;
-      for(let wd=0;wd<7;wd++)
-        html += `<th>${translations.weekdaysShort[lang][wd]}</th>`;
-      html += "</tr></thead><tbody><tr>";
-      let dayCount = 1;
-      for (let i=0; i<firstDay; i++) html += "<td></td>";
-      for (let i=firstDay; i<7; i++) {
-        html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
-        dayCount++;
+function createCalendar(year, month, day) {
+  const d = new Date(year, month-1, 1);
+  const firstDay = d.getDay(); // 0=Sun
+  d.setMonth(month, 0);
+  const lastDate = d.getDate();
+
+  let html = `<table class="calendar-table"><thead><tr>
+    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
+    <th>Thu</th><th>Fri</th><th>Sat</th>
+  </tr></thead><tbody>`;
+
+  let dayCounter = 1;
+  for (let week = 0; dayCounter <= lastDate; week++) {
+    html += "<tr>";
+    for (let i = 0; i < 7; i++) {
+      // If we're on the first week, skip days before firstDay
+      if (week === 0 && i < firstDay) {
+        html += "<td></td>";
+      } else if (dayCounter > lastDate) {
+        html += "<td></td>";
+      } else {
+        html += `<td${dayCounter == day ? ' class="calendar-today"' : ""}>${dayCounter}</td>`;
+        dayCounter++;
       }
-      html += "</tr>";
-      while (dayCount <= lastDate) {
-        html += "<tr>";
-        for (let i=0; i<7; i++) {
-          if (dayCount > lastDate) html += "<td></td>";
-          else html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
-          dayCount++;
-        }
-        html += "</tr>";
-      }
-      html += "</tbody></table>";
-      return html;
     }
+    html += "</tr>";
+  }
+  html += "</tbody></table>";
+  return html;
+}
     // --- Main Logic ---
     let currentQuestion = null;
     let currentDayName = "";
