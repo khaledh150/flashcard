@@ -6,7 +6,6 @@
   <title>Nada Calendar Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
   <style>
-    /* ...all your previous styles unchanged... */
     html, body { margin: 0; padding: 0; height: 100%; background: #fff; font-family: 'Quicksand', 'Nunito', Arial, sans-serif; overflow: hidden; width: 100vw; height: 100vh; box-sizing: border-box; user-select: none;}
     body { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
     .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
@@ -48,10 +47,14 @@
       text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
       transition: font-size 0.1s;
       letter-spacing: 0.06em;
+      filter: none;
+      position: relative;
     }
-    .slot-inner-gold .slot-reel-track {
-      display: flex; flex-direction: column; align-items: center; width: 100%;
-      transition: transform 0s;
+    .slot-reel-track {
+      width: 100%; height: 300%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: absolute; left: 0; top: 0; will-change: transform; pointer-events: none;
+    }
+    .slot-reel-digit {
+      font-size: inherit; font-weight: inherit; height: 1.35em; display: flex; align-items: center; justify-content: center;
     }
     .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
     @media (max-width: 700px) {
@@ -120,9 +123,10 @@
     <img src="nadamascot.png" id="nadamascot" alt="Mascot">
   </div>
   <!-- Sounds -->
-  <audio id="rouletteSFX" src="roulettewheel.wav" preload="auto"></audio>
-  <audio id="beepSFX" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
+  <audio id="rouletteSound" src="roulettewheel.wav" preload="auto"></audio>
+  <audio id="beepSound" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
+  <!-- Ready Overlay -->
   <div id="getreadyOverlay" class="getready-overlay">
     <div class="getready-text" id="getreadyText">Get Ready</div>
     <div class="getready-count" id="getreadyCount"></div>
@@ -148,75 +152,8 @@
     function monthName(month) {
       return ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1];
     }
-    function createCalendar(year, month, day) {
-      let d = new Date(year, month-1, 1);
-      const firstDay = d.getDay();
-      d.setMonth(month, 0);
-      const lastDate = d.getDate();
-      let html = `<table class="calendar-table"><thead><tr>
-        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-        <th>Thu</th><th>Fri</th><th>Sat</th>
-      </tr></thead><tbody><tr>`;
-      let dayCount = 1;
-      for (let i=0; i<firstDay; i++) html += "<td></td>";
-      for (let i=firstDay; i<7; i++) {
-        html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
-        dayCount++;
-      }
-      html += "</tr>";
-      while (dayCount <= lastDate) {
-        html += "<tr>";
-        for (let i=0; i<7; i++) {
-          if (dayCount > lastDate) html += "<td></td>";
-          else html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
-          dayCount++;
-        }
-        html += "</tr>";
-      }
-      html += "</tbody></table>";
-      return html;
-    }
 
-    // --- Main Logic ---
-    let currentQuestion = null;
-    let currentDayName = "";
-    let thaiYear = false;
-    let hideSlotsTimeout = null;
-    let answerShown = false;
-    let speedTimeout = null;
-
-    function showSettings() {
-      document.getElementById('settingsBox').style.display = "";
-      document.getElementById('lotteryRow').style.display = "none";
-      document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('bottomControls').style.display = "none";
-      document.getElementById('calendarShowAnswerBtn').style.display = "none";
-      document.getElementById('calendarNextBtn').style.display = "none";
-      clearTimeout(hideSlotsTimeout);
-      clearTimeout(speedTimeout);
-      answerShown = false;
-    }
-
-    function startGetReady(onDone) {
-      const overlay = document.getElementById('getreadyOverlay');
-      const text = document.getElementById('getreadyText');
-      const count = document.getElementById('getreadyCount');
-      overlay.style.display = 'flex';
-      text.style.display = '';
-      count.style.display = '';
-      text.textContent = 'Get Ready';
-      count.textContent = '';
-      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
-      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
-      setTimeout(() => { count.textContent = '2'; }, 1850);
-      setTimeout(() => { count.textContent = '1'; }, 2850);
-      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        count.textContent = '';
-        onDone();
-      }, 4950);
-    }
+    // --- Slot Reel with easing-out motion, all digits spin together ---
     function pad2(n) { return n.toString().padStart(2,'0'); }
     function pad4(n) { return n.toString().padStart(4,'0'); }
     function splitDigits(n, padLen=2) {
@@ -224,109 +161,58 @@
       return s.split('');
     }
 
-    // --- Slot Machine Animation with true reel and SFX ---
-    function animateAllDigitSlots(day, month, year, onDone) {
-      // Helper for each digit
-      function animateSingleSlot(el, finalValue, slowOut = true) {
-        return new Promise(resolve => {
-          // Clean up any prev
-          el.textContent = '';
-          let animDiv = document.createElement('div');
-          animDiv.style.position = "absolute";
-          animDiv.style.left = 0; animDiv.style.right = 0; animDiv.style.top = 0; animDiv.style.bottom = 0;
-          animDiv.style.width = "100%";
-          animDiv.style.height = "100%";
-          animDiv.style.overflow = "hidden";
-          animDiv.style.display = "flex";
-          animDiv.style.flexDirection = "column";
-          animDiv.style.justifyContent = "flex-end";
-          animDiv.style.alignItems = "center";
-          animDiv.style.pointerEvents = "none";
+    function animateDigitSlotReel(el, finalValue, duration=3000) {
+      // A true slot reel: numbers move up, slowing with blur, final digit at the end.
+      return new Promise(resolve => {
+        el.innerHTML = '';
+        let reel = document.createElement('div');
+        reel.className = 'slot-reel-track';
+        // Build digits for reel: repeat digits for cycles, then land on final
+        let totalDigits = 26; // how many digits to show for spinning
+        let finalIdx = totalDigits;
+        let fullList = [];
+        for(let i=0;i<totalDigits;i++){
+          let d = document.createElement('div');
+          d.className = 'slot-reel-digit';
+          d.textContent = Math.floor(Math.random()*10);
+          fullList.push(d);
+          reel.appendChild(d);
+        }
+        let last = document.createElement('div');
+        last.className = 'slot-reel-digit';
+        last.textContent = finalValue;
+        last.style.filter = 'none';
+        reel.appendChild(last);
+        fullList.push(last);
+        el.appendChild(reel);
 
-          let slotTrack = document.createElement('div');
-          slotTrack.className = "slot-reel-track";
-          slotTrack.style.position = "relative";
-          slotTrack.style.display = "flex";
-          slotTrack.style.flexDirection = "column";
-          slotTrack.style.alignItems = "center";
-          slotTrack.style.justifyContent = "flex-start";
-          slotTrack.style.height = "250%";
-          slotTrack.style.filter = "blur(2.5px) brightness(1.11)";
-
-          // 50 cycles
-          let cycles = 50;
-          for (let i = 0; i < cycles; i++) {
-            let d = document.createElement('span');
-            d.textContent = Math.floor(Math.random() * 10);
-            d.style.height = "1.22em";
-            d.style.fontSize = "inherit";
-            d.style.fontWeight = "inherit";
-            slotTrack.appendChild(d);
-          }
-          // Final digit
-          let d = document.createElement('span');
-          d.textContent = finalValue;
-          d.style.height = "1.22em";
-          d.style.fontSize = "inherit";
-          d.style.fontWeight = "inherit";
-          d.style.filter = "none";
-          slotTrack.appendChild(d);
-
-          animDiv.appendChild(slotTrack);
-          el.appendChild(animDiv);
-
-          let height = el.offsetHeight || 48;
-          let duration = 3000; // 3s
-          let start = null;
-
-          function step(ts) {
-            if (!start) start = ts;
-            let progress = Math.min((ts - start) / duration, 1);
-            // Easing: quadratic out for smooth slow-down
-            let ease = 1 - Math.pow(1-progress, 3);
-            let offset = (slotTrack.scrollHeight - height) * ease;
-            slotTrack.style.transform = `translateY(-${offset}px)`;
-            if (progress < 1) {
-              requestAnimationFrame(step);
-            } else {
-              el.removeChild(animDiv);
-              el.textContent = finalValue;
+        // Animation timing
+        let start = null;
+        let height = el.offsetHeight || 48;
+        let blurStart = 2.2, blurEnd = 0;
+        let ease = t => 1 - Math.pow(1-t,2.8); // smooth out at end
+        function frame(ts) {
+          if(!start) start = ts;
+          let progress = Math.min((ts-start)/duration,1);
+          let eased = ease(progress);
+          // At first, blur; as slows, sharpen
+          let blur = blurStart + (blurEnd-blurStart) * eased;
+          reel.style.filter = `blur(${blur}px) brightness(${1+0.11*(1-progress)})`;
+          let offset = ((reel.scrollHeight - height) * eased);
+          reel.style.transform = `translateY(-${offset}px)`;
+          if(progress<1) {
+            requestAnimationFrame(frame);
+          } else {
+            // Land on final digit, sharp
+            reel.style.filter = 'none';
+            reel.style.transform = `translateY(-${reel.scrollHeight - height}px)`;
+            setTimeout(()=>{
+              el.innerHTML = finalValue;
               resolve();
-            }
+            },80);
           }
-          requestAnimationFrame(step);
-        });
-      }
-      // Gather digits and slots
-      let dayDigits = splitDigits(day,2);
-      let monthDigits = splitDigits(month,2);
-      let yearDigits = splitDigits(year,4);
-
-      function getSlotId(groupId, i) { return `slot-${groupId}-${i}`; }
-
-      let allAnims = [];
-      dayDigits.forEach((digit,i)=>{
-        let el = document.getElementById(getSlotId('day',i));
-        allAnims.push(animateSingleSlot(el, digit));
-      });
-      monthDigits.forEach((digit,i)=>{
-        let el = document.getElementById(getSlotId('month',i));
-        allAnims.push(animateSingleSlot(el, digit));
-      });
-      yearDigits.forEach((digit,i)=>{
-        let el = document.getElementById(getSlotId('year',i));
-        allAnims.push(animateSingleSlot(el, digit));
-      });
-
-      // Play the spin SFX at the start, Beep at end.
-      let rouletteSFX = document.getElementById('rouletteSFX');
-      rouletteSFX.currentTime = 0; rouletteSFX.play();
-
-      Promise.all(allAnims).then(()=>{
-        rouletteSFX.pause(); // stop in case it's longer than anim (shouldn't happen)
-        let beep = document.getElementById('beepSFX');
-        beep.currentTime = 0; beep.play();
-        if (onDone) onDone();
+        }
+        requestAnimationFrame(frame);
       });
     }
 
@@ -358,8 +244,56 @@
       let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
       bar.appendChild(sep2);
       bar.appendChild(renderGroup(yearDigits,'year'));
-      // Animate all digits at once with sound
-      animateAllDigitSlots(day, month, year, onDone);
+      // Animate all digits simultaneously
+      let digitEls = [
+        ...dayDigits.map((_,i)=>document.getElementById(`slot-day-${i}`)),
+        ...monthDigits.map((_,i)=>document.getElementById(`slot-month-${i}`)),
+        ...yearDigits.map((_,i)=>document.getElementById(`slot-year-${i}`))
+      ];
+      let digitVals = [...dayDigits, ...monthDigits, ...yearDigits];
+      Promise.all(digitEls.map((el,idx)=>animateDigitSlotReel(el, digitVals[idx])))
+        .then(onDone);
+    }
+
+    // --- Main logic ---
+    let currentQuestion = null;
+    let currentDayName = "";
+    let thaiYear = false;
+    let hideSlotsTimeout = null;
+    let answerShown = false;
+    let questionTimeout = null;
+
+    function showSettings() {
+      document.getElementById('settingsBox').style.display = "";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('bottomControls').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      clearTimeout(hideSlotsTimeout);
+      clearTimeout(questionTimeout);
+      answerShown = false;
+    }
+
+    function startGetReady(onDone) {
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = 'Get Ready';
+      count.textContent = '';
+      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
+      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
+      setTimeout(() => { count.textContent = '2'; }, 1850);
+      setTimeout(() => { count.textContent = '1'; }, 2850);
+      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        onDone();
+      }, 4950);
     }
 
     function startGame() {
@@ -371,23 +305,62 @@
       document.getElementById('calendarNextBtn').style.display = "none";
       thaiYear = document.getElementById('thaiYearToggle').checked;
       answerShown = false;
-      clearTimeout(speedTimeout);
-
+      clearTimeout(questionTimeout);
       startGetReady(() => {
         let q = randomDate();
         currentQuestion = q;
         currentDayName = getDayOfWeek(q.year, q.month, q.day);
         let yearDisplay = thaiYear ? (q.year+543) : q.year;
+        // Start roulette sound and reel spin
+        let rouletteSound = document.getElementById('rouletteSound');
+        let beepSound = document.getElementById('beepSound');
+        rouletteSound.currentTime = 0;
+        rouletteSound.play();
         renderSlotBar(q.day, q.month, yearDisplay, ()=>{
-          // After spin + beep finishes, start the main timer for the "question"
-          const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-          speedTimeout = setTimeout(()=>{
-            document.getElementById('lotteryRow').style.display = "none";
-            if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
-          }, speed*1000);
+          // After 3s, play beep, show button, start timer to hide
+          setTimeout(()=>{
+            beepSound.currentTime = 0; beepSound.play();
+            document.getElementById('calendarShowAnswerBtn').style.display = "";
+            // After user speed seconds, hide question
+            const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+            questionTimeout = setTimeout(()=>{
+              document.getElementById('lotteryRow').style.display = "none";
+              if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
+            }, speed*1000);
+          }, 3000); // After roulette
         });
       });
     }
+
+    function createCalendar(year, month, day) {
+      let d = new Date(year, month-1, 1);
+      const firstDay = d.getDay();
+      d.setMonth(month, 0);
+      const lastDate = d.getDate();
+      let html = `<table class="calendar-table"><thead><tr>
+        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
+        <th>Thu</th><th>Fri</th><th>Sat</th>
+      </tr></thead><tbody><tr>`;
+      let dayCount = 1;
+      for (let i=0; i<firstDay; i++) html += "<td></td>";
+      for (let i=firstDay; i<7; i++) {
+        html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+        dayCount++;
+      }
+      html += "</tr>";
+      while (dayCount <= lastDate) {
+        html += "<tr>";
+        for (let i=0; i<7; i++) {
+          if (dayCount > lastDate) html += "<td></td>";
+          else html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+          dayCount++;
+        }
+        html += "</tr>";
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+
     function showAnswer() {
       if (answerShown) return;
       answerShown = true;
@@ -410,12 +383,13 @@
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "";
     }
+
     function nextRound() {
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
       answerShown = false;
-      clearTimeout(speedTimeout);
+      clearTimeout(questionTimeout);
       startGame();
     }
     // --- Events
