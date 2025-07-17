@@ -47,14 +47,20 @@
       text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
       transition: font-size 0.1s;
       letter-spacing: 0.06em;
+      /* For blur reel effect: */
       filter: none;
+    }
+    .slot-inner-gold .digit-stack {
       position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: filter 0.3s;
     }
-    .slot-reel-track {
-      width: 100%; height: 300%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; position: absolute; left: 0; top: 0; will-change: transform; pointer-events: none;
-    }
-    .slot-reel-digit {
-      font-size: inherit; font-weight: inherit; height: 1.35em; display: flex; align-items: center; justify-content: center;
+    .slot-inner-gold.reeling .digit-stack {
+      filter: blur(2.7px) brightness(1.09);
     }
     .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
     @media (max-width: 700px) {
@@ -126,7 +132,6 @@
   <audio id="rouletteSound" src="roulettewheel.wav" preload="auto"></audio>
   <audio id="beepSound" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
-  <!-- Ready Overlay -->
   <div id="getreadyOverlay" class="getready-overlay">
     <div class="getready-text" id="getreadyText">Get Ready</div>
     <div class="getready-count" id="getreadyCount"></div>
@@ -151,185 +156,6 @@
     }
     function monthName(month) {
       return ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1];
-    }
-
-    // --- Slot Reel with easing-out motion, all digits spin together ---
-    function pad2(n) { return n.toString().padStart(2,'0'); }
-    function pad4(n) { return n.toString().padStart(4,'0'); }
-    function splitDigits(n, padLen=2) {
-      let s = n.toString().padStart(padLen,'0');
-      return s.split('');
-    }
-
-    function animateDigitSlotReel(el, finalValue, duration=3000) {
-      // A true slot reel: numbers move up, slowing with blur, final digit at the end.
-      return new Promise(resolve => {
-        el.innerHTML = '';
-        let reel = document.createElement('div');
-        reel.className = 'slot-reel-track';
-        // Build digits for reel: repeat digits for cycles, then land on final
-        let totalDigits = 26; // how many digits to show for spinning
-        let finalIdx = totalDigits;
-        let fullList = [];
-        for(let i=0;i<totalDigits;i++){
-          let d = document.createElement('div');
-          d.className = 'slot-reel-digit';
-          d.textContent = Math.floor(Math.random()*10);
-          fullList.push(d);
-          reel.appendChild(d);
-        }
-        let last = document.createElement('div');
-        last.className = 'slot-reel-digit';
-        last.textContent = finalValue;
-        last.style.filter = 'none';
-        reel.appendChild(last);
-        fullList.push(last);
-        el.appendChild(reel);
-
-        // Animation timing
-        let start = null;
-        let height = el.offsetHeight || 48;
-        let blurStart = 2.2, blurEnd = 0;
-        let ease = t => 1 - Math.pow(1-t,2.8); // smooth out at end
-        function frame(ts) {
-          if(!start) start = ts;
-          let progress = Math.min((ts-start)/duration,1);
-          let eased = ease(progress);
-          // At first, blur; as slows, sharpen
-          let blur = blurStart + (blurEnd-blurStart) * eased;
-          reel.style.filter = `blur(${blur}px) brightness(${1+0.11*(1-progress)})`;
-          let offset = ((reel.scrollHeight - height) * eased);
-          reel.style.transform = `translateY(-${offset}px)`;
-          if(progress<1) {
-            requestAnimationFrame(frame);
-          } else {
-            // Land on final digit, sharp
-            reel.style.filter = 'none';
-            reel.style.transform = `translateY(-${reel.scrollHeight - height}px)`;
-            setTimeout(()=>{
-              el.innerHTML = finalValue;
-              resolve();
-            },80);
-          }
-        }
-        requestAnimationFrame(frame);
-      });
-    }
-
-    function renderSlotBar(day, month, year, onDone) {
-      const bar = document.getElementById('slotMachineBar');
-      bar.innerHTML = '';
-      let dayDigits = splitDigits(day,2);
-      let monthDigits = splitDigits(month,2);
-      let yearDigits = splitDigits(year,4);
-      function renderGroup(digits, groupId) {
-        let group = document.createElement('div');
-        group.className = 'slot-digit-group';
-        digits.forEach((digit,i)=>{
-          let slot = document.createElement('div');
-          slot.className = 'slot-container-gold';
-          let inner = document.createElement('div');
-          inner.className = 'slot-inner-gold';
-          inner.id = `slot-${groupId}-${i}`;
-          inner.textContent = '–';
-          slot.appendChild(inner);
-          group.appendChild(slot);
-        });
-        return group;
-      }
-      bar.appendChild(renderGroup(dayDigits,'day'));
-      let sep1 = document.createElement('div'); sep1.className='slot-separator'; sep1.textContent='/';
-      bar.appendChild(sep1);
-      bar.appendChild(renderGroup(monthDigits,'month'));
-      let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
-      bar.appendChild(sep2);
-      bar.appendChild(renderGroup(yearDigits,'year'));
-      // Animate all digits simultaneously
-      let digitEls = [
-        ...dayDigits.map((_,i)=>document.getElementById(`slot-day-${i}`)),
-        ...monthDigits.map((_,i)=>document.getElementById(`slot-month-${i}`)),
-        ...yearDigits.map((_,i)=>document.getElementById(`slot-year-${i}`))
-      ];
-      let digitVals = [...dayDigits, ...monthDigits, ...yearDigits];
-      Promise.all(digitEls.map((el,idx)=>animateDigitSlotReel(el, digitVals[idx])))
-        .then(onDone);
-    }
-
-    // --- Main logic ---
-    let currentQuestion = null;
-    let currentDayName = "";
-    let thaiYear = false;
-    let hideSlotsTimeout = null;
-    let answerShown = false;
-    let questionTimeout = null;
-
-    function showSettings() {
-      document.getElementById('settingsBox').style.display = "";
-      document.getElementById('lotteryRow').style.display = "none";
-      document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('bottomControls').style.display = "none";
-      document.getElementById('calendarShowAnswerBtn').style.display = "none";
-      document.getElementById('calendarNextBtn').style.display = "none";
-      clearTimeout(hideSlotsTimeout);
-      clearTimeout(questionTimeout);
-      answerShown = false;
-    }
-
-    function startGetReady(onDone) {
-      const overlay = document.getElementById('getreadyOverlay');
-      const text = document.getElementById('getreadyText');
-      const count = document.getElementById('getreadyCount');
-      overlay.style.display = 'flex';
-      text.style.display = '';
-      count.style.display = '';
-      text.textContent = 'Get Ready';
-      count.textContent = '';
-      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
-      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
-      setTimeout(() => { count.textContent = '2'; }, 1850);
-      setTimeout(() => { count.textContent = '1'; }, 2850);
-      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        count.textContent = '';
-        onDone();
-      }, 4950);
-    }
-
-    function startGame() {
-      document.getElementById('settingsBox').style.display = "none";
-      document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('lotteryRow').style.display = "";
-      document.getElementById('bottomControls').style.display = "";
-      document.getElementById('calendarShowAnswerBtn').style.display = "none";
-      document.getElementById('calendarNextBtn').style.display = "none";
-      thaiYear = document.getElementById('thaiYearToggle').checked;
-      answerShown = false;
-      clearTimeout(questionTimeout);
-      startGetReady(() => {
-        let q = randomDate();
-        currentQuestion = q;
-        currentDayName = getDayOfWeek(q.year, q.month, q.day);
-        let yearDisplay = thaiYear ? (q.year+543) : q.year;
-        // Start roulette sound and reel spin
-        let rouletteSound = document.getElementById('rouletteSound');
-        let beepSound = document.getElementById('beepSound');
-        rouletteSound.currentTime = 0;
-        rouletteSound.play();
-        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
-          // After 3s, play beep, show button, start timer to hide
-          setTimeout(()=>{
-            beepSound.currentTime = 0; beepSound.play();
-            document.getElementById('calendarShowAnswerBtn').style.display = "";
-            // After user speed seconds, hide question
-            const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-            questionTimeout = setTimeout(()=>{
-              document.getElementById('lotteryRow').style.display = "none";
-              if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
-            }, speed*1000);
-          }, 3000); // After roulette
-        });
-      });
     }
 
     function createCalendar(year, month, day) {
@@ -361,8 +187,190 @@
       return html;
     }
 
+    // --- Main Logic ---
+    let currentQuestion = null;
+    let currentDayName = "";
+    let thaiYear = false;
+    let hideSlotsTimeout = null;
+    let answerShown = false;
+    let slotAnimationInProgress = false;
+    let timerTimeout = null;
+
+    function showSettings() {
+      document.getElementById('settingsBox').style.display = "";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('bottomControls').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      clearTimeout(hideSlotsTimeout);
+      clearTimeout(timerTimeout);
+      answerShown = false;
+    }
+
+    function startGetReady(onDone) {
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = 'Get Ready';
+      count.textContent = '';
+      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
+      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
+      setTimeout(() => { count.textContent = '2'; }, 1850);
+      setTimeout(() => { count.textContent = '1'; }, 2850);
+      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        onDone();
+      }, 4950);
+    }
+
+    function pad2(n) { return n.toString().padStart(2,'0'); }
+    function pad4(n) { return n.toString().padStart(4,'0'); }
+    function splitDigits(n, padLen=2) {
+      let s = n.toString().padStart(padLen,'0');
+      return s.split('');
+    }
+
+    // True slot-machine style reel animation
+    function animateDigitSlot(el, finalValue, duration=3000) {
+      return new Promise(resolve => {
+        el.innerHTML = '';
+        el.classList.add('reeling');
+        // The stack: 30 random digits, then the final digit
+        let stack = document.createElement('div');
+        stack.className = "digit-stack";
+        let stackDigits = [];
+        for (let i = 0; i < 30; i++) {
+          let d = document.createElement('span');
+          d.textContent = Math.floor(Math.random()*10);
+          d.style.height = "1.19em";
+          d.style.fontSize = "inherit";
+          d.style.fontWeight = "inherit";
+          d.style.display = "block";
+          stack.appendChild(d);
+          stackDigits.push(d);
+        }
+        let last = document.createElement('span');
+        last.textContent = finalValue;
+        last.style.height = "1.19em";
+        last.style.fontSize = "inherit";
+        last.style.fontWeight = "inherit";
+        last.style.display = "block";
+        stack.appendChild(last);
+        el.appendChild(stack);
+
+        // Reel up animation: easing out, matches roulettewheel.wav
+        let start = null;
+        let slotHeight = el.offsetHeight || 44;
+        let totalHeight = stack.scrollHeight - slotHeight;
+        function easeOutCubic(t) { return 1 - Math.pow(1 - t, 3); }
+        function step(ts) {
+          if (!start) start = ts;
+          let progress = Math.min((ts - start) / duration, 1);
+          let ease = easeOutCubic(progress);
+          let offset = totalHeight * ease;
+          stack.style.transform = `translateY(-${offset}px)`;
+          // As progress nears 1, reduce blur
+          stack.style.filter = `blur(${2.7 - 2.5*ease}px) brightness(${1.09 - 0.08*ease})`;
+          if (progress < 1) {
+            requestAnimationFrame(step);
+          } else {
+            el.innerHTML = finalValue;
+            el.classList.remove('reeling');
+            resolve();
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    function renderSlotBar(day, month, year, onDone) {
+      const bar = document.getElementById('slotMachineBar');
+      bar.innerHTML = '';
+      let dayDigits = splitDigits(day,2);
+      let monthDigits = splitDigits(month,2);
+      let yearDigits = splitDigits(year,4);
+      function renderGroup(digits, groupId) {
+        let group = document.createElement('div');
+        group.className = 'slot-digit-group';
+        digits.forEach((digit,i)=>{
+          let slot = document.createElement('div');
+          slot.className = 'slot-container-gold';
+          let inner = document.createElement('div');
+          inner.className = 'slot-inner-gold';
+          inner.id = `slot-${groupId}-${i}`;
+          inner.textContent = '–';
+          slot.appendChild(inner);
+          group.appendChild(slot);
+        });
+        return group;
+      }
+      bar.appendChild(renderGroup(dayDigits,'day'));
+      let sep1 = document.createElement('div'); sep1.className='slot-separator'; sep1.textContent='/';
+      bar.appendChild(sep1);
+      bar.appendChild(renderGroup(monthDigits,'month'));
+      let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
+      bar.appendChild(sep2);
+      bar.appendChild(renderGroup(yearDigits,'year'));
+      // Animate all digits at the same time (all reels up for 3s)
+      slotAnimationInProgress = true;
+      document.getElementById('rouletteSound').currentTime = 0;
+      document.getElementById('rouletteSound').play();
+      let promises = [];
+      dayDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-day-${i}`);
+        promises.push(animateDigitSlot(el, digit, 3000));
+      });
+      monthDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-month-${i}`);
+        promises.push(animateDigitSlot(el, digit, 3000));
+      });
+      yearDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-year-${i}`);
+        promises.push(animateDigitSlot(el, digit, 3000));
+      });
+      Promise.all(promises).then(()=>{
+        slotAnimationInProgress = false;
+        document.getElementById('beepSound').currentTime = 0;
+        document.getElementById('beepSound').play();
+        if (onDone) onDone();
+      });
+    }
+
+    function startGame() {
+      document.getElementById('settingsBox').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('lotteryRow').style.display = "";
+      document.getElementById('bottomControls').style.display = "";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      thaiYear = document.getElementById('thaiYearToggle').checked;
+      answerShown = false;
+      startGetReady(() => {
+        let q = randomDate();
+        currentQuestion = q;
+        currentDayName = getDayOfWeek(q.year, q.month, q.day);
+        let yearDisplay = thaiYear ? (q.year+543) : q.year;
+        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+          document.getElementById('calendarShowAnswerBtn').style.display = "";
+          // Only after slot reel+beep, start user timer (speed setting)
+          const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+          clearTimeout(timerTimeout);
+          timerTimeout = setTimeout(()=>{
+            document.getElementById('lotteryRow').style.display = "none";
+            if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
+          }, speed*1000);
+        });
+      });
+    }
+
     function showAnswer() {
-      if (answerShown) return;
+      if (answerShown || slotAnimationInProgress) return;
       answerShown = true;
       document.getElementById('lotteryRow').style.display = "none";
       const q = currentQuestion;
@@ -389,9 +397,9 @@
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
       answerShown = false;
-      clearTimeout(questionTimeout);
       startGame();
     }
+
     // --- Events
     document.getElementById('calendarStartBtn').onclick = startGame;
     document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
