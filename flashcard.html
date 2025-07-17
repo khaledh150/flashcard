@@ -15,43 +15,43 @@
       box-sizing: border-box;
       user-select: none;
     }
-    body {
-      height: 100vh;
-      width: 100vw;
-      position: relative;
-      overflow: hidden;
-    }
+    body { position: relative; overflow: hidden;}
     .logo-fixed {
-      position: fixed;
-      top: 2vw;
-      left: 2vw;
-      z-index: 100;
-      background: none;
-      border-radius: 2vw;
-      width: 12vw;
-      min-width: 66px;
-      max-width: 120px;
-      height: auto;
-      pointer-events: none;
-      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
+      position: fixed; top: 2vw; left: 2vw; z-index: 100;
+      background: none; border-radius: 2vw;
+      width: 12vw; min-width: 66px; max-width: 120px; height: auto;
+      pointer-events: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);
     }
-    .logo-wk {
+    .back-btn {
       position: fixed;
-      top: 2vw;
-      right: 2vw;
-      z-index: 100;
+      top: calc(2vw + 7vw + 18px); /* 7vw for logo, +18px for gap */
+      left: 2vw;
+      z-index: 101;
       background: none;
-      border-radius: 2vw;
-      width: 12vw;
-      min-width: 66px;
-      max-width: 120px;
-      height: auto;
-      pointer-events: none;
-      box-shadow: 0 2px 7px rgba(80,180,255,0.07);
+      border: none;
+      cursor: pointer;
+      display: none;
+      padding: 0.3em 0.4em;
+      border-radius: 100px;
+      transition: background 0.15s;
+    }
+    .back-btn:hover { background: #ede8fa; }
+    .back-icon {
+      width: 37px; height: 37px; display: block;
+      color: #a566e6;
+    }
+    .show-back #firstPage + .back-btn { display: block; }
+    .logo-wk {
+      position: fixed; top: 2vw; right: 2vw; z-index: 100;
+      background: none; border-radius: 2vw;
+      width: 12vw; min-width: 66px; max-width: 120px; height: auto;
+      pointer-events: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);
       display: block;
     }
     @media (max-width: 700px) {
       .logo-fixed, .logo-wk { width: 21vw; min-width: 48px; max-width: 68px;}
+      .back-icon { width: 28px; height: 28px;}
+      .back-btn { top: calc(2vw + 21vw + 9px);}
     }
     .mascot-box {
       position: fixed;
@@ -60,118 +60,57 @@
       padding: 1vw 0.6vw;
       pointer-events: none;
       user-select: none;
-      width: auto;
-      height: auto;
       min-width: 48px;
     }
     #nadamascot {
-      width: 11vw;
-      min-width: 44px;
-      max-width: 76px;
-      height: auto;
-      pointer-events: none;
-      user-select: none;
+      width: 11vw; min-width: 44px; max-width: 76px; height: auto;
+      pointer-events: none; user-select: none;
       animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite;
       filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14));
     }
-    @keyframes mascotFloat {
-      0% { transform: translateY(0) scale(1);}
-      40% { transform: translateY(-10px) scale(1.03);}
-      60% { transform: translateY(-16px) scale(1.02);}
-      100% { transform: translateY(0) scale(1);}
-    }
-    @keyframes mascotWave {
-      0%, 100% { transform: rotate(-2deg);}
-      10% { transform: rotate(3deg);}
-      20% { transform: rotate(-3deg);}
-      30% { transform: rotate(2deg);}
-      40% { transform: rotate(-2deg);}
-      50% { transform: rotate(2deg);}
-      60% { transform: rotate(-2deg);}
-      70% { transform: rotate(2deg);}
-      80% { transform: rotate(-2deg);}
-      90% { transform: rotate(1deg);}
-    }
+    @keyframes mascotFloat {0%{transform:translateY(0)scale(1);}40%{transform:translateY(-10px)scale(1.03);}60%{transform:translateY(-16px)scale(1.02);}100%{transform:translateY(0)scale(1);}}
+    @keyframes mascotWave {0%,100%{transform:rotate(-2deg);}10%{transform:rotate(3deg);}20%{transform:rotate(-3deg);}30%{transform:rotate(2deg);}40%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}60%{transform:rotate(-2deg);}70%{transform:rotate(2deg);}80%{transform:rotate(-2deg);}90%{transform:rotate(1deg);}}
     .main-content {
-      height: 100vh;
-      width: 100vw;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      position: relative;
-      z-index: 1;
+      height: 100vh; width: 100vw;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; position: relative; z-index: 1;
     }
     .main-centerer {
-      flex: 1 1 0%;
-      min-height: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
+      flex: 1 1 0%; min-height: 0;
+      width: 100vw; height: 100vh;
+      display: flex; align-items: center; justify-content: center; position: relative;
     }
     .number-wrapper {
-      flex: 1;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      position: relative;
+      flex: 1; width: 100vw; height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center; position: relative;
       pointer-events: none;
     }
     #number, #answer {
-      text-align: center;
-      width: 98vw;
-      font-weight: bold;
-      line-height: 1.15;
-      letter-spacing: 2vw;
-      border-radius: 2vw;
+      text-align: center; width: 98vw; font-weight: bold;
+      line-height: 1.15; letter-spacing: 2vw; border-radius: 2vw;
       transition: color 0.15s, background 0.3s;
-      box-sizing: border-box;
-      padding: 2vw 0 2vw 0;
+      box-sizing: border-box; padding: 2vw 0 2vw 0;
       font-size: clamp(60px, 19vw, 330px);
     }
     #number {
-      color: #3a21b3;
-      background: none !important;
+      color: #3a21b3; background: none !important;
       box-shadow: none !important;
       text-shadow: 0 8px 24px rgba(120,170,255,0.07);
-      min-height: 1.2em;
-      margin-bottom: 1vw;
-      border-radius: 3vw;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      pointer-events: none;
+      min-height: 1.2em; margin-bottom: 1vw; border-radius: 3vw;
+      display: flex; justify-content: center; align-items: center;
+      position: relative; pointer-events: none;
     }
-    .with-equal {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: inherit;
-    }
+    .with-equal {display:flex;align-items:center;justify-content:center;font-size:inherit;}
     .equal-sign {
-      font-size: 1em;
-      color: #ff0000;
-      margin-left: 2vw;
-      font-weight: 900;
-      animation: pop 0.3s;
-      line-height: 1;
+      font-size: 1em; color: #ff0000;
+      margin-left: 2vw; font-weight: 900;
+      animation: pop 0.3s; line-height: 1;
       display: inline-block;
     }
-    @keyframes pop {
-      0% { transform: scale(0.7); opacity: 0.4;}
-      70% { transform: scale(1.3); opacity: 1;}
-      100% { transform: scale(1); opacity: 1;}
-    }
+    @keyframes pop {0%{transform:scale(0.7);opacity:0.4;}70%{transform:scale(1.3);opacity:1;}100%{transform:scale(1);opacity:1;}}
     #answer {
-      color: #ff0000;
-      background: none !important;
+      color: #ff0000; background: none !important;
       box-shadow: none !important;
       display: none;
       position: absolute;
@@ -180,70 +119,34 @@
       border-radius: 3vw;
       z-index: 2;
       font-size: clamp(90px, 20vw, 380px);
-      font-weight: bold;
-      pointer-events: none;
+      font-weight: bold; pointer-events: none;
     }
     #equation {
-      display: none;
-      position: absolute;
-      left: 0; right: 0; top: 48%;
+      display: none; position: absolute; left: 0; right: 0; top: 48%;
       transform: translateY(-50%);
       font-size: clamp(18px, 6vw, 56px);
-      font-family: inherit;
-      color: #3b15a3;
-      font-weight: bold;
-      letter-spacing: 1vw;
-      z-index: 3;
-      opacity: 0;
+      font-family: inherit; color: #3b15a3; font-weight: bold;
+      letter-spacing: 1vw; z-index: 3; opacity: 0;
       animation: eq-pop 0.6s cubic-bezier(.27,1.3,.28,.99) forwards;
-      text-align: center;
-      pointer-events: none;
-      line-height: 1.24;
+      text-align: center; pointer-events: none; line-height: 1.24;
     }
-    @keyframes eq-pop {
-      0% { transform: scale(0.8) translateY(-50%); opacity: 0; }
-      60% { transform: scale(1.12) translateY(-50%); opacity: 1; }
-      100% { transform: scale(1) translateY(-50%); opacity: 1; }
-    }
+    @keyframes eq-pop {0%{transform:scale(0.8)translateY(-50%);opacity:0;}60%{transform:scale(1.12)translateY(-50%);opacity:1;}100%{transform:scale(1)translateY(-50%);opacity:1;}}
     .controls {
-      position: fixed;
-      left: 0; right: 0; bottom: 2.5vw;
-      width: 100vw;
-      z-index: 300;
-      background: none !important;
-      box-shadow: none !important;
-      display: flex;
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
-      gap: 2vw;
-      pointer-events: none;
+      position: fixed; left: 0; right: 0; bottom: 2.5vw;
+      width: 100vw; z-index: 300;
+      background: none !important; box-shadow: none !important;
+      display: flex; flex-direction: row; justify-content: center;
+      align-items: center; gap: 2vw; pointer-events: none;
     }
-    .button-group {
-      display: flex;
-      flex-direction: row;
-      gap: 2vw;
-      justify-content: center;
-      align-items: center;
-      pointer-events: all;
-      margin: 0;
-    }
+    .button-group {display: flex;flex-direction: row;gap: 2vw;justify-content: center;align-items: center;pointer-events: all;margin: 0;}
     .action-btn {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white;
-      border: none;
-      padding: 0.5em 2em;
-      border-radius: 3em;
-      font-size: 1.25em;
-      font-family: inherit;
-      font-weight: 700;
+      color: white; border: none; padding: 0.5em 2em;
+      border-radius: 3em; font-size: 1.25em;
+      font-family: inherit; font-weight: 700;
       box-shadow: 0 2px 18px rgba(90,180,255,0.13);
-      cursor: pointer;
-      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
-      outline: none;
-      letter-spacing: 0.04em;
-      min-width: 88px;
-      margin: 0;
+      cursor: pointer; transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
+      outline: none; letter-spacing: 0.04em; min-width: 88px; margin: 0;
     }
     .action-btn:active {
       background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
@@ -262,154 +165,94 @@
       .action-btn { font-size: 1em; min-width: 64px; padding: 0.35em 1.1em;}
     }
     #getreadyOverlay {
-      position: fixed;
-      left: 0; right: 0; top: 0; bottom: 0;
-      background: rgba(255,255,255,0.88);
-      z-index: 999;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      font-size: clamp(2.3em, 8vw, 6.6em);
-      font-family: inherit;
-      font-weight: bold;
-      color: #6747cc;
-      text-align: center;
-      letter-spacing: 0.03em;
-      transition: background 0.33s;
+      position: fixed; left: 0; right: 0; top: 0; bottom: 0;
+      background: rgba(255,255,255,0.88); z-index: 999;
+      display: none; flex-direction: column; justify-content: center; align-items: center;
+      font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold;
+      color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s;
       user-select: none;
     }
     .getready-text {
-      color: #4881ff;
-      margin-bottom: 0.2em;
-      font-size: 1.1em;
-      width: 100%;
-      text-align: center;
-      font-family: inherit;
-      font-weight: bold;
-      background: none;
+      color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%;
+      text-align: center; font-family: inherit; font-weight: bold; background: none;
     }
     .getready-count {
-      color: #6747cc;
-      font-size: 1.3em;
-      margin: 0.2em 0;
-      width: 100%;
-      text-align: center;
-      font-family: inherit;
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      background: none;
+      color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%;
+      text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em; background: none;
     }
     ::-webkit-scrollbar { width: 0 !important }
     body { -ms-overflow-style: none; scrollbar-width: none; }
     /* Settings panel and controls */
     #firstPage label {
-      font-size: 1.25em;
-      margin: 0.22em 0.4em;
-      color: #273c78;
-      border-radius: 0;
-      border: none;
-      padding: 0;
-      font-family: inherit;
-      font-weight: 700;
-      background: none !important;
+      font-size: 1.25em; margin: 0.22em 0.4em; color: #273c78; border-radius: 0; border: none; padding: 0; font-family: inherit; font-weight: 700; background: none !important;
     }
     #firstPage select, #firstPage input[type="number"] {
-      border-radius: 2em;
-      border: none;
-      padding: 0.18em 0.9em;
-      background: #e9f4fd;
-      font-family: inherit;
-      font-weight: 700;
+      border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700;
     }
     #firstPage input[type="number"] { width: 3.5em; text-align: center; }
     #firstPage select { padding: 0.2em 1em;}
     #firstPage .radio-group label {
-      font-size: 1.12em;
-      color: #185bff;
-      margin-right: 1em;
-      margin-left: 0.5em;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      background: #e2e8fc;
-      border-radius: 2em;
-      padding: 0.22em 0.75em;
+      font-size: 1.12em; color: #185bff; margin-right: 1em; margin-left: 0.5em;
+      font-weight: 700; letter-spacing: 0.01em; background: #e2e8fc; border-radius: 2em; padding: 0.22em 0.75em;
     }
     #firstPage .radio-group input[type="radio"] { margin-right: 0.3em;}
     #firstPage .options-group label {
-      font-size: 1.04em;
-      color: #2c37b7;
-      margin-right: 1em;
-      margin-left: 0.3em;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      background: #e2e8fc;
-      border-radius: 2em;
-      padding: 0.21em 0.7em;
-      margin-bottom: 0.4em;
-      display: inline-block;
+      font-size: 1.04em; color: #2c37b7; margin-right: 1em; margin-left: 0.3em;
+      font-weight: 700; letter-spacing: 0.01em; background: #e2e8fc; border-radius: 2em; padding: 0.21em 0.7em; margin-bottom: 0.4em; display: inline-block;
     }
     #firstPage .options-group input[type="radio"] { margin-right: 0.3em;}
     #firstPage button#toggleButton {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white;
-      border: none;
-      border-radius: 3em;
-      font-size: 1.25em;
-      font-family: inherit;
-      font-weight: 700;
-      padding: 0.7em 2.8em;
-      margin-top: 1.1em;
-      cursor: pointer;
-      transition: background 0.14s;
-      box-shadow: 0 2px 16px rgba(90,180,255,0.11);
-      letter-spacing: 0.04em;
+      color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700;
+      padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer;
+      transition: background 0.14s; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em;
     }
-    #firstPage button#toggleButton:active {
-      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
-    }
-    #firstPage { width: 100vw; text-align: center; margin-top: 12vh; margin-bottom: 0; }
+    #firstPage button#toggleButton:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
+    #firstPage { width: 100vw; text-align: center; margin-top: 12vh; margin-bottom: 0;}
     .main-centerer { flex: 1 1 0%; min-height: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;}
   </style>
 </head>
 <body>
   <img src="nada.png" alt="Logo" class="logo-fixed">
+  <button class="back-btn" id="backBtn" title="Back to Menu" tabindex="0">
+    <svg class="back-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="22" fill="#ede8fa"/><path d="M25.3 31.3a1 1 0 0 1-1.4 0l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 1.4L19.4 22l5.9 5.9a1 1 0 0 1 0 1.4z" fill="#9f5af7"/></svg>
+  </button>
   <img src="wonderkids.png" alt="" class="logo-wk">
   <div class="main-content">
     <div class="main-centerer">
       <div id="firstPage">
-        <label for="speedInput">Speed</label>
+        <label for="speedInput" data-i18n="speed"></label>
         <input type="number" id="speedInput" value="1.0" min="0.3" max="5.0" step="0.1" />
-        <label for="countInput">Num/set</label>
+        <label for="countInput" data-i18n="numset"></label>
         <input type="number" id="countInput" value="5" min="1" max="20"/>
-        <label for="operation">Operation</label>
+        <label for="operation" data-i18n="operation"></label>
         <select id="operation">
-          <option value="addsub" selected>Add / Subtract</option>
-          <option value="multi">Multiply (×)</option>
-          <option value="divide">Divide (÷)</option>
+          <option value="addsub" selected data-i18n="addsub"></option>
+          <option value="multi" data-i18n="multi"></option>
+          <option value="divide" data-i18n="divide"></option>
         </select>
         <span class="radio-group" id="digitTypeGroup" style="display:inline-flex;">
           <label style="margin:0; color:#185bff;">
-            <input type="radio" name="digitType" value="single" checked>Single Digit
+            <input type="radio" name="digitType" value="single" checked data-i18n="single_digit"> <span data-i18n="single_digit"></span>
           </label>
           <label style="margin:0; color:#185bff;">
-            <input type="radio" name="digitType" value="double">2 Digits
+            <input type="radio" name="digitType" value="double"> <span data-i18n="double_digit"></span>
           </label>
         </span>
         <!-- Multiplication options -->
         <div class="options-group" id="multiOptions" style="display:none; margin:1.2em 0 0.6em 0;">
-          <label><input type="radio" name="multiType" value="2x1" checked> 2 digit × 1 digit</label>
-          <label><input type="radio" name="multiType" value="2x2"> 2 digit × 2 digit</label>
-          <label><input type="radio" name="multiType" value="3x2"> 3 digit × 2 digit</label>
+          <label><input type="radio" name="multiType" value="2x1" checked> <span data-i18n="2x1"></span></label>
+          <label><input type="radio" name="multiType" value="2x2"> <span data-i18n="2x2"></span></label>
+          <label><input type="radio" name="multiType" value="3x2"> <span data-i18n="3x2"></span></label>
         </div>
         <!-- Division options -->
         <div class="options-group" id="divOptions" style="display:none; margin:1.2em 0 0.6em 0;">
-          <label><input type="radio" name="divType" value="2d1" checked> 2 digit ÷ 1 digit</label>
-          <label><input type="radio" name="divType" value="3d2"> 3 digit ÷ 2 digit</label>
-          <label><input type="radio" name="divType" value="4d2"> 4 digit ÷ 2 digit</label>
+          <label><input type="radio" name="divType" value="2d1" checked> <span data-i18n="2d1"></span></label>
+          <label><input type="radio" name="divType" value="3d2"> <span data-i18n="3d2"></span></label>
+          <label><input type="radio" name="divType" value="4d2"> <span data-i18n="4d2"></span></label>
         </div>
         <br>
-        <button id="toggleButton">START</button>
+        <button id="toggleButton" data-i18n="start"></button>
       </div>
       <div id="secondPage" style="display: none; width:100%;">
         <div class="number-wrapper">
@@ -422,9 +265,9 @@
   </div>
   <div class="controls" id="bottomControls" style="display: none;">
     <div class="button-group">
-      <button id="nextButton" class="action-btn">Next Set</button>
-      <button id="returnButton" class="action-btn">Back</button>
-      <button id="showAnswerButton" class="action-btn" style="display: none;">Show Answer</button>
+      <button id="nextButton" class="action-btn" data-i18n="next_set"></button>
+      <button id="returnButton" class="action-btn" data-i18n="back"></button>
+      <button id="showAnswerButton" class="action-btn" style="display: none;" data-i18n="show_answer"></button>
     </div>
   </div>
   <div class="mascot-box">
@@ -436,10 +279,54 @@
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
   <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
   <div id="getreadyOverlay" class="getready-overlay">
-    <div class="getready-text" id="getreadyText">Get Ready</div>
+    <div class="getready-text" id="getreadyText"></div>
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
+    // Language state
+    const translations = {
+      speed:      {en:"Speed",th:"ความเร็ว"},
+      numset:     {en:"Num/set",th:"จำนวน/ชุด"},
+      operation:  {en:"Operation",th:"ประเภท"},
+      addsub:     {en:"Add / Subtract",th:"บวก / ลบ"},
+      multi:      {en:"Multiply (×)",th:"คูณ (×)"},
+      divide:     {en:"Divide (÷)",th:"หาร (÷)"},
+      single_digit:{en:"Single Digit",th:"หลักเดียว"},
+      double_digit:{en:"2 Digits",th:"2 หลัก"},
+      "2x1":      {en:"2 digit × 1 digit",th:"2 หลัก × 1 หลัก"},
+      "2x2":      {en:"2 digit × 2 digit",th:"2 หลัก × 2 หลัก"},
+      "3x2":      {en:"3 digit × 2 digit",th:"3 หลัก × 2 หลัก"},
+      "2d1":      {en:"2 digit ÷ 1 digit",th:"2 หลัก ÷ 1 หลัก"},
+      "3d2":      {en:"3 digit ÷ 2 digit",th:"3 หลัก ÷ 2 หลัก"},
+      "4d2":      {en:"4 digit ÷ 2 digit",th:"4 หลัก ÷ 2 หลัก"},
+      start:      {en:"START",th:"เริ่ม"},
+      next_set:   {en:"Next Set",th:"ชุดถัดไป"},
+      back:       {en:"Back",th:"กลับ"},
+      show_answer:{en:"Show Answer",th:"แสดงคำตอบ"},
+      get_ready:  {en:"Get Ready",th:"เตรียมตัว"},
+      go:         {en:"Go!",th:"ไป!"},
+      "3":        {en:"3",th:"3"},
+      "2":        {en:"2",th:"2"},
+      "1":        {en:"1",th:"1"}
+    };
+    let lang = localStorage.getItem('lang') || 'en';
+    function applyLang() {
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(translations[key]) el.textContent = translations[key][lang];
+      });
+      // Overlay (for dynamic text)
+      if(document.getElementById('getreadyText')) {
+        document.getElementById('getreadyText').textContent = translations["get_ready"][lang];
+      }
+    }
+    function setLang(l) { lang=l; localStorage.setItem('lang',lang); applyLang(); }
+    // Listen for index page sending a language change event (optional)
+    window.addEventListener('storage',e=>{
+      if(e.key==='lang') { lang=localStorage.getItem('lang')||'en'; applyLang(); }
+    });
+    applyLang();
+
     // Show/hide extra options and disable num/set for multi/div
     const operationSelect = document.getElementById('operation');
     const multiOptions = document.getElementById('multiOptions');
@@ -673,13 +560,13 @@
       overlay.style.display = 'flex';
       text.style.display = '';
       count.style.display = '';
-      text.textContent = 'Get Ready';
+      text.textContent = translations["get_ready"][lang];
       count.textContent = '';
       playGetReadySound();
-      getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850));
-      getReadyTimeouts.push(setTimeout(() => { count.textContent = '2'; }, 1850));
-      getReadyTimeouts.push(setTimeout(() => { count.textContent = '1'; }, 2850));
-      getReadyTimeouts.push(setTimeout(() => { count.textContent = 'Go!'; }, 3850));
+      getReadyTimeouts.push(setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = translations["3"][lang]; }, 850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = translations["2"][lang]; }, 1850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = translations["1"][lang]; }, 2850));
+      getReadyTimeouts.push(setTimeout(() => { count.textContent = translations["go"][lang]; }, 3850));
       getReadyTimeouts.push(setTimeout(() => {
         overlay.style.display = 'none';
         count.textContent = '';
@@ -692,6 +579,7 @@
       const firstPage = document.getElementById('firstPage');
       const secondPage = document.getElementById('secondPage');
       const bottomControls = document.getElementById('bottomControls');
+      document.body.classList.toggle('show-back', firstPage.style.display !== 'none');
       const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
       numbersToShow = parseInt(document.getElementById('countInput').value);
       mode = document.getElementById('operation').value;
@@ -724,6 +612,7 @@
         bottomControls.style.display = 'none';
         clearInterval(countdownInterval);
       }
+      document.body.classList.toggle('show-back', firstPage.style.display !== 'none');
     }
 
     function nextSet() {
@@ -761,6 +650,20 @@
     document.addEventListener('keydown', function (event) {
       if (waitingForEnter && event.key === 'Enter') showAnswer();
     });
+    // Back to index from settings
+    document.getElementById('backBtn').addEventListener('click',function(){
+      window.location.href="index.html";
+    });
+
+    // Show/hide back icon only on settings
+    function updateBackIcon() {
+      const firstPage = document.getElementById('firstPage');
+      document.getElementById('backBtn').style.display = (firstPage.style.display !== 'none') ? 'block' : 'none';
+    }
+    window.addEventListener('DOMContentLoaded',updateBackIcon);
+    document.getElementById('toggleButton').addEventListener('click',updateBackIcon);
+    document.getElementById('returnButton').addEventListener('click',updateBackIcon);
+    applyLang();
   </script>
 </body>
 </html>
