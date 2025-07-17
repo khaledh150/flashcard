@@ -6,44 +6,32 @@
   <title>Nada Calendar Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
   <style>
-    html, body {
-      margin: 0; padding: 0; height: 100%;
-      background: #fff;
-      font-family: 'Quicksand', 'Nunito', Arial, sans-serif;
-      overflow: hidden;
-      width: 100vw; height: 100vh;
-      box-sizing: border-box;
-      user-select: none;
-    }
+    html, body { margin: 0; padding: 0; height: 100%; background: #fff; font-family: 'Quicksand', 'Nunito', Arial, sans-serif; overflow: hidden; width: 100vw; height: 100vh; box-sizing: border-box; user-select: none;}
     body { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
     .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
     .logo-wk { position: fixed; top: 2vw; right: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
-    .back-logo-btn {
-      display: none;
-      position: fixed;
-      top: 8vw;
-      left: 2vw;
-      z-index: 110;
-      width: 4vw; min-width: 38px; max-width: 44px; height: 4vw; min-height: 38px; max-height: 44px;
-      border-radius: 2vw; background: #a86aff; box-shadow: 0 3px 12px #d3b0ff22;
-      cursor: pointer; align-items: center; justify-content: center; border: none;
-      transition: background 0.17s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .back-logo-btn svg { width: 56%; height: 56%; display: block; fill: #fff;}
-    .show-back .back-logo-btn { display: flex; }
     .mascot-box { position: fixed; left: 0; bottom: 0; z-index: 30; padding: 1vw 0.6vw; pointer-events: none; user-select: none; min-width: 48px;}
-    #nadamascot { width: 11vw; min-width: 44px; max-width: 76px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
+    #nadamascot { width: 11vw; min-width: 44px; max-width: 88px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
     @keyframes mascotFloat { 0% { transform: translateY(0) scale(1);} 40% { transform: translateY(-10px) scale(1.03);} 60% { transform: translateY(-16px) scale(1.02);} 100% { transform: translateY(0) scale(1);} }
     @keyframes mascotWave { 0%, 100% { transform: rotate(-2deg);} 10% { transform: rotate(3deg);} 20% { transform: rotate(-3deg);} 30% { transform: rotate(2deg);} 40% { transform: rotate(-2deg);} 50% { transform: rotate(2deg);} 60% { transform: rotate(-2deg);} 70% { transform: rotate(2deg);} 80% { transform: rotate(-2deg);} 90% { transform: rotate(1deg);} }
     .main-centerer { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;}
-    #settingsBox { margin-top: 11vh; width: 100vw; text-align: center; }
-    #settingsBox label { font-size: 1.27em; margin: 0.22em 0.4em; color: #273c78; font-weight: 700; background: none;}
-    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center;}
-    #settingsBox button { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;}
+    #settingsBox {
+      margin-top: 11vh; width: 100vw; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .speed-row { display: flex; align-items: center; justify-content: center; gap: 1em; margin-bottom: 0.9em;}
+    #settingsBox label { font-size: 2em; color: #273c78; font-weight: 700; background: none; display: inline-block; margin-right: 0.45em;}
+    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center; font-size: 1.7em; margin-left: 0.15em;}
+    #settingsBox button {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white; border: none; border-radius: 3em;
+      font-size: 1.6em; font-family: inherit; font-weight: 700; padding: 0.5em 2.5em;
+      margin-top: 1.2em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;
+      text-align: center;
+    }
     #settingsBox button:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
-    .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1em 0 0.2em 0; }
-    .toggle-label { margin: 0 0.4em; font-size: 1.1em; font-weight: 700; color: #6747cc;}
+    .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1.2em 0 0.4em 0; }
+    .toggle-label { margin: 0 0.4em; font-size: 1.25em; font-weight: 700; color: #6747cc;}
     .toggle-switch { appearance: none; width: 2.6em; height: 1.3em; background: #e6e6ef; border-radius: 1em; position: relative; outline: none; cursor: pointer; transition: background 0.2s;}
     .toggle-switch:checked { background: #6747cc; }
     .toggle-switch:before { content: ""; position: absolute; left: 0.22em; top: 0.17em; width: 0.95em; height: 0.95em; border-radius: 50%; background: #fff; transition: transform 0.22s;}
@@ -69,12 +57,17 @@
       text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
       transition: font-size 0.1s;
       letter-spacing: 0.06em;
+      position: relative;
+      will-change: transform, filter;
     }
     .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
     @media (max-width: 700px) {
       .slot-container-gold { width: 11vw; min-width: 18px; max-width: 30px; height: 13vw; min-height: 17px; max-height: 34px;}
       .slot-inner-gold { font-size: clamp(13px, 4vw, 19px);}
       .slot-machine-bar { gap: 0.7vw;}
+      #nadamascot { min-width: 60px; max-width: 120px; width: 18vw;}
+      #settingsBox label, #settingsBox button, #settingsBox input[type="number"] { font-size: 1.15em !important;}
+      .toggle-label { font-size: 1.05em; }
     }
     #calendarBox { display: none; justify-content: center; align-items: center; height: 72vh; width: 100vw; }
     #calendarView { margin: auto; width: 98vw; max-width: 720px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
@@ -99,6 +92,10 @@
     #calendarShowAnswerBtn:hover {
       background: linear-gradient(90deg,#9448db 0,#461196 100%);
     }
+    @media (max-width: 700px) {
+      .action-btn { font-size: 1em; min-width: 66px; padding: 0.32em 0.7em;}
+      .controls { bottom: 1.5vw; }
+    }
     #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
     .getready-text { color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
     .getready-count { color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
@@ -108,19 +105,19 @@
 <body>
   <img src="nada.png" alt="Logo" class="logo-fixed">
   <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
-  <button class="back-logo-btn" id="backLogoBtn" title="Back" type="button" tabindex="0" aria-label="Back">
-    <svg viewBox="0 0 44 44"><path d="M28 11L17 22l11 11" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-  </button>
   <div class="main-centerer">
     <div id="settingsBox">
-      <label for="calendarSpeedInput" data-i18n="speed">Speed</label>
-      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> <span data-i18n="seconds">seconds</span>
+      <div class="speed-row">
+        <label for="calendarSpeedInput" data-i18n="speed">Speed</label>
+        <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" />
+        <span data-i18n="seconds" style="margin-left:0.35em;">seconds</span>
+      </div>
       <div class="toggle-row">
         <span class="toggle-label" data-i18n="normal_year">Normal year</span>
         <input type="checkbox" id="thaiYearToggle" class="toggle-switch" />
         <span class="toggle-label" data-i18n="thai_year">Thai year</span>
       </div>
-      <br><button id="calendarStartBtn" data-i18n="start">START</button>
+      <button id="calendarStartBtn" data-i18n="start">START</button>
     </div>
     <div id="lotteryRow" style="display:none;">
       <div id="slotMachineBar" class="slot-machine-bar"></div>
@@ -140,48 +137,46 @@
     <img src="nadamascot.png" id="nadamascot" alt="Mascot">
   </div>
   <!-- Sounds -->
-  <audio id="tickSound" src="tick.wav" preload="auto"></audio>
+  <audio id="roulettewheel" src="roulettewheel.wav" preload="auto"></audio>
+  <audio id="arcadebeep" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
   <audio id="dingSound" src="ding.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
   <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
   <!-- Ready Overlay -->
   <div id="getreadyOverlay" class="getready-overlay">
-    <div class="getready-text" id="getreadyText"></div>
+    <div class="getready-text" id="getreadyText">Get Ready</div>
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
-    // ---- Language/Localization ----
+    // Localization
     const translations = {
-      speed:       {en:"Speed",th:"ความเร็ว"},
-      seconds:     {en:"seconds",th:"วินาที"},
-      normal_year: {en:"Normal year",th:"คริสต์ศักราช"},
-      thai_year:   {en:"Thai year",th:"พุทธศักราช"},
-      start:       {en:"START",th:"เริ่ม"},
-      back:        {en:"Back",th:"กลับ"},
-      show_answer: {en:"Show Answer",th:"แสดงคำตอบ"},
-      next_round:  {en:"Next Round",th:"รอบถัดไป"},
-      get_ready:   {en:"Get Ready",th:"เตรียมพร้อม"},
-      go:          {en:"Go!",th:"ไป!"},
-      months:      {en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-                    th: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']},
-      weekdays:    {en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-                    th:['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์']},
+      speed: {en: "Speed", th: "ความเร็ว"},
+      seconds: {en: "seconds", th: "วินาที"},
+      start: {en: "START", th: "เริ่ม"},
+      back: {en: "Back", th: "กลับ"},
+      show_answer: {en: "Show Answer", th: "ดูคำตอบ"},
+      next_round: {en: "Next Round", th: "รอบถัดไป"},
+      normal_year: {en: "Normal year", th: "ปี ค.ศ."},
+      thai_year: {en: "Thai year", th: "ปี พ.ศ."},
+      get_ready: {en: "Get Ready", th: "เตรียมพร้อม"},
+      go: {en:"Go!",th:"ไป!"},
+      months: {en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+        th: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']},
+      weekdays: {en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
+        th:['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์']},
       weekdaysShort:{en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-                    th:['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.']},
+        th:['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.']},
     };
     let lang = localStorage.getItem('lang')||'en';
     function applyLang() {
       document.documentElement.lang = lang;
       document.querySelectorAll('[data-i18n]').forEach(el=>{
         const key = el.getAttribute('data-i18n');
-        if (translations[key]) {
-          el.innerText = translations[key][lang];
-        }
+        if (translations[key]) el.innerText = translations[key][lang];
       });
     }
-    // ---- End Localization ----
 
-    // --- Slot machine / date ---
+    // Slot machine / date
     function randomDate() {
       const year = Math.floor(Math.random() * 25) + 2000;
       const month = Math.floor(Math.random() * 12) + 1;
@@ -201,29 +196,54 @@
     function monthName(month) {
       return translations.months[lang][month-1];
     }
-    function playTickSound() { try { document.getElementById('tickSound').currentTime = 0; document.getElementById('tickSound').play(); } catch (e) {} }
+    function playRouletteWheel() { try { let s = document.getElementById('roulettewheel'); s.currentTime=0; s.play(); } catch(e){} }
+    function playArcadeBeep() { try { let s = document.getElementById('arcadebeep'); s.currentTime=0; s.play(); } catch(e){} }
     function playDingSound() { try { document.getElementById('dingSound').currentTime = 0; document.getElementById('dingSound').play(); } catch (e) {} }
     function playGetReadySound() { try { document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play(); } catch (e) {} }
-    function playStartBuzz() { try { document.getElementById('startbuzz').currentTime = 0; document.getElementById('startbuzz').play(); } catch (e) {} }
-
-    function animateDigitSlot(el, finalValue, duration=1450) {
+    // True slot machine with vertical spin + blur
+    function animateDigitSlot(el, finalValue, duration=3000) {
       return new Promise(resolve => {
-        let tEnd = Date.now() + duration;
-        let lastShown = '';
-        function show(val) { el.textContent = val; }
-        let rolling = setInterval(()=>{
-          let r = Math.floor(Math.random()*10);
-          if(r!==lastShown) {
-            show(r);
-            playTickSound();
-            lastShown = r;
-          }
-        }, 55);
+        let nums = [];
+        for(let cycle=0;cycle<3;cycle++) for(let i=0;i<10;i++) nums.push(i);
+        nums.push(finalValue);
+        let idx = 0;
+        el.innerHTML = ''; // clear
+        let innerWheel = document.createElement('div');
+        innerWheel.style.position = "absolute";
+        innerWheel.style.top = "0";
+        innerWheel.style.left = "0";
+        innerWheel.style.right = "0";
+        innerWheel.style.transition = `transform ${duration}ms cubic-bezier(.19,1.01,.38,0.99)`;
+        innerWheel.style.willChange = "transform, filter";
+        for(let i=0;i<nums.length;i++) {
+          let ndiv = document.createElement('div');
+          ndiv.textContent = nums[i];
+          ndiv.style.height = "2.2em";
+          ndiv.style.display = "flex";
+          ndiv.style.justifyContent = "center";
+          ndiv.style.alignItems = "center";
+          ndiv.style.fontSize = "inherit";
+          ndiv.style.fontWeight = "900";
+          ndiv.style.filter = "blur(0px)";
+          ndiv.className = "slot-spin";
+          innerWheel.appendChild(ndiv);
+        }
+        el.appendChild(innerWheel);
         setTimeout(()=>{
-          clearInterval(rolling);
-          show(finalValue);
+          innerWheel.style.transform = `translateY(-${2.2*(nums.length-1)}em)`;
+          innerWheel.style.filter = "blur(3px)";
+        },50);
+        setTimeout(()=>{
+          innerWheel.style.filter = "blur(0)";
+        }, duration-400);
+        setTimeout(()=>{
+          el.innerHTML = '';
+          let ndiv = document.createElement('div');
+          ndiv.textContent = finalValue;
+          ndiv.className = "slot-inner-gold";
+          el.appendChild(ndiv);
           resolve();
-        }, duration);
+        }, duration+40);
       });
     }
     function pad2(n) { return n.toString().padStart(2,'0'); }
@@ -260,23 +280,25 @@
       let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
       bar.appendChild(sep2);
       bar.appendChild(renderGroup(yearDigits,'year'));
-      // Animate all digits
+      playRouletteWheel();
       let promises = [];
       dayDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-day-${i}`);
-        promises.push(animateDigitSlot(el, digit));
+        promises.push(animateDigitSlot(el, digit, 3000));
       });
       monthDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-month-${i}`);
-        promises.push(animateDigitSlot(el, digit, 1500));
+        promises.push(animateDigitSlot(el, digit, 3000));
       });
       yearDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-year-${i}`);
-        promises.push(animateDigitSlot(el, digit, 1650));
+        promises.push(animateDigitSlot(el, digit, 3000));
       });
       Promise.all(promises).then(()=>{
-        playDingSound();
-        if (onDone) onDone();
+        setTimeout(()=>{
+          playArcadeBeep();
+          if (onDone) onDone();
+        }, 70);
       });
     }
     function createCalendar(year, month, day) {
@@ -312,6 +334,8 @@
     let currentDayName = "";
     let thaiYear = false;
     let hideSlotsTimeout = null;
+    let lastSpeed = 4;
+
     function showSettings() {
       document.getElementById('settingsBox').style.display = "";
       document.getElementById('lotteryRow').style.display = "none";
@@ -320,11 +344,8 @@
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
       clearTimeout(hideSlotsTimeout);
-      document.body.classList.add('show-back');
     }
-    function hideSettings() {
-      document.body.classList.remove('show-back');
-    }
+
     function startGetReady(onDone) {
       const overlay = document.getElementById('getreadyOverlay');
       const text = document.getElementById('getreadyText');
@@ -345,8 +366,8 @@
         onDone();
       }, 4950);
     }
-    function startGame() {
-      hideSettings();
+
+    function doGameRound() {
       document.getElementById('settingsBox').style.display = "none";
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('lotteryRow').style.display = "";
@@ -354,22 +375,28 @@
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
       thaiYear = document.getElementById('thaiYearToggle').checked;
-      startGetReady(() => {
-        let q = randomDate();
-        currentQuestion = q;
-        currentDayName = getDayOfWeek(q.year, q.month, q.day);
-        let yearDisplay = thaiYear ? (q.year+543) : q.year;
-        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+      let q = randomDate();
+      currentQuestion = q;
+      currentDayName = getDayOfWeek(q.year, q.month, q.day);
+      let yearDisplay = thaiYear ? (q.year+543) : q.year;
+      renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+        // After slot spin and arcade beep, start the user timer!
+        setTimeout(()=>{
           document.getElementById('calendarShowAnswerBtn').style.display = "";
-        });
-        const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-        clearTimeout(hideSlotsTimeout);
-        hideSlotsTimeout = setTimeout(()=>{
-          document.getElementById('lotteryRow').style.display = "none";
-          document.getElementById('calendarShowAnswerBtn').style.display = "";
-        }, speed*1000 + 500);
+          hideSlotsTimeout = setTimeout(()=>{
+            document.getElementById('lotteryRow').style.display = "none";
+            document.getElementById('calendarShowAnswerBtn').style.display = "none";
+          }, lastSpeed*1000);
+        }, 2000); // arcadebeep = 2s
       });
     }
+
+    function startGame() {
+      // Read speed setting once for this game, and use for future rounds until changed
+      lastSpeed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+      doGameRound();
+    }
+
     function showAnswer() {
       playDingSound();
       document.getElementById('lotteryRow').style.display = "none";
@@ -391,20 +418,27 @@
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "";
     }
+
     function nextRound() {
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
-      startGame();
+      startGetReady(doGameRound);
     }
-    // --- Events
-    document.getElementById('calendarStartBtn').onclick = startGame;
-    document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
+
+    document.getElementById('calendarStartBtn').onclick = function(){
+      lastSpeed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+      startGetReady(doGameRound);
+    };
+    document.getElementById('calendarShowAnswerBtn').onclick = function(){
+      showAnswer();
+      this.style.display = "none";
+    };
     document.getElementById('calendarNextBtn').onclick = nextRound;
     document.getElementById('calendarBackBtn').onclick = showSettings;
-    document.getElementById('backLogoBtn').onclick = function(){ window.location.href='index.html'; };
     document.getElementById('thaiYearToggle').onchange = function() {};
-    // Language update on load
+
+    // Language
     applyLang();
     showSettings();
   </script>
