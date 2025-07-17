@@ -11,27 +11,17 @@
     .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
     .logo-wk { position: fixed; top: 2vw; right: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
     .mascot-box { position: fixed; left: 0; bottom: 0; z-index: 30; padding: 1vw 0.6vw; pointer-events: none; user-select: none; min-width: 48px;}
-    #nadamascot { width: 11vw; min-width: 44px; max-width: 88px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
+    #nadamascot { width: 11vw; min-width: 44px; max-width: 76px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
     @keyframes mascotFloat { 0% { transform: translateY(0) scale(1);} 40% { transform: translateY(-10px) scale(1.03);} 60% { transform: translateY(-16px) scale(1.02);} 100% { transform: translateY(0) scale(1);} }
     @keyframes mascotWave { 0%, 100% { transform: rotate(-2deg);} 10% { transform: rotate(3deg);} 20% { transform: rotate(-3deg);} 30% { transform: rotate(2deg);} 40% { transform: rotate(-2deg);} 50% { transform: rotate(2deg);} 60% { transform: rotate(-2deg);} 70% { transform: rotate(2deg);} 80% { transform: rotate(-2deg);} 90% { transform: rotate(1deg);} }
     .main-centerer { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;}
-    #settingsBox {
-      margin-top: 11vh; width: 100vw; text-align: center;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .speed-row { display: flex; align-items: center; justify-content: center; gap: 1em; margin-bottom: 0.9em;}
-    #settingsBox label { font-size: 2em; color: #273c78; font-weight: 700; background: none; display: inline-block; margin-right: 0.45em;}
-    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center; font-size: 1.7em; margin-left: 0.15em;}
-    #settingsBox button {
-      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white; border: none; border-radius: 3em;
-      font-size: 1.6em; font-family: inherit; font-weight: 700; padding: 0.5em 2.5em;
-      margin-top: 1.2em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;
-      text-align: center;
-    }
+    #settingsBox { margin-top: 11vh; width: 100vw; text-align: center; }
+    #settingsBox label { font-size: 1.27em; margin: 0.22em 0.4em; color: #273c78; font-weight: 700; background: none;}
+    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center;}
+    #settingsBox button { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;}
     #settingsBox button:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
-    .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1.2em 0 0.4em 0; }
-    .toggle-label { margin: 0 0.4em; font-size: 1.25em; font-weight: 700; color: #6747cc;}
+    .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1em 0 0.2em 0; }
+    .toggle-label { margin: 0 0.4em; font-size: 1.1em; font-weight: 700; color: #6747cc;}
     .toggle-switch { appearance: none; width: 2.6em; height: 1.3em; background: #e6e6ef; border-radius: 1em; position: relative; outline: none; cursor: pointer; transition: background 0.2s;}
     .toggle-switch:checked { background: #6747cc; }
     .toggle-switch:before { content: ""; position: absolute; left: 0.22em; top: 0.17em; width: 0.95em; height: 0.95em; border-radius: 50%; background: #fff; transition: transform 0.22s;}
@@ -57,17 +47,23 @@
       text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
       transition: font-size 0.1s;
       letter-spacing: 0.06em;
-      position: relative;
-      will-change: transform, filter;
+      /* For blur reel effect: */
+      filter: none;
+    }
+    .slot-inner-gold.reeling {
+      animation: slotreel 1.3s cubic-bezier(.26,.9,.46,1.01);
+      filter: blur(2.5px) brightness(1.15);
+    }
+    @keyframes slotreel {
+      0% { transform: translateY(0);}
+      60% { filter: blur(2.5px);}
+      100% { transform: translateY(-100%);}
     }
     .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
     @media (max-width: 700px) {
       .slot-container-gold { width: 11vw; min-width: 18px; max-width: 30px; height: 13vw; min-height: 17px; max-height: 34px;}
       .slot-inner-gold { font-size: clamp(13px, 4vw, 19px);}
       .slot-machine-bar { gap: 0.7vw;}
-      #nadamascot { min-width: 60px; max-width: 120px; width: 18vw;}
-      #settingsBox label, #settingsBox button, #settingsBox input[type="number"] { font-size: 1.15em !important;}
-      .toggle-label { font-size: 1.05em; }
     }
     #calendarBox { display: none; justify-content: center; align-items: center; height: 72vh; width: 100vw; }
     #calendarView { margin: auto; width: 98vw; max-width: 720px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
@@ -92,10 +88,6 @@
     #calendarShowAnswerBtn:hover {
       background: linear-gradient(90deg,#9448db 0,#461196 100%);
     }
-    @media (max-width: 700px) {
-      .action-btn { font-size: 1em; min-width: 66px; padding: 0.32em 0.7em;}
-      .controls { bottom: 1.5vw; }
-    }
     #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
     .getready-text { color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
     .getready-count { color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
@@ -107,17 +99,14 @@
   <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
   <div class="main-centerer">
     <div id="settingsBox">
-      <div class="speed-row">
-        <label for="calendarSpeedInput" data-i18n="speed">Speed</label>
-        <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" />
-        <span data-i18n="seconds" style="margin-left:0.35em;">seconds</span>
-      </div>
+      <label for="calendarSpeedInput">Speed</label>
+      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> seconds
       <div class="toggle-row">
-        <span class="toggle-label" data-i18n="normal_year">Normal year</span>
+        <span class="toggle-label">Normal year</span>
         <input type="checkbox" id="thaiYearToggle" class="toggle-switch" />
-        <span class="toggle-label" data-i18n="thai_year">Thai year</span>
+        <span class="toggle-label">Thai year</span>
       </div>
-      <button id="calendarStartBtn" data-i18n="start">START</button>
+      <br><button id="calendarStartBtn">START</button>
     </div>
     <div id="lotteryRow" style="display:none;">
       <div id="slotMachineBar" class="slot-machine-bar"></div>
@@ -128,17 +117,16 @@
   </div>
   <div class="controls" id="bottomControls" style="display: none;">
     <div class="button-group">
-      <button id="calendarBackBtn" class="action-btn" data-i18n="back">Back</button>
-      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;" data-i18n="show_answer">Show Answer</button>
-      <button id="calendarNextBtn" class="action-btn" style="display:none;" data-i18n="next_round">Next Round</button>
+      <button id="calendarBackBtn" class="action-btn">Back</button>
+      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;">Show Answer</button>
+      <button id="calendarNextBtn" class="action-btn" style="display:none;">Next Round</button>
     </div>
   </div>
   <div class="mascot-box">
     <img src="nadamascot.png" id="nadamascot" alt="Mascot">
   </div>
   <!-- Sounds -->
-  <audio id="roulettewheel" src="roulettewheel.wav" preload="auto"></audio>
-  <audio id="arcadebeep" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
+  <audio id="tickSound" src="tick.wav" preload="auto"></audio>
   <audio id="dingSound" src="ding.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
   <audio id="startbuzz" src="startbuzz.wav" preload="auto"></audio>
@@ -148,35 +136,6 @@
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
-    // Localization
-    const translations = {
-      speed: {en: "Speed", th: "ความเร็ว"},
-      seconds: {en: "seconds", th: "วินาที"},
-      start: {en: "START", th: "เริ่ม"},
-      back: {en: "Back", th: "กลับ"},
-      show_answer: {en: "Show Answer", th: "ดูคำตอบ"},
-      next_round: {en: "Next Round", th: "รอบถัดไป"},
-      normal_year: {en: "Normal year", th: "ปี ค.ศ."},
-      thai_year: {en: "Thai year", th: "ปี พ.ศ."},
-      get_ready: {en: "Get Ready", th: "เตรียมพร้อม"},
-      go: {en:"Go!",th:"ไป!"},
-      months: {en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
-        th: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม']},
-      weekdays: {en:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],
-        th:['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์']},
-      weekdaysShort:{en:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
-        th:['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.']},
-    };
-    let lang = localStorage.getItem('lang')||'en';
-    function applyLang() {
-      document.documentElement.lang = lang;
-      document.querySelectorAll('[data-i18n]').forEach(el=>{
-        const key = el.getAttribute('data-i18n');
-        if (translations[key]) el.innerText = translations[key][lang];
-      });
-    }
-
-    // Slot machine / date
     function randomDate() {
       const year = Math.floor(Math.random() * 25) + 2000;
       const month = Math.floor(Math.random() * 12) + 1;
@@ -191,60 +150,75 @@
     }
     function getDayOfWeek(year, month, day) {
       const d = new Date(year, month-1, day);
-      return translations.weekdays[lang][d.getDay()];
+      const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      return weekdays[d.getDay()];
     }
     function monthName(month) {
-      return translations.months[lang][month-1];
+      return ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1];
     }
-    function playRouletteWheel() { try { let s = document.getElementById('roulettewheel'); s.currentTime=0; s.play(); } catch(e){} }
-    function playArcadeBeep() { try { let s = document.getElementById('arcadebeep'); s.currentTime=0; s.play(); } catch(e){} }
-    function playDingSound() { try { document.getElementById('dingSound').currentTime = 0; document.getElementById('dingSound').play(); } catch (e) {} }
-    function playGetReadySound() { try { document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play(); } catch (e) {} }
-    // True slot machine with vertical spin + blur
-    function animateDigitSlot(el, finalValue, duration=3000) {
-      return new Promise(resolve => {
-        let nums = [];
-        for(let cycle=0;cycle<3;cycle++) for(let i=0;i<10;i++) nums.push(i);
-        nums.push(finalValue);
-        let idx = 0;
-        el.innerHTML = ''; // clear
-        let innerWheel = document.createElement('div');
-        innerWheel.style.position = "absolute";
-        innerWheel.style.top = "0";
-        innerWheel.style.left = "0";
-        innerWheel.style.right = "0";
-        innerWheel.style.transition = `transform ${duration}ms cubic-bezier(.19,1.01,.38,0.99)`;
-        innerWheel.style.willChange = "transform, filter";
-        for(let i=0;i<nums.length;i++) {
-          let ndiv = document.createElement('div');
-          ndiv.textContent = nums[i];
-          ndiv.style.height = "2.2em";
-          ndiv.style.display = "flex";
-          ndiv.style.justifyContent = "center";
-          ndiv.style.alignItems = "center";
-          ndiv.style.fontSize = "inherit";
-          ndiv.style.fontWeight = "900";
-          ndiv.style.filter = "blur(0px)";
-          ndiv.className = "slot-spin";
-          innerWheel.appendChild(ndiv);
+    function createCalendar(year, month, day) {
+      let d = new Date(year, month-1, 1);
+      const firstDay = d.getDay();
+      d.setMonth(month, 0);
+      const lastDate = d.getDate();
+      let html = `<table class="calendar-table"><thead><tr>
+        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
+        <th>Thu</th><th>Fri</th><th>Sat</th>
+      </tr></thead><tbody><tr>`;
+      let dayCount = 1;
+      for (let i=0; i<firstDay; i++) html += "<td></td>";
+      for (let i=firstDay; i<7; i++) {
+        html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+        dayCount++;
+      }
+      html += "</tr>";
+      while (dayCount <= lastDate) {
+        html += "<tr>";
+        for (let i=0; i<7; i++) {
+          if (dayCount > lastDate) html += "<td></td>";
+          else html += `<td${dayCount==day?' class="calendar-today"':''}>${dayCount}</td>`;
+          dayCount++;
         }
-        el.appendChild(innerWheel);
-        setTimeout(()=>{
-          innerWheel.style.transform = `translateY(-${2.2*(nums.length-1)}em)`;
-          innerWheel.style.filter = "blur(3px)";
-        },50);
-        setTimeout(()=>{
-          innerWheel.style.filter = "blur(0)";
-        }, duration-400);
-        setTimeout(()=>{
-          el.innerHTML = '';
-          let ndiv = document.createElement('div');
-          ndiv.textContent = finalValue;
-          ndiv.className = "slot-inner-gold";
-          el.appendChild(ndiv);
-          resolve();
-        }, duration+40);
-      });
+        html += "</tr>";
+      }
+      html += "</tbody></table>";
+      return html;
+    }
+    // --- Main Logic ---
+    let currentQuestion = null;
+    let currentDayName = "";
+    let thaiYear = false;
+    let hideSlotsTimeout = null;
+    let answerShown = false;
+    function showSettings() {
+      document.getElementById('settingsBox').style.display = "";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('bottomControls').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      clearTimeout(hideSlotsTimeout);
+      answerShown = false;
+    }
+    function startGetReady(onDone) {
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = 'Get Ready';
+      count.textContent = '';
+      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
+      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
+      setTimeout(() => { count.textContent = '2'; }, 1850);
+      setTimeout(() => { count.textContent = '1'; }, 2850);
+      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        onDone();
+      }, 4950);
     }
     function pad2(n) { return n.toString().padStart(2,'0'); }
     function pad4(n) { return n.toString().padStart(4,'0'); }
@@ -252,7 +226,86 @@
       let s = n.toString().padStart(padLen,'0');
       return s.split('');
     }
+    function playTickSound() { try { document.getElementById('tickSound').currentTime = 0; document.getElementById('tickSound').play(); } catch (e) {} }
+    function playDingSound() { try { document.getElementById('dingSound').currentTime = 0; document.getElementById('dingSound').play(); } catch (e) {} }
+    function playGetReadySound() { try { document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play(); } catch (e) {} }
+    function playStartBuzz() { try { document.getElementById('startbuzz').currentTime = 0; document.getElementById('startbuzz').play(); } catch (e) {} }
+    // --- Slot Machine Animation with true reel ---
+    function animateDigitSlot(el, finalValue, duration=1450) {
+      // Use a "reel up" slot effect with blur and scrolling digits
+      return new Promise(resolve => {
+        let animDiv = document.createElement('div');
+        animDiv.style.position = "absolute";
+        animDiv.style.left = 0;
+        animDiv.style.right = 0;
+        animDiv.style.top = 0;
+        animDiv.style.bottom = 0;
+        animDiv.style.width = "100%";
+        animDiv.style.height = "100%";
+        animDiv.style.overflow = "hidden";
+        animDiv.style.display = "flex";
+        animDiv.style.flexDirection = "column";
+        animDiv.style.justifyContent = "flex-end";
+        animDiv.style.alignItems = "center";
+        animDiv.style.pointerEvents = "none";
+
+        let slotTrack = document.createElement('div');
+        slotTrack.style.position = "relative";
+        slotTrack.style.display = "flex";
+        slotTrack.style.flexDirection = "column";
+        slotTrack.style.alignItems = "center";
+        slotTrack.style.justifyContent = "flex-start";
+        slotTrack.style.height = "300%";
+        slotTrack.style.filter = "blur(2.5px) brightness(1.14)";
+
+        // 30 digit cycles to loop up, then final digit
+        let cycles = 30, digits = [];
+        for (let i = 0; i < cycles; i++) {
+          let d = document.createElement('span');
+          d.textContent = Math.floor(Math.random() * 10);
+          d.style.height = "1.25em";
+          d.style.fontSize = "inherit";
+          d.style.fontWeight = "inherit";
+          slotTrack.appendChild(d);
+          digits.push(d);
+        }
+        // Final digit to land on
+        let d = document.createElement('span');
+        d.textContent = finalValue;
+        d.style.height = "1.25em";
+        d.style.fontSize = "inherit";
+        d.style.fontWeight = "inherit";
+        d.style.filter = "none";
+        slotTrack.appendChild(d);
+        digits.push(d);
+
+        animDiv.appendChild(slotTrack);
+
+        el.textContent = "";
+        el.appendChild(animDiv);
+
+        let start = null;
+        let height = el.offsetHeight || 48;
+        function step(ts) {
+          if (!start) start = ts;
+          let progress = Math.min((ts - start) / duration, 1);
+          let offset = (slotTrack.scrollHeight - height) * progress;
+          slotTrack.style.transform = `translateY(-${offset}px)`;
+          if (progress < 1) {
+            playTickSound();
+            requestAnimationFrame(step);
+          } else {
+            // End: show the final digit in place, remove anim
+            el.removeChild(animDiv);
+            el.textContent = finalValue;
+            resolve();
+          }
+        }
+        requestAnimationFrame(step);
+      });
+    }
     function renderSlotBar(day, month, year, onDone) {
+      // Render each digit as its own gold slot (day:2, month:2, year:4)
       const bar = document.getElementById('slotMachineBar');
       bar.innerHTML = '';
       let dayDigits = splitDigits(day,2);
@@ -280,96 +333,26 @@
       let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
       bar.appendChild(sep2);
       bar.appendChild(renderGroup(yearDigits,'year'));
-      playRouletteWheel();
+      // Animate all digits
       let promises = [];
       dayDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-day-${i}`);
-        promises.push(animateDigitSlot(el, digit, 3000));
+        promises.push(animateDigitSlot(el, digit));
       });
       monthDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-month-${i}`);
-        promises.push(animateDigitSlot(el, digit, 3000));
+        promises.push(animateDigitSlot(el, digit, 1500));
       });
       yearDigits.forEach((digit,i)=>{
         let el = document.getElementById(`slot-year-${i}`);
-        promises.push(animateDigitSlot(el, digit, 3000));
+        promises.push(animateDigitSlot(el, digit, 1650));
       });
       Promise.all(promises).then(()=>{
-        setTimeout(()=>{
-          playArcadeBeep();
-          if (onDone) onDone();
-        }, 70);
+        playDingSound();
+        if (onDone) onDone();
       });
     }
-function createCalendar(year, month, day) {
-  const d = new Date(year, month-1, 1);
-  const firstDay = d.getDay(); // 0=Sun
-  d.setMonth(month, 0);
-  const lastDate = d.getDate();
-
-  let html = `<table class="calendar-table"><thead><tr>
-    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-    <th>Thu</th><th>Fri</th><th>Sat</th>
-  </tr></thead><tbody>`;
-
-  let dayCounter = 1;
-  for (let week = 0; dayCounter <= lastDate; week++) {
-    html += "<tr>";
-    for (let i = 0; i < 7; i++) {
-      // If we're on the first week, skip days before firstDay
-      if (week === 0 && i < firstDay) {
-        html += "<td></td>";
-      } else if (dayCounter > lastDate) {
-        html += "<td></td>";
-      } else {
-        html += `<td${dayCounter == day ? ' class="calendar-today"' : ""}>${dayCounter}</td>`;
-        dayCounter++;
-      }
-    }
-    html += "</tr>";
-  }
-  html += "</tbody></table>";
-  return html;
-}
-    // --- Main Logic ---
-    let currentQuestion = null;
-    let currentDayName = "";
-    let thaiYear = false;
-    let hideSlotsTimeout = null;
-    let lastSpeed = 4;
-
-    function showSettings() {
-      document.getElementById('settingsBox').style.display = "";
-      document.getElementById('lotteryRow').style.display = "none";
-      document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('bottomControls').style.display = "none";
-      document.getElementById('calendarShowAnswerBtn').style.display = "none";
-      document.getElementById('calendarNextBtn').style.display = "none";
-      clearTimeout(hideSlotsTimeout);
-    }
-
-    function startGetReady(onDone) {
-      const overlay = document.getElementById('getreadyOverlay');
-      const text = document.getElementById('getreadyText');
-      const count = document.getElementById('getreadyCount');
-      text.textContent = translations.get_ready[lang];
-      overlay.style.display = 'flex';
-      text.style.display = '';
-      count.style.display = '';
-      count.textContent = '';
-      playGetReadySound();
-      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
-      setTimeout(() => { count.textContent = '2'; }, 1850);
-      setTimeout(() => { count.textContent = '1'; }, 2850);
-      setTimeout(() => { count.textContent = translations.go[lang]; }, 3850);
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        count.textContent = '';
-        onDone();
-      }, 4950);
-    }
-
-    function doGameRound() {
+    function startGame() {
       document.getElementById('settingsBox').style.display = "none";
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('lotteryRow').style.display = "";
@@ -377,29 +360,27 @@ function createCalendar(year, month, day) {
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
       thaiYear = document.getElementById('thaiYearToggle').checked;
-      let q = randomDate();
-      currentQuestion = q;
-      currentDayName = getDayOfWeek(q.year, q.month, q.day);
-      let yearDisplay = thaiYear ? (q.year+543) : q.year;
-      renderSlotBar(q.day, q.month, yearDisplay, ()=>{
-        // After slot spin and arcade beep, start the user timer!
-        setTimeout(()=>{
-          document.getElementById('calendarShowAnswerBtn').style.display = "";
-          hideSlotsTimeout = setTimeout(()=>{
-            document.getElementById('lotteryRow').style.display = "none";
-            document.getElementById('calendarShowAnswerBtn').style.display = "none";
-          }, lastSpeed*1000);
-        }, 2000); // arcadebeep = 2s
+      answerShown = false;
+      startGetReady(() => {
+        let q = randomDate();
+        currentQuestion = q;
+        currentDayName = getDayOfWeek(q.year, q.month, q.day);
+        let yearDisplay = thaiYear ? (q.year+543) : q.year;
+        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+          if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
+        });
+        // Remove slot bar after speed seconds
+        const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+        clearTimeout(hideSlotsTimeout);
+        hideSlotsTimeout = setTimeout(()=>{
+          document.getElementById('lotteryRow').style.display = "none";
+          if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
+        }, speed*1000 + 500);
       });
     }
-
-    function startGame() {
-      // Read speed setting once for this game, and use for future rounds until changed
-      lastSpeed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-      doGameRound();
-    }
-
     function showAnswer() {
+      if (answerShown) return;
+      answerShown = true;
       playDingSound();
       document.getElementById('lotteryRow').style.display = "none";
       const q = currentQuestion;
@@ -412,7 +393,7 @@ function createCalendar(year, month, day) {
         <div class="calendar-day-label" style="animation:pop 0.77s cubic-bezier(.14,2.1,.32,1.07); color:#e32155; font-size:3em;">
           ${currentDayName}
         </div>
-        ${createCalendar(yearDisplay, q.month, q.day)}
+        ${createCalendar(q.year, q.month, q.day)}
       `;
       document.getElementById('calendarBox').style.display = "flex";
       calendar.classList.add("calendar-animate");
@@ -420,28 +401,19 @@ function createCalendar(year, month, day) {
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "";
     }
-
     function nextRound() {
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
-      startGetReady(doGameRound);
+      answerShown = false;
+      startGame();
     }
-
-    document.getElementById('calendarStartBtn').onclick = function(){
-      lastSpeed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-      startGetReady(doGameRound);
-    };
-    document.getElementById('calendarShowAnswerBtn').onclick = function(){
-      showAnswer();
-      this.style.display = "none";
-    };
+    // --- Events
+    document.getElementById('calendarStartBtn').onclick = startGame;
+    document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
     document.getElementById('calendarNextBtn').onclick = nextRound;
     document.getElementById('calendarBackBtn').onclick = showSettings;
-    document.getElementById('thaiYearToggle').onchange = function() {};
-
-    // Language
-    applyLang();
+    document.getElementById('thaiYearToggle').onchange = function() {}
     showSettings();
   </script>
 </body>
