@@ -22,25 +22,6 @@
       width: 12vw; min-width: 66px; max-width: 120px; height: auto;
       pointer-events: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);
     }
-    .back-btn {
-      position: fixed;
-      top: calc(2vw + 7vw + 18px); /* 7vw for logo, +18px for gap */
-      left: 2vw;
-      z-index: 101;
-      background: none;
-      border: none;
-      cursor: pointer;
-      display: none;
-      padding: 0.3em 0.4em;
-      border-radius: 100px;
-      transition: background 0.15s;
-    }
-    .back-btn:hover { background: #ede8fa; }
-    .back-icon {
-      width: 37px; height: 37px; display: block;
-      color: #a566e6;
-    }
-    .show-back #firstPage + .back-btn { display: block; }
     .logo-wk {
       position: fixed; top: 2vw; right: 2vw; z-index: 100;
       background: none; border-radius: 2vw;
@@ -50,8 +31,6 @@
     }
     @media (max-width: 700px) {
       .logo-fixed, .logo-wk { width: 21vw; min-width: 48px; max-width: 68px;}
-      .back-icon { width: 28px; height: 28px;}
-      .back-btn { top: calc(2vw + 21vw + 9px);}
     }
     .mascot-box {
       position: fixed;
@@ -70,22 +49,12 @@
     }
     @keyframes mascotFloat {0%{transform:translateY(0)scale(1);}40%{transform:translateY(-10px)scale(1.03);}60%{transform:translateY(-16px)scale(1.02);}100%{transform:translateY(0)scale(1);}}
     @keyframes mascotWave {0%,100%{transform:rotate(-2deg);}10%{transform:rotate(3deg);}20%{transform:rotate(-3deg);}30%{transform:rotate(2deg);}40%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}60%{transform:rotate(-2deg);}70%{transform:rotate(2deg);}80%{transform:rotate(-2deg);}90%{transform:rotate(1deg);}}
-    .main-content {
-      height: 100vh; width: 100vw;
-      display: flex; align-items: center; justify-content: center;
-      flex-direction: column; position: relative; z-index: 1;
+    @media (max-width: 700px) {
+      #nadamascot { min-width: 64px; max-width: 120px; width: 17vw;}
     }
-    .main-centerer {
-      flex: 1 1 0%; min-height: 0;
-      width: 100vw; height: 100vh;
-      display: flex; align-items: center; justify-content: center; position: relative;
-    }
-    .number-wrapper {
-      flex: 1; width: 100vw; height: 100vh;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center; position: relative;
-      pointer-events: none;
-    }
+    .main-content {height: 100vh; width: 100vw; display: flex; align-items: center; justify-content: center; flex-direction: column; position: relative; z-index: 1;}
+    .main-centerer {flex: 1 1 0%; min-height: 0; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative;}
+    .number-wrapper {flex: 1; width: 100vw; height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; pointer-events: none;}
     #number, #answer {
       text-align: center; width: 98vw; font-weight: bold;
       line-height: 1.15; letter-spacing: 2vw; border-radius: 2vw;
@@ -163,6 +132,7 @@
     @media (max-width: 700px) {
       #number, #answer { font-size: clamp(40px, 18vw, 180px);}
       .action-btn { font-size: 1em; min-width: 64px; padding: 0.35em 1.1em;}
+      .controls { bottom: 1.5vw; }
     }
     #getreadyOverlay {
       position: fixed; left: 0; right: 0; top: 0; bottom: 0;
@@ -184,26 +154,27 @@
     body { -ms-overflow-style: none; scrollbar-width: none; }
     /* Settings panel and controls */
     #firstPage label {
-      font-size: 1.25em; margin: 0.22em 0.4em; color: #273c78; border-radius: 0; border: none; padding: 0; font-family: inherit; font-weight: 700; background: none !important;
+      font-size: 1.45em; margin: 0.22em 0.4em; color: #273c78; border-radius: 0; border: none; padding: 0; font-family: inherit; font-weight: 700; background: none !important;
     }
     #firstPage select, #firstPage input[type="number"] {
       border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700;
+      font-size: 1.12em;
     }
     #firstPage input[type="number"] { width: 3.5em; text-align: center; }
     #firstPage select { padding: 0.2em 1em;}
     #firstPage .radio-group label {
-      font-size: 1.12em; color: #185bff; margin-right: 1em; margin-left: 0.5em;
+      font-size: 1.22em; color: #185bff; margin-right: 1em; margin-left: 0.5em;
       font-weight: 700; letter-spacing: 0.01em; background: #e2e8fc; border-radius: 2em; padding: 0.22em 0.75em;
     }
     #firstPage .radio-group input[type="radio"] { margin-right: 0.3em;}
     #firstPage .options-group label {
-      font-size: 1.04em; color: #2c37b7; margin-right: 1em; margin-left: 0.3em;
+      font-size: 1.14em; color: #2c37b7; margin-right: 1em; margin-left: 0.3em;
       font-weight: 700; letter-spacing: 0.01em; background: #e2e8fc; border-radius: 2em; padding: 0.21em 0.7em; margin-bottom: 0.4em; display: inline-block;
     }
     #firstPage .options-group input[type="radio"] { margin-right: 0.3em;}
     #firstPage button#toggleButton {
       background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
-      color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700;
+      color: white; border: none; border-radius: 3em; font-size: 1.38em; font-family: inherit; font-weight: 700;
       padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer;
       transition: background 0.14s; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em;
     }
@@ -214,9 +185,6 @@
 </head>
 <body>
   <img src="nada.png" alt="Logo" class="logo-fixed">
-  <button class="back-btn" id="backBtn" title="Back to Menu" tabindex="0">
-    <svg class="back-icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="22" fill="#ede8fa"/><path d="M25.3 31.3a1 1 0 0 1-1.4 0l-7-7a1 1 0 0 1 0-1.4l7-7a1 1 0 0 1 1.4 1.4L19.4 22l5.9 5.9a1 1 0 0 1 0 1.4z" fill="#9f5af7"/></svg>
-  </button>
   <img src="wonderkids.png" alt="" class="logo-wk">
   <div class="main-content">
     <div class="main-centerer">
@@ -321,13 +289,12 @@
       }
     }
     function setLang(l) { lang=l; localStorage.setItem('lang',lang); applyLang(); }
-    // Listen for index page sending a language change event (optional)
     window.addEventListener('storage',e=>{
       if(e.key==='lang') { lang=localStorage.getItem('lang')||'en'; applyLang(); }
     });
     applyLang();
 
-    // Show/hide extra options and disable num/set for multi/div
+    // Settings panel options UI logic
     const operationSelect = document.getElementById('operation');
     const multiOptions = document.getElementById('multiOptions');
     const divOptions = document.getElementById('divOptions');
@@ -359,7 +326,6 @@
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    // Generate question sets based on selected operation and options
     function generateRandomSets(numSets = 30, numbersPerSet = 9, mode = 'addsub', digitType = 'single', multiType = '2x1', divType = '2d1') {
       const sets = [];
       for (let i = 0; i < numSets; i++) {
@@ -421,6 +387,7 @@
     let getReadyTimeouts = [];
     let nextSetTimeout = null;
     let controlsLocked = false;
+
     const tickSound = document.getElementById('tickSound');
     const dingSound = document.getElementById('dingSound');
     const getready321 = document.getElementById('getready321');
@@ -625,22 +592,24 @@
       document.getElementById('nextButton').style.display = 'none';
       document.getElementById('showAnswerButton').style.display = 'none';
       nextSetTimeout = setTimeout(() => {
-        currentSetIndex++;
-        if (currentSetIndex >= sets.length) {
-          mode = document.getElementById('operation').value;
-          digitType = document.querySelector('input[name="digitType"]:checked')?.value || "single";
-          let multiType = document.querySelector('input[name="multiType"]:checked')?.value || "2x1";
-          let divType = document.querySelector('input[name="divType"]:checked')?.value || "2d1";
-          sets = generateRandomSets(30, numbersToShow, mode, digitType, multiType, divType);
-          currentSetIndex = 0;
-        }
-        currentNumberIndex = 0;
-        const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
-        clearInterval(countdownInterval);
-        displayNumber(true);
-        countdownInterval = setInterval(displayNumber, speed);
-        controlsLocked = false;
-      }, 1000);
+        startGetReadySequence(() => {
+          currentSetIndex++;
+          if (currentSetIndex >= sets.length) {
+            mode = document.getElementById('operation').value;
+            digitType = document.querySelector('input[name="digitType"]:checked')?.value || "single";
+            let multiType = document.querySelector('input[name="multiType"]:checked')?.value || "2x1";
+            let divType = document.querySelector('input[name="divType"]:checked')?.value || "2d1";
+            sets = generateRandomSets(30, numbersToShow, mode, digitType, multiType, divType);
+            currentSetIndex = 0;
+          }
+          currentNumberIndex = 0;
+          const speed = parseFloat(document.getElementById('speedInput').value) * 1000;
+          clearInterval(countdownInterval);
+          displayNumber(true);
+          countdownInterval = setInterval(displayNumber, speed);
+          controlsLocked = false;
+        });
+      }, 800);
     }
 
     document.getElementById('toggleButton').addEventListener('click', switchPage);
@@ -650,19 +619,7 @@
     document.addEventListener('keydown', function (event) {
       if (waitingForEnter && event.key === 'Enter') showAnswer();
     });
-    // Back to index from settings
-    document.getElementById('backBtn').addEventListener('click',function(){
-      window.location.href="index.html";
-    });
 
-    // Show/hide back icon only on settings
-    function updateBackIcon() {
-      const firstPage = document.getElementById('firstPage');
-      document.getElementById('backBtn').style.display = (firstPage.style.display !== 'none') ? 'block' : 'none';
-    }
-    window.addEventListener('DOMContentLoaded',updateBackIcon);
-    document.getElementById('toggleButton').addEventListener('click',updateBackIcon);
-    document.getElementById('returnButton').addEventListener('click',updateBackIcon);
     applyLang();
   </script>
 </body>
