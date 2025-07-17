@@ -28,37 +28,86 @@
     #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center;}
     #settingsBox button { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;}
     #settingsBox button:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
-    #lotteryQuestion { font-size: clamp(48px,12vw,140px); color: #3a21b3; font-weight: bold; letter-spacing: 0.16em; margin: 2vh 0; width: 100vw; text-align: center; }
+    .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1em 0 0.2em 0; }
+    .toggle-label { margin: 0 0.4em; font-size: 1.1em; font-weight: 700; color: #6747cc;}
+    .toggle-switch { appearance: none; width: 2.6em; height: 1.3em; background: #e6e6ef; border-radius: 1em; position: relative; outline: none; cursor: pointer; transition: background 0.2s;}
+    .toggle-switch:checked { background: #6747cc; }
+    .toggle-switch:before { content: ""; position: absolute; left: 0.22em; top: 0.17em; width: 0.95em; height: 0.95em; border-radius: 50%; background: #fff; transition: transform 0.22s;}
+    .toggle-switch:checked:before { transform: translateX(1.18em);}
+    .slot-machine-bar { display: flex; justify-content: center; align-items: center; width: 98vw; max-width: 1020px; gap: 1vw; }
+    .slot-digit-group { display: flex; }
+    .slot-container-gold {
+      background: linear-gradient(180deg, #ffe278 0%, #d2a23e 90%, #fff1b0 100%);
+      border-radius: 1.1vw;
+      box-shadow: 0 3px 16px #be900066, 0 1.5px 0 #fff6e1 inset, 0 -1.5px 0 #baa04b inset;
+      border: 4px solid #e7c457;
+      width: 7vw; max-width: 52px; min-width: 29px;
+      height: 10vw; max-height: 72px; min-height: 32px;
+      display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+      margin: 0 0.15vw;
+      transition: box-shadow 0.13s;
+    }
+    .slot-inner-gold {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(22px, 5vw, 42px);
+      font-family: inherit; font-weight: 900; color: #d70b30;
+      text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
+      transition: font-size 0.1s;
+      letter-spacing: 0.06em;
+    }
+    .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
+    @media (max-width: 700px) {
+      .slot-container-gold { width: 11vw; min-width: 18px; max-width: 30px; height: 13vw; min-height: 17px; max-height: 34px;}
+      .slot-inner-gold { font-size: clamp(13px, 4vw, 19px);}
+      .slot-machine-bar { gap: 0.7vw;}
+    }
     #calendarBox { display: none; justify-content: center; align-items: center; height: 72vh; width: 100vw; }
-    #calendarView { margin: auto; width: 92vw; max-width: 600px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
-    .calendar-month-title { text-align: center; font-size: 2em; font-weight: bold; color: #6640d6; margin: 0.3em 0 0.5em 0;}
+    #calendarView { margin: auto; width: 98vw; max-width: 720px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
+    .calendar-month-title { text-align: center; font-size: 2.3em; font-weight: bold; color: #6640d6; margin: 0.3em 0 0.05em 0; animation: pop 0.44s;}
     .calendar-table { width: 100%; border-spacing: 0.23em; border-collapse: separate; }
-    .calendar-table th, .calendar-table td { font-size: 1.22em; text-align: center; border-radius: 0.6em; padding: 0.55em 0.3em; }
+    .calendar-table th, .calendar-table td { font-size: 1.30em; text-align: center; border-radius: 0.7em; padding: 0.7em 0.37em; }
     .calendar-table th { color: #4b26ae; font-weight: bold;}
     .calendar-table td { color: #222; font-weight: bold; background: #f5f6fd; transition: background 0.33s;}
-    .calendar-today { background: #ff3535 !important; color: #fff !important; font-weight: 900; font-size: 1.2em; box-shadow: 0 2px 14px #ff353533; }
+    .calendar-today { background: #ff3535 !important; color: #fff !important; font-weight: 900; font-size: 1.18em; box-shadow: 0 2px 14px #ff353533; animation: pop 0.45s;}
     .calendar-animate { transform: scale(1.18) rotate(-2deg); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
-    .calendar-day-label { text-align: center; font-size: 2.1em; color: #e32155; font-weight: 900; margin: 0.2em 0 0.35em 0;}
+    .calendar-day-label { text-align: center; font-size: 2.7em; color: #e32155; font-weight: 900; margin: 0.18em 0 0.25em 0; animation: pop 0.55s;}
+    @keyframes pop { 0% { transform: scale(0.73); opacity: 0.5;} 70% { transform: scale(1.22); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
     .controls { position: fixed; left: 0; right: 0; bottom: 2.5vw; width: 100vw; z-index: 300; background: none; box-shadow: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 2vw; pointer-events: none;}
     .button-group { display: flex; flex-direction: row; gap: 2vw; justify-content: center; align-items: center; pointer-events: all; margin: 0;}
     .action-btn { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; padding: 0.5em 2em; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; box-shadow: 0 2px 18px rgba(90,180,255,0.13); cursor: pointer; transition: background 0.15s, box-shadow 0.23s, transform 0.13s; outline: none; letter-spacing: 0.04em; min-width: 88px; margin: 0;}
     .action-btn:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%); transform: scale(0.98);}
+    #calendarShowAnswerBtn {
+      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
+      font-weight: bold;
+      border: none;
+    }
+    #calendarShowAnswerBtn:hover {
+      background: linear-gradient(90deg,#9448db 0,#461196 100%);
+    }
     #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
     .getready-text { color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
     .getready-count { color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
-    @media (max-width: 700px) { #calendarView { max-width: 97vw; } }
+    @media (max-width: 700px) { #calendarView { max-width: 100vw; } }
   </style>
 </head>
 <body>
   <img src="nada.png" alt="Logo" class="logo-fixed">
-  <img src="wonderkids.png" alt="" class="logo-wk">
+  <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
   <div class="main-centerer">
     <div id="settingsBox">
       <label for="calendarSpeedInput">Speed</label>
       <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> seconds
+      <div class="toggle-row">
+        <span class="toggle-label">Normal year</span>
+        <input type="checkbox" id="thaiYearToggle" class="toggle-switch" />
+        <span class="toggle-label">Thai year</span>
+      </div>
       <br><button id="calendarStartBtn">START</button>
     </div>
-    <div id="lotteryQuestion" style="display:none;"></div>
+    <div id="lotteryRow" style="display:none;">
+      <div id="slotMachineBar" class="slot-machine-bar"></div>
+    </div>
     <div id="calendarBox">
       <div id="calendarView"></div>
     </div>
@@ -84,13 +133,10 @@
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
-    // Helper functions for date & calendar
     function randomDate() {
-      // Random year 2000-2024, month 1-12, day valid for month
       const year = Math.floor(Math.random() * 25) + 2000;
       const month = Math.floor(Math.random() * 12) + 1;
-      let day = 1 + Math.floor(Math.random() * 28); // Always valid for any month
-      // For months with 30/31 days:
+      let day = 1 + Math.floor(Math.random() * 28);
       if ([4,6,9,11].includes(month)) day = Math.min(day, 30);
       if (month === 2) {
         const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
@@ -100,7 +146,6 @@
       return { year, month, day };
     }
     function getDayOfWeek(year, month, day) {
-      // month is 1-based (Jan=1)
       const d = new Date(year, month-1, day);
       const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
       return weekdays[d.getDay()];
@@ -112,43 +157,91 @@
     function playDingSound() { try { document.getElementById('dingSound').currentTime = 0; document.getElementById('dingSound').play(); } catch (e) {} }
     function playGetReadySound() { try { document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play(); } catch (e) {} }
     function playStartBuzz() { try { document.getElementById('startbuzz').currentTime = 0; document.getElementById('startbuzz').play(); } catch (e) {} }
-    // Animation helpers
-    function animateLottery(element, finalValue, rollingTime=1400) {
-      // Show rolling numbers for day/month/year for 1.4s, then show the real question
-      let rolling = true;
-      const interval = 75, tEnd = Date.now() + rollingTime;
-      let timer = setInterval(() => {
-        if (Date.now() > tEnd) {
-          clearInterval(timer);
-          rolling = false;
-          element.innerHTML = `<span style="margin:0 0.3em;">${finalValue.day}</span>
-            <span style="margin:0 0.3em;">/</span>
-            <span style="margin:0 0.3em;">${finalValue.month}</span>
-            <span style="margin:0 0.3em;">/</span>
-            <span style="margin:0 0.3em;">${finalValue.year}</span>`;
-          playDingSound();
-        } else {
-          let d = 1+Math.floor(Math.random()*28);
-          let m = 1+Math.floor(Math.random()*12);
-          let y = 2000+Math.floor(Math.random()*25);
-          element.innerHTML = `<span style="margin:0 0.3em;">${d}</span>
-            <span style="margin:0 0.3em;">/</span>
-            <span style="margin:0 0.3em;">${m}</span>
-            <span style="margin:0 0.3em;">/</span>
-            <span style="margin:0 0.3em;">${y}</span>`;
-          playTickSound();
-        }
-      }, interval);
+    // --- Slot Machine Animation ---
+    function animateDigitSlot(el, finalValue, duration=1450) {
+      return new Promise(resolve => {
+        let tEnd = Date.now() + duration;
+        let lastShown = '';
+        function show(val) { el.textContent = val; }
+        let rolling = setInterval(()=>{
+          let r = Math.floor(Math.random()*10);
+          if(r!==lastShown) {
+            show(r);
+            playTickSound();
+            lastShown = r;
+          }
+        }, 55);
+        setTimeout(()=>{
+          clearInterval(rolling);
+          show(finalValue);
+          resolve();
+        }, duration);
+      });
     }
+    function pad2(n) { return n.toString().padStart(2,'0'); }
+    function pad4(n) { return n.toString().padStart(4,'0'); }
+    function splitDigits(n, padLen=2) {
+      let s = n.toString().padStart(padLen,'0');
+      return s.split('');
+    }
+    function renderSlotBar(day, month, year, onDone) {
+      // Render each digit as its own gold slot (day:2, month:2, year:4)
+      const bar = document.getElementById('slotMachineBar');
+      bar.innerHTML = '';
+      // Day slots
+      let dayDigits = splitDigits(day,2);
+      let monthDigits = splitDigits(month,2);
+      let yearDigits = splitDigits(year,4);
+      // Helper to render a digit group
+      function renderGroup(digits, groupId) {
+        let group = document.createElement('div');
+        group.className = 'slot-digit-group';
+        digits.forEach((digit,i)=>{
+          let slot = document.createElement('div');
+          slot.className = 'slot-container-gold';
+          let inner = document.createElement('div');
+          inner.className = 'slot-inner-gold';
+          inner.id = `slot-${groupId}-${i}`;
+          inner.textContent = '–';
+          slot.appendChild(inner);
+          group.appendChild(slot);
+        });
+        return group;
+      }
+      // Render groups with separators
+      bar.appendChild(renderGroup(dayDigits,'day'));
+      let sep1 = document.createElement('div'); sep1.className='slot-separator'; sep1.textContent='/';
+      bar.appendChild(sep1);
+      bar.appendChild(renderGroup(monthDigits,'month'));
+      let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
+      bar.appendChild(sep2);
+      bar.appendChild(renderGroup(yearDigits,'year'));
+      // Animate all digits
+      let promises = [];
+      dayDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-day-${i}`);
+        promises.push(animateDigitSlot(el, digit));
+      });
+      monthDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-month-${i}`);
+        promises.push(animateDigitSlot(el, digit, 1500));
+      });
+      yearDigits.forEach((digit,i)=>{
+        let el = document.getElementById(`slot-year-${i}`);
+        promises.push(animateDigitSlot(el, digit, 1650));
+      });
+      Promise.all(promises).then(()=>{
+        playDingSound();
+        if (onDone) onDone();
+      });
+    }
+    // --- Calendar logic ---
     function createCalendar(year, month, day) {
-      // Build HTML table for calendar, highlight the date
       let d = new Date(year, month-1, 1);
       const firstDay = d.getDay();
-      d.setMonth(month, 0); // go to last day of month
+      d.setMonth(month, 0);
       const lastDate = d.getDate();
-      let html = `<div class="calendar-month-title">${monthName(month)} ${year}</div>
-      <div class="calendar-day-label"></div>
-      <table class="calendar-table"><thead><tr>
+      let html = `<table class="calendar-table"><thead><tr>
         <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
         <th>Thu</th><th>Fri</th><th>Sat</th>
       </tr></thead><tbody><tr>`;
@@ -171,17 +264,19 @@
       html += "</tbody></table>";
       return html;
     }
-
     // --- Main Logic ---
     let currentQuestion = null;
     let currentDayName = "";
+    let thaiYear = false;
+    let hideSlotsTimeout = null;
     function showSettings() {
       document.getElementById('settingsBox').style.display = "";
-      document.getElementById('lotteryQuestion').style.display = "none";
+      document.getElementById('lotteryRow').style.display = "none";
       document.getElementById('calendarBox').style.display = "none";
       document.getElementById('bottomControls').style.display = "none";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
+      clearTimeout(hideSlotsTimeout);
     }
     function startGetReady(onDone) {
       const overlay = document.getElementById('getreadyOverlay');
@@ -205,32 +300,46 @@
     }
     function startGame() {
       document.getElementById('settingsBox').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('lotteryRow').style.display = "";
+      document.getElementById('bottomControls').style.display = "";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      thaiYear = document.getElementById('thaiYearToggle').checked;
+      // Pick question
       startGetReady(() => {
         let q = randomDate();
         currentQuestion = q;
         currentDayName = getDayOfWeek(q.year, q.month, q.day);
-        document.getElementById('lotteryQuestion').style.display = "";
-        document.getElementById('calendarBox').style.display = "none";
-        document.getElementById('bottomControls').style.display = "";
-        document.getElementById('calendarShowAnswerBtn').style.display = "";
-        document.getElementById('calendarNextBtn').style.display = "none";
-        // Animate rolling
-        animateLottery(document.getElementById('lotteryQuestion'), q, 1700);
-        // After the set speed, hide the question (force after lottery done)
-        const sec = Math.max(2, +document.getElementById('calendarSpeedInput').value||4);
-        setTimeout(() => {
-          document.getElementById('lotteryQuestion').style.display = "none";
-        }, sec * 1000 + 1800);
+        let yearDisplay = thaiYear ? (q.year+543) : q.year;
+        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+          document.getElementById('calendarShowAnswerBtn').style.display = "";
+        });
+        // Remove slot bar after speed seconds
+        const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+        clearTimeout(hideSlotsTimeout);
+        hideSlotsTimeout = setTimeout(()=>{
+          document.getElementById('lotteryRow').style.display = "none";
+          document.getElementById('calendarShowAnswerBtn').style.display = "";
+        }, speed*1000 + 500); // Give a bit extra so the animation finishes
       });
     }
     function showAnswer() {
       playDingSound();
-      document.getElementById('lotteryQuestion').style.display = "none";
+      document.getElementById('lotteryRow').style.display = "none";
       const q = currentQuestion;
+      let yearDisplay = thaiYear ? (q.year+543) : q.year;
       const calendar = document.getElementById('calendarView');
-      calendar.innerHTML = createCalendar(q.year, q.month, q.day);
-      calendar.querySelector('.calendar-month-title').insertAdjacentHTML("afterend",
-        `<div class="calendar-day-label">${currentDayName}</div>`);
+      // **New answer layout: Only month+year at top, below it the day name (big, red, pop)**
+      calendar.innerHTML = `
+        <div class="calendar-month-title" style="color:#6542d7; font-size:2.1em; font-weight:900; animation:pop 0.44s;">
+          ${monthName(q.month)} ${yearDisplay}
+        </div>
+        <div class="calendar-day-label" style="animation:pop 0.77s cubic-bezier(.14,2.1,.32,1.07); color:#e32155; font-size:3em;">
+          ${currentDayName}
+        </div>
+        ${createCalendar(yearDisplay, q.month, q.day)}
+      `;
       document.getElementById('calendarBox').style.display = "flex";
       calendar.classList.add("calendar-animate");
       setTimeout(()=>calendar.classList.remove("calendar-animate"),500);
@@ -248,8 +357,8 @@
     document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
     document.getElementById('calendarNextBtn').onclick = nextRound;
     document.getElementById('calendarBackBtn').onclick = showSettings;
+    document.getElementById('thaiYearToggle').onchange = function() {}
     showSettings();
   </script>
 </body>
 </html>
-
