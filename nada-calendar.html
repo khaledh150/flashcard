@@ -47,7 +47,6 @@
       text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
       transition: font-size 0.1s;
       letter-spacing: 0.06em;
-      /* For blur reel effect: */
       filter: none;
     }
     .slot-inner-gold .digit-stack {
@@ -102,14 +101,14 @@
   <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
   <div class="main-centerer">
     <div id="settingsBox">
-      <label for="calendarSpeedInput">Speed</label>
-      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> seconds
+      <label for="calendarSpeedInput" data-i18n="speed">Speed</label>
+      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> <span data-i18n="seconds">seconds</span>
       <div class="toggle-row">
-        <span class="toggle-label">Normal year</span>
+        <span class="toggle-label" data-i18n="normal_year">Normal year</span>
         <input type="checkbox" id="thaiYearToggle" class="toggle-switch" />
-        <span class="toggle-label">Thai year</span>
+        <span class="toggle-label" data-i18n="thai_year">Thai year</span>
       </div>
-      <br><button id="calendarStartBtn">START</button>
+      <br><button id="calendarStartBtn" data-i18n="start">START</button>
     </div>
     <div id="lotteryRow" style="display:none;">
       <div id="slotMachineBar" class="slot-machine-bar"></div>
@@ -120,9 +119,9 @@
   </div>
   <div class="controls" id="bottomControls" style="display: none;">
     <div class="button-group">
-      <button id="calendarBackBtn" class="action-btn">Back</button>
-      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;">Show Answer</button>
-      <button id="calendarNextBtn" class="action-btn" style="display:none;">Next Round</button>
+      <button id="calendarBackBtn" class="action-btn" data-i18n="back">Back</button>
+      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;" data-i18n="show_answer">Show Answer</button>
+      <button id="calendarNextBtn" class="action-btn" style="display:none;" data-i18n="next_round">Next Round</button>
     </div>
   </div>
   <div class="mascot-box">
@@ -132,11 +131,76 @@
   <audio id="rouletteSound" src="roulettewheel.wav" preload="auto"></audio>
   <audio id="beepSound" src="Arcade-Attention-Beep.wav" preload="auto"></audio>
   <audio id="getready321" src="getready321.wav" preload="auto"></audio>
+  <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
   <div id="getreadyOverlay" class="getready-overlay">
     <div class="getready-text" id="getreadyText">Get Ready</div>
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
+    // --- Language System ---
+    const translations = {
+      en: {
+        speed: "Speed",
+        seconds: "seconds",
+        normal_year: "Normal year",
+        thai_year: "Thai year",
+        start: "START",
+        back: "Back",
+        show_answer: "Show Answer",
+        next_round: "Next Round",
+        get_ready: "Get Ready",
+        sun: "Sun", mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat",
+        month_names: [
+          "January","February","March","April","May","June","July","August","September","October","November","December"
+        ],
+        weekdays: [
+          "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
+        ]
+      },
+      th: {
+        speed: "ความเร็ว",
+        seconds: "วินาที",
+        normal_year: "ปีปกติ",
+        thai_year: "พ.ศ.",
+        start: "เริ่ม",
+        back: "กลับ",
+        show_answer: "แสดงคำตอบ",
+        next_round: "รอบถัดไป",
+        get_ready: "เตรียมตัว",
+        sun: "อา", mon: "จ", tue: "อ", wed: "พ", thu: "พฤ", fri: "ศ", sat: "ส",
+        month_names: [
+          "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
+          "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
+        ],
+        weekdays: [
+          "วันอาทิตย์","วันจันทร์","วันอังคาร","วันพุธ","วันพฤหัสบดี","วันศุกร์","วันเสาร์"
+        ]
+      }
+    };
+    let lang = localStorage.getItem("lang") || "en";
+    function setLang(l) {
+      lang = l; localStorage.setItem("lang", l); applyLang();
+    }
+    function applyLang() {
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        let key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+      // If calendar or question is shown, rerender calendar with lang
+      if (currentQuestion && answerShown) {
+        showAnswer(true);
+      }
+    }
+
+    // Listen for lang switch from index page via storage
+    window.addEventListener("storage", e => {
+      if (e.key === "lang") {
+        lang = localStorage.getItem("lang") || "en";
+        applyLang();
+      }
+    });
+
+    // -------- Calendar Logic -----------
     function randomDate() {
       const year = Math.floor(Math.random() * 25) + 2000;
       const month = Math.floor(Math.random() * 12) + 1;
@@ -151,21 +215,20 @@
     }
     function getDayOfWeek(year, month, day) {
       const d = new Date(year, month-1, day);
-      const weekdays = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-      return weekdays[d.getDay()];
+      return translations[lang].weekdays[d.getDay()];
     }
     function monthName(month) {
-      return ['January','February','March','April','May','June','July','August','September','October','November','December'][month-1];
+      return translations[lang].month_names[month-1];
     }
-
     function createCalendar(year, month, day) {
       let d = new Date(year, month-1, 1);
       const firstDay = d.getDay();
       d.setMonth(month, 0);
       const lastDate = d.getDate();
       let html = `<table class="calendar-table"><thead><tr>
-        <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th>
-        <th>Thu</th><th>Fri</th><th>Sat</th>
+        <th>${translations[lang].sun}</th><th>${translations[lang].mon}</th><th>${translations[lang].tue}</th>
+        <th>${translations[lang].wed}</th><th>${translations[lang].thu}</th><th>${translations[lang].fri}</th>
+        <th>${translations[lang].sat}</th>
       </tr></thead><tbody><tr>`;
       let dayCount = 1;
       for (let i=0; i<firstDay; i++) html += "<td></td>";
@@ -215,7 +278,7 @@
       overlay.style.display = 'flex';
       text.style.display = '';
       count.style.display = '';
-      text.textContent = 'Get Ready';
+      text.textContent = translations[lang]["get_ready"];
       count.textContent = '';
       document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
       setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
@@ -369,8 +432,12 @@
       });
     }
 
-    function showAnswer() {
-      if (answerShown || slotAnimationInProgress) return;
+    function showAnswer(keepBox) {
+      if (answerShown && !keepBox) return;
+      if (!keepBox) {
+        document.getElementById('correctSound').currentTime = 0;
+        document.getElementById('correctSound').play();
+      }
       answerShown = true;
       document.getElementById('lotteryRow').style.display = "none";
       const q = currentQuestion;
@@ -381,7 +448,7 @@
           ${monthName(q.month)} ${yearDisplay}
         </div>
         <div class="calendar-day-label" style="animation:pop 0.77s cubic-bezier(.14,2.1,.32,1.07); color:#e32155; font-size:3em;">
-          ${currentDayName}
+          ${getDayOfWeek(q.year, q.month, q.day)}
         </div>
         ${createCalendar(q.year, q.month, q.day)}
       `;
@@ -402,10 +469,12 @@
 
     // --- Events
     document.getElementById('calendarStartBtn').onclick = startGame;
-    document.getElementById('calendarShowAnswerBtn').onclick = showAnswer;
+    document.getElementById('calendarShowAnswerBtn').onclick = ()=>showAnswer(false);
     document.getElementById('calendarNextBtn').onclick = nextRound;
     document.getElementById('calendarBackBtn').onclick = showSettings;
     document.getElementById('thaiYearToggle').onchange = function() {}
+    // --- Apply lang on load ---
+    applyLang();
     showSettings();
   </script>
 </body>
