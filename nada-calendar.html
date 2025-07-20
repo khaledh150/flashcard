@@ -6,47 +6,83 @@
   <title>Nada Calendar Game</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&family=Nunito:wght@700&display=swap" rel="stylesheet">
   <style>
+    /* ... your styles as before ... */
     html, body { margin: 0; padding: 0; height: 100%; background: #fff; font-family: 'Quicksand', 'Nunito', Arial, sans-serif; overflow: hidden; width: 100vw; height: 100vh; box-sizing: border-box; user-select: none;}
-    body { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
-    .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
+    body { width: 100vw; height: 100vh; position: relative; overflow: hidden; background: #fff;}
+        .logo-fixed { position: fixed; top: 2vw; left: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
     .logo-wk { position: fixed; top: 2vw; right: 2vw; z-index: 100; width: 12vw; min-width: 66px; max-width: 120px; height: auto; pointer-events: none; border-radius: 2vw; background: none; box-shadow: 0 2px 7px rgba(80,180,255,0.07);}
     .mascot-box { position: fixed; left: 0; bottom: 0; z-index: 30; padding: 1vw 0.6vw; pointer-events: none; user-select: none; min-width: 48px;}
     #nadamascot { width: 11vw; min-width: 44px; max-width: 76px; height: auto; animation: mascotFloat 3.7s ease-in-out infinite alternate, mascotWave 2.6s ease-in-out infinite; filter: drop-shadow(0 6px 20px rgba(120,180,255,0.14)); }
+
     @keyframes mascotFloat { 0% { transform: translateY(0) scale(1);} 40% { transform: translateY(-10px) scale(1.03);} 60% { transform: translateY(-16px) scale(1.02);} 100% { transform: translateY(0) scale(1);} }
     @keyframes mascotWave { 0%, 100% { transform: rotate(-2deg);} 10% { transform: rotate(3deg);} 20% { transform: rotate(-3deg);} 30% { transform: rotate(2deg);} 40% { transform: rotate(-2deg);} 50% { transform: rotate(2deg);} 60% { transform: rotate(-2deg);} 70% { transform: rotate(2deg);} 80% { transform: rotate(-2deg);} 90% { transform: rotate(1deg);} }
+
     .main-centerer { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative;}
+
     #settingsBox { margin-top: 11vh; width: 100vw; text-align: center; }
-    #settingsBox label { font-size: 1.27em; margin: 0.22em 0.4em; color: #273c78; font-weight: 700; background: none;}
-    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center;}
-    #settingsBox button { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; padding: 0.7em 2.8em; margin-top: 1.1em; cursor: pointer; box-shadow: 0 2px 16px rgba(90,180,255,0.11); letter-spacing: 0.04em; transition: background 0.15s;}
+    #settingsBox label { font-size: 1.27em; margin: 0.22em 0.4em; color: #2353b7; font-weight: 700; background: none;}
+    #settingsBox input[type="number"] { border-radius: 2em; border: none; padding: 0.18em 0.9em; background: #e9f4fd; font-family: inherit; font-weight: 700; width: 3.5em; text-align: center; color:#185bff;}
+    #settingsBox button {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white;
+      border: none;
+      border-radius: 3em;
+      font-size: 1.25em;
+      font-family: inherit;
+      font-weight: 700;
+      padding: 0.7em 2.8em;
+      margin-top: 1.1em;
+      cursor: pointer;
+      box-shadow: 0 2px 16px rgba(90,180,255,0.11);
+      letter-spacing: 0.04em;
+      transition: background 0.15s;
+    }
     #settingsBox button:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);}
     .toggle-row { display: flex; justify-content: center; align-items: center; margin: 1em 0 0.2em 0; }
-    .toggle-label { margin: 0 0.4em; font-size: 1.1em; font-weight: 700; color: #6747cc;}
-    .toggle-switch { appearance: none; width: 2.6em; height: 1.3em; background: #e6e6ef; border-radius: 1em; position: relative; outline: none; cursor: pointer; transition: background 0.2s;}
-    .toggle-switch:checked { background: #6747cc; }
-    .toggle-switch:before { content: ""; position: absolute; left: 0.22em; top: 0.17em; width: 0.95em; height: 0.95em; border-radius: 50%; background: #fff; transition: transform 0.22s;}
-    .toggle-switch:checked:before { transform: translateX(1.18em);}
-    .slot-machine-bar { display: flex; justify-content: center; align-items: center; width: 98vw; max-width: 1020px; gap: 1vw; }
+    .toggle-label { margin: 0 0.4em; font-size: 1.1em; font-weight: 700; color: #2353b7;}
+    .radio-group { display: flex; align-items: center; justify-content: center; gap: 2em; }
+    .radio-group label { margin: 0; color: #2353b7; font-weight: 700; font-size: 1.08em;}
+    .radio-group input[type="radio"] { accent-color: #349afd; width: 1.1em; height: 1.1em; margin-right: 0.45em; }
+
+    /* SLOT MACHINE STYLE */
+    .slot-machine-bar {
+      display: flex; justify-content: center; align-items: center;
+      width: 100vw; max-width: 1020px; gap: 1vw;
+      margin-top: 7vh;
+      margin-bottom: 7vh;
+    }
     .slot-digit-group { display: flex; }
+
     .slot-container-gold {
       background: linear-gradient(180deg, #ffe278 0%, #d2a23e 90%, #fff1b0 100%);
-      border-radius: 1.1vw;
-      box-shadow: 0 3px 16px #be900066, 0 1.5px 0 #fff6e1 inset, 0 -1.5px 0 #baa04b inset;
-      border: 4px solid #e7c457;
-      width: 7vw; max-width: 52px; min-width: 29px;
-      height: 10vw; max-height: 72px; min-height: 32px;
+      border-radius: 2vw;
+      box-shadow: 0 3px 24px #be900088, 0 1.5px 0 #fff6e1 inset, 0 -1.5px 0 #baa04b inset, 0 3px 16px #d46d067e;
+      border: 5px solid #ffd139;
+      width: 11vw; max-width: 70px; min-width: 36px;
+      height: 25vw; max-height: 164px; min-height: 74px;
       display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
-      margin: 0 0.15vw;
+      margin: 0 0.21vw;
       transition: box-shadow 0.13s;
+      background-clip: padding-box;
     }
+
     .slot-inner-gold {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
-      font-size: clamp(22px, 5vw, 42px);
-      font-family: inherit; font-weight: 900; color: #d70b30;
-      text-shadow: 0 5px 24px #ffdbaf44, 0 2px 0 #fff5, 0 1.5px 0 #b98320;
+      font-size: clamp(32px, 7vw, 64px);
+      font-family: inherit; font-weight: 900;
+      color: #d70b30;
+      text-shadow:
+        0 6px 16px #a70d31cc,
+        0 2px 0 #fff5,
+        0 1.5px 0 #b98320,
+        2px 2px 0 #fff6,
+        0 5px 24px #ffdbaf44;
       transition: font-size 0.1s;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.09em;
+      background: transparent;
+      border-radius: 1vw;
+      box-shadow: 0 0 12px #fff4;
       filter: none;
     }
     .slot-inner-gold .digit-stack {
@@ -61,38 +97,61 @@
     .slot-inner-gold.reeling .digit-stack {
       filter: blur(2.7px) brightness(1.09);
     }
-    .slot-separator { font-size: clamp(20px,2.6vw,32px); font-weight: bold; color: #a29cc7; margin: 0 0.55vw;}
+    .slot-separator { font-size: clamp(25px,4vw,48px); font-weight: bold; color: #ffd139; margin: 0 0.95vw; text-shadow: 0 4px 12px #a70d3188;}
     @media (max-width: 700px) {
-      .slot-container-gold { width: 11vw; min-width: 18px; max-width: 30px; height: 13vw; min-height: 17px; max-height: 34px;}
-      .slot-inner-gold { font-size: clamp(13px, 4vw, 19px);}
-      .slot-machine-bar { gap: 0.7vw;}
+      .slot-container-gold { width: 19vw; min-width: 26px; max-width: 38px; height: 34vw; min-height: 40px; max-height: 88px;}
+      .slot-inner-gold { font-size: clamp(20px, 9vw, 34px);}
+      .slot-machine-bar { gap: 1vw; }
     }
-    #calendarBox { display: none; justify-content: center; align-items: center; height: 72vh; width: 100vw; }
-    #calendarView { margin: auto; width: 98vw; max-width: 720px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
-    .calendar-month-title { text-align: center; font-size: 2.3em; font-weight: bold; color: #6640d6; margin: 0.3em 0 0.05em 0; animation: pop 0.44s;}
-    .calendar-table { width: 100%; border-spacing: 0.23em; border-collapse: separate; }
-    .calendar-table th, .calendar-table td { font-size: 1.30em; text-align: center; border-radius: 0.7em; padding: 0.7em 0.37em; }
-    .calendar-table th { color: #4b26ae; font-weight: bold;}
+
+    /* BUTTONS */
+    .controls { position: fixed; left: 0; right: 0; bottom: 2vw; width: 100vw; z-index: 300; background: none; box-shadow: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 1vw; pointer-events: none;}
+    .button-group { display: flex; flex-direction: row; gap: 1.3vw; justify-content: center; align-items: center; pointer-events: all; margin: 0;}
+    .action-btn {
+      background: linear-gradient(90deg,#56c7fa 0,#349afd 100%);
+      color: white;
+      border: none;
+      padding: 0.36em 1.13em;
+      border-radius: 3em;
+      font-size: 1.08em;
+      font-family: inherit; font-weight: 700;
+      box-shadow: 0 2px 14px rgba(90,180,255,0.11);
+      cursor: pointer;
+      transition: background 0.15s, box-shadow 0.23s, transform 0.13s;
+      outline: none; letter-spacing: 0.04em; min-width: 64px; margin: 0;
+    }
+    .action-btn:active {
+      background: linear-gradient(90deg,#1558be 0,#48a0ff 100%);
+      transform: scale(0.97);
+    }
+    @media (max-width: 700px) {
+      .action-btn {
+        font-size: 0.98em; min-width: 48px; padding: 0.23em 0.8em;
+      }
+      .controls { bottom: 1vw;}
+    }
+
+    #calendarBox { display: none; justify-content: center; align-items: center; height: 68vh; width: 100vw; }
+    #calendarView { margin: auto; width: 99vw; max-width: 690px; background: #fff; border-radius: 2.5vw; box-shadow: 0 4px 36px 0 rgba(72,120,255,0.07); font-family: inherit; transform: scale(1); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
+    .calendar-table { width: 100%; border-spacing: 0.13em; border-collapse: separate; }
+    .calendar-table th, .calendar-table td { font-size: 1.1em; text-align: center; border-radius: 0.6em; padding: 0.6em 0.18em; }
+    .calendar-table th { color: #2353b7; font-weight: bold;}
     .calendar-table td { color: #222; font-weight: bold; background: #f5f6fd; transition: background 0.33s;}
     .calendar-today { background: #ff3535 !important; color: #fff !important; font-weight: 900; font-size: 1.18em; box-shadow: 0 2px 14px #ff353533; animation: pop 0.45s;}
     .calendar-animate { transform: scale(1.18) rotate(-2deg); transition: transform 0.38s cubic-bezier(.16,2,.22,.95);}
-    .calendar-day-label { text-align: center; font-size: 2.7em; color: #e32155; font-weight: 900; margin: 0.18em 0 0.25em 0; animation: pop 0.55s;}
+    .calendar-month-title { text-align: center; font-size: 2.1em; font-weight: bold; color: #2353b7; margin: 0.3em 0 0.05em 0;}
+    .calendar-day-label { text-align: center; font-size: 2.4em; color: #e32155; font-weight: 900; margin: 0.18em 0 0.25em 0; animation: pop 0.55s;}
     @keyframes pop { 0% { transform: scale(0.73); opacity: 0.5;} 70% { transform: scale(1.22); opacity: 1;} 100% { transform: scale(1); opacity: 1;} }
-    .controls { position: fixed; left: 0; right: 0; bottom: 2.5vw; width: 100vw; z-index: 300; background: none; box-shadow: none; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 2vw; pointer-events: none;}
-    .button-group { display: flex; flex-direction: row; gap: 2vw; justify-content: center; align-items: center; pointer-events: all; margin: 0;}
-    .action-btn { background: linear-gradient(90deg,#56c7fa 0,#349afd 100%); color: white; border: none; padding: 0.5em 2em; border-radius: 3em; font-size: 1.25em; font-family: inherit; font-weight: 700; box-shadow: 0 2px 18px rgba(90,180,255,0.13); cursor: pointer; transition: background 0.15s, box-shadow 0.23s, transform 0.13s; outline: none; letter-spacing: 0.04em; min-width: 88px; margin: 0;}
-    .action-btn:active { background: linear-gradient(90deg,#1558be 0,#48a0ff 100%); transform: scale(0.98);}
-    #calendarShowAnswerBtn {
-      background: linear-gradient(90deg,#a964fc 0,#7522d5 100%);
-      font-weight: bold;
-      border: none;
+    @media (max-width: 700px) {
+      #calendarView { max-width: 100vw; font-size: 0.98em; }
+      .calendar-table th, .calendar-table td { font-size: 0.99em; padding: 0.36em 0.08em;}
+      .calendar-month-title { font-size: 1.23em;}
+      .calendar-day-label { font-size: 1.23em;}
     }
-    #calendarShowAnswerBtn:hover {
-      background: linear-gradient(90deg,#9448db 0,#461196 100%);
-    }
-    #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #6747cc; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
-    .getready-text { color: #4881ff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
-    .getready-count { color: #6747cc; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
+
+    #getreadyOverlay { position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(255,255,255,0.88); z-index: 999; display: none; flex-direction: column; justify-content: center; align-items: center; font-size: clamp(2.3em, 8vw, 6.6em); font-family: inherit; font-weight: bold; color: #2353b7; text-align: center; letter-spacing: 0.03em; transition: background 0.33s; user-select: none;}
+    .getready-text { color: #185bff; margin-bottom: 0.2em; font-size: 1.1em; width: 100%; text-align: center; font-family: inherit; font-weight: bold;}
+    .getready-count { color: #2353b7; font-size: 1.3em; margin: 0.2em 0; width: 100%; text-align: center; font-family: inherit; font-weight: bold; letter-spacing: 0.05em;}
     @media (max-width: 700px) { #calendarView { max-width: 100vw; } }
   </style>
 </head>
@@ -101,14 +160,13 @@
   <img src="wonderkids.png" alt="Wonder Kids" class="logo-wk">
   <div class="main-centerer">
     <div id="settingsBox">
-      <label for="calendarSpeedInput" data-i18n="speed">Speed</label>
-      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> <span data-i18n="seconds">seconds</span>
-      <div class="toggle-row">
-        <span class="toggle-label" data-i18n="normal_year">Normal year</span>
-        <input type="checkbox" id="thaiYearToggle" class="toggle-switch" />
-        <span class="toggle-label" data-i18n="thai_year">Thai year</span>
+      <label id="lblSpeed" for="calendarSpeedInput">Speed</label>
+      <input type="number" id="calendarSpeedInput" value="4" min="2" max="15" step="1" /> <span id="lblSeconds">seconds</span>
+      <div class="toggle-row radio-group">
+        <label><input type="radio" name="yearType" value="normal" checked id="radioNormal"> <span id="lblNormalYear">Normal year</span></label>
+        <label><input type="radio" name="yearType" value="thai" id="radioThai"> <span id="lblThaiYear">Thai year</span></label>
       </div>
-      <br><button id="calendarStartBtn" data-i18n="start">START</button>
+      <br><button id="calendarStartBtn">START</button>
     </div>
     <div id="lotteryRow" style="display:none;">
       <div id="slotMachineBar" class="slot-machine-bar"></div>
@@ -119,9 +177,9 @@
   </div>
   <div class="controls" id="bottomControls" style="display: none;">
     <div class="button-group">
-      <button id="calendarBackBtn" class="action-btn" data-i18n="back">Back</button>
-      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;" data-i18n="show_answer">Show Answer</button>
-      <button id="calendarNextBtn" class="action-btn" style="display:none;" data-i18n="next_round">Next Round</button>
+      <button id="calendarBackBtn" class="action-btn">Back</button>
+      <button id="calendarShowAnswerBtn" class="action-btn" style="display:none;">Show Answer</button>
+      <button id="calendarNextBtn" class="action-btn" style="display:none;">Next Round</button>
     </div>
   </div>
   <div class="mascot-box">
@@ -137,62 +195,42 @@
     <div class="getready-count" id="getreadyCount"></div>
   </div>
   <script>
-    // --- Language System ---
+    // --------- Bilingual System ---------
     const translations = {
       en: {
-        speed: "Speed",
-        seconds: "seconds",
-        normal_year: "Normal year",
-        thai_year: "Thai year",
-        start: "START",
-        back: "Back",
-        show_answer: "Show Answer",
-        next_round: "Next Round",
-        get_ready: "Get Ready",
-        sun: "Sun", mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat",
-        month_names: [
-          "January","February","March","April","May","June","July","August","September","October","November","December"
-        ],
-        weekdays: [
-          "Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"
-        ]
+        speed: "Speed", seconds: "seconds", normal_year: "Normal year", thai_year: "Thai year",
+        start: "START", back: "Back", show_answer: "Show Answer", next_round: "Next Round",
+        get_ready: "Get Ready", sun: "Sun", mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat",
+        month_names: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+        weekdays: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], go: "Go!"
       },
       th: {
-        speed: "ความเร็ว",
-        seconds: "วินาที",
-        normal_year: "ปีปกติ",
-        thai_year: "พ.ศ.",
-        start: "เริ่ม",
-        back: "กลับ",
-        show_answer: "แสดงคำตอบ",
-        next_round: "รอบถัดไป",
-        get_ready: "เตรียมตัว",
-        sun: "อา", mon: "จ", tue: "อ", wed: "พ", thu: "พฤ", fri: "ศ", sat: "ส",
-        month_names: [
-          "มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน",
-          "กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"
-        ],
-        weekdays: [
-          "วันอาทิตย์","วันจันทร์","วันอังคาร","วันพุธ","วันพฤหัสบดี","วันศุกร์","วันเสาร์"
-        ]
+        speed: "ความเร็ว", seconds: "วินาที", normal_year: "ปีปกติ", thai_year: "พ.ศ.",
+        start: "เริ่ม", back: "กลับ", show_answer: "แสดงคำตอบ", next_round: "รอบถัดไป",
+        get_ready: "เตรียมตัว", sun: "อา", mon: "จ", tue: "อ", wed: "พ", thu: "พฤ", fri: "ศ", sat: "ส",
+        month_names: ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"],
+        weekdays: ["วันอาทิตย์","วันจันทร์","วันอังคาร","วันพุธ","วันพฤหัสบดี","วันศุกร์","วันเสาร์"], go: "ไป!"
       }
     };
     let lang = localStorage.getItem("lang") || "en";
     function setLang(l) {
-      lang = l; localStorage.setItem("lang", l); applyLang();
+      lang = l;
+      localStorage.setItem("lang", l);
+      applyLang();
     }
     function applyLang() {
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        let key = el.getAttribute("data-i18n");
-        if (translations[lang][key]) el.textContent = translations[lang][key];
-      });
-      // If calendar or question is shown, rerender calendar with lang
-      if (currentQuestion && answerShown) {
-        showAnswer(true);
-      }
+      document.getElementById('lblSpeed').textContent      = translations[lang].speed;
+      document.getElementById('lblSeconds').textContent    = translations[lang].seconds;
+      document.getElementById('lblNormalYear').textContent = translations[lang].normal_year;
+      document.getElementById('lblThaiYear').textContent   = translations[lang].thai_year;
+      document.getElementById('calendarStartBtn').textContent      = translations[lang].start;
+      document.getElementById('calendarBackBtn').textContent       = translations[lang].back;
+      document.getElementById('calendarShowAnswerBtn').textContent = translations[lang].show_answer;
+      document.getElementById('calendarNextBtn').textContent       = translations[lang].next_round;
+      document.getElementById('getreadyText').textContent          = translations[lang].get_ready;
+      if (currentQuestion && answerShown) showAnswer(true);
+      if (currentQuestion && !answerShown) showQuestion();
     }
-
-    // Listen for lang switch from index page via storage
     window.addEventListener("storage", e => {
       if (e.key === "lang") {
         lang = localStorage.getItem("lang") || "en";
@@ -200,7 +238,23 @@
       }
     });
 
-    // -------- Calendar Logic -----------
+    // --- Game Logic ---
+    let currentQuestion = null;
+    let currentDayName = "";
+    let useThaiYear = false;
+    let answerShown = false;
+    let slotAnimationInProgress = false;
+    let timerTimeout = null;
+    let activeSlotSound = null;
+
+    function stopAllSounds() {
+      ['rouletteSound', 'beepSound', 'getready321', 'correctSound'].forEach(id => {
+        const audio = document.getElementById(id);
+        audio.pause();
+        audio.currentTime = 0;
+      });
+    }
+
     function randomDate() {
       const year = Math.floor(Math.random() * 25) + 2000;
       const month = Math.floor(Math.random() * 12) + 1;
@@ -250,48 +304,6 @@
       return html;
     }
 
-    // --- Main Logic ---
-    let currentQuestion = null;
-    let currentDayName = "";
-    let thaiYear = false;
-    let hideSlotsTimeout = null;
-    let answerShown = false;
-    let slotAnimationInProgress = false;
-    let timerTimeout = null;
-
-    function showSettings() {
-      document.getElementById('settingsBox').style.display = "";
-      document.getElementById('lotteryRow').style.display = "none";
-      document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('bottomControls').style.display = "none";
-      document.getElementById('calendarShowAnswerBtn').style.display = "none";
-      document.getElementById('calendarNextBtn').style.display = "none";
-      clearTimeout(hideSlotsTimeout);
-      clearTimeout(timerTimeout);
-      answerShown = false;
-    }
-
-    function startGetReady(onDone) {
-      const overlay = document.getElementById('getreadyOverlay');
-      const text = document.getElementById('getreadyText');
-      const count = document.getElementById('getreadyCount');
-      overlay.style.display = 'flex';
-      text.style.display = '';
-      count.style.display = '';
-      text.textContent = translations[lang]["get_ready"];
-      count.textContent = '';
-      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
-      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
-      setTimeout(() => { count.textContent = '2'; }, 1850);
-      setTimeout(() => { count.textContent = '1'; }, 2850);
-      setTimeout(() => { count.textContent = 'Go!'; }, 3850);
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        count.textContent = '';
-        onDone();
-      }, 4950);
-    }
-
     function pad2(n) { return n.toString().padStart(2,'0'); }
     function pad4(n) { return n.toString().padStart(4,'0'); }
     function splitDigits(n, padLen=2) {
@@ -299,15 +311,12 @@
       return s.split('');
     }
 
-    // True slot-machine style reel animation
     function animateDigitSlot(el, finalValue, duration=3000) {
       return new Promise(resolve => {
         el.innerHTML = '';
         el.classList.add('reeling');
-        // The stack: 30 random digits, then the final digit
         let stack = document.createElement('div');
         stack.className = "digit-stack";
-        let stackDigits = [];
         for (let i = 0; i < 30; i++) {
           let d = document.createElement('span');
           d.textContent = Math.floor(Math.random()*10);
@@ -316,7 +325,6 @@
           d.style.fontWeight = "inherit";
           d.style.display = "block";
           stack.appendChild(d);
-          stackDigits.push(d);
         }
         let last = document.createElement('span');
         last.textContent = finalValue;
@@ -326,8 +334,6 @@
         last.style.display = "block";
         stack.appendChild(last);
         el.appendChild(stack);
-
-        // Reel up animation: easing out, matches roulettewheel.wav
         let start = null;
         let slotHeight = el.offsetHeight || 44;
         let totalHeight = stack.scrollHeight - slotHeight;
@@ -338,7 +344,6 @@
           let ease = easeOutCubic(progress);
           let offset = totalHeight * ease;
           stack.style.transform = `translateY(-${offset}px)`;
-          // As progress nears 1, reduce blur
           stack.style.filter = `blur(${2.7 - 2.5*ease}px) brightness(${1.09 - 0.08*ease})`;
           if (progress < 1) {
             requestAnimationFrame(step);
@@ -380,7 +385,6 @@
       let sep2 = document.createElement('div'); sep2.className='slot-separator'; sep2.textContent='/';
       bar.appendChild(sep2);
       bar.appendChild(renderGroup(yearDigits,'year'));
-      // Animate all digits at the same time (all reels up for 3s)
       slotAnimationInProgress = true;
       document.getElementById('rouletteSound').currentTime = 0;
       document.getElementById('rouletteSound').play();
@@ -405,49 +409,56 @@
       });
     }
 
+    function showQuestion() {
+      document.getElementById('lotteryRow').style.display = "";
+      let q = currentQuestion;
+      let yearDisplay = useThaiYear ? (q.year+543) : q.year;
+      renderSlotBar(q.day, q.month, yearDisplay, ()=>{
+        document.getElementById('calendarShowAnswerBtn').style.display = "";
+        const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
+        clearTimeout(timerTimeout);
+        timerTimeout = setTimeout(()=>{
+          document.getElementById('lotteryRow').style.display = "none";
+          if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
+        }, speed*1000);
+      });
+    }
+
     function startGame() {
       document.getElementById('settingsBox').style.display = "none";
       document.getElementById('calendarBox').style.display = "none";
-      document.getElementById('lotteryRow').style.display = "";
-      document.getElementById('bottomControls').style.display = "";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
-      thaiYear = document.getElementById('thaiYearToggle').checked;
+      document.getElementById('bottomControls').style.display = "";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('slotMachineBar').innerHTML = "";
+      stopAllSounds();
+      useThaiYear = document.querySelector('input[name="yearType"]:checked').value === "thai";
       answerShown = false;
-      startGetReady(() => {
-        let q = randomDate();
-        currentQuestion = q;
-        currentDayName = getDayOfWeek(q.year, q.month, q.day);
-        let yearDisplay = thaiYear ? (q.year+543) : q.year;
-        renderSlotBar(q.day, q.month, yearDisplay, ()=>{
-          document.getElementById('calendarShowAnswerBtn').style.display = "";
-          // Only after slot reel+beep, start user timer (speed setting)
-          const speed = parseInt(document.getElementById('calendarSpeedInput').value) || 4;
-          clearTimeout(timerTimeout);
-          timerTimeout = setTimeout(()=>{
-            document.getElementById('lotteryRow').style.display = "none";
-            if (!answerShown) document.getElementById('calendarShowAnswerBtn').style.display = "";
-          }, speed*1000);
+      setTimeout(() => {
+        startGetReady(() => {
+          let q = randomDate();
+          currentQuestion = q;
+          currentDayName = getDayOfWeek(q.year, q.month, q.day);
+          showQuestion();
         });
-      });
+      }, 100);
     }
 
     function showAnswer(keepBox) {
       if (answerShown && !keepBox) return;
-      if (!keepBox) {
-        document.getElementById('correctSound').currentTime = 0;
-        document.getElementById('correctSound').play();
-      }
+      document.getElementById('correctSound').currentTime = 0;
+      document.getElementById('correctSound').play();
       answerShown = true;
       document.getElementById('lotteryRow').style.display = "none";
       const q = currentQuestion;
-      let yearDisplay = thaiYear ? (q.year+543) : q.year;
+      let yearDisplay = useThaiYear ? (q.year+543) : q.year;
       const calendar = document.getElementById('calendarView');
       calendar.innerHTML = `
-        <div class="calendar-month-title" style="color:#6542d7; font-size:2.1em; font-weight:900; animation:pop 0.44s;">
+        <div class="calendar-month-title">
           ${monthName(q.month)} ${yearDisplay}
         </div>
-        <div class="calendar-day-label" style="animation:pop 0.77s cubic-bezier(.14,2.1,.32,1.07); color:#e32155; font-size:3em;">
+        <div class="calendar-day-label" style="animation:pop 0.55s;">
           ${getDayOfWeek(q.year, q.month, q.day)}
         </div>
         ${createCalendar(q.year, q.month, q.day)}
@@ -461,10 +472,51 @@
 
     function nextRound() {
       document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('slotMachineBar').innerHTML = "";
       document.getElementById('calendarShowAnswerBtn').style.display = "none";
       document.getElementById('calendarNextBtn').style.display = "none";
+      stopAllSounds();
       answerShown = false;
-      startGame();
+      setTimeout(startGame, 120);
+    }
+
+    function showSettings() {
+      // FULL RESET
+      document.getElementById('settingsBox').style.display = "";
+      document.getElementById('lotteryRow').style.display = "none";
+      document.getElementById('calendarBox').style.display = "none";
+      document.getElementById('bottomControls').style.display = "none";
+      document.getElementById('calendarShowAnswerBtn').style.display = "none";
+      document.getElementById('calendarNextBtn').style.display = "none";
+      document.getElementById('slotMachineBar').innerHTML = "";
+      document.getElementById('getreadyOverlay').style.display = "none";
+      stopAllSounds();
+      clearTimeout(timerTimeout);
+      answerShown = false;
+      slotAnimationInProgress = false;
+      currentQuestion = null;
+    }
+
+    function startGetReady(onDone) {
+      const overlay = document.getElementById('getreadyOverlay');
+      const text = document.getElementById('getreadyText');
+      const count = document.getElementById('getreadyCount');
+      overlay.style.display = 'flex';
+      text.style.display = '';
+      count.style.display = '';
+      text.textContent = translations[lang].get_ready;
+      count.textContent = '';
+      document.getElementById('getready321').currentTime = 0; document.getElementById('getready321').play();
+      setTimeout(() => { text.style.display = 'none'; count.style.display = ''; count.textContent = '3'; }, 850);
+      setTimeout(() => { count.textContent = '2'; }, 1850);
+      setTimeout(() => { count.textContent = '1'; }, 2850);
+      setTimeout(() => { count.textContent = translations[lang].go; }, 3850);
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        count.textContent = '';
+        onDone();
+      }, 4950);
     }
 
     // --- Events
@@ -472,8 +524,8 @@
     document.getElementById('calendarShowAnswerBtn').onclick = ()=>showAnswer(false);
     document.getElementById('calendarNextBtn').onclick = nextRound;
     document.getElementById('calendarBackBtn').onclick = showSettings;
-    document.getElementById('thaiYearToggle').onchange = function() {}
-    // --- Apply lang on load ---
+    document.getElementById('radioNormal').onclick = applyLang;
+    document.getElementById('radioThai').onclick = applyLang;
     applyLang();
     showSettings();
   </script>
