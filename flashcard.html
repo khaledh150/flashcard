@@ -382,37 +382,64 @@
       return [];
     }
     function generateStrictPlusMinus9StepSet() {
-      let tries = 0;
-      while (tries++ < 2000) {
-        let nums = [];
-        let A = randomInt(1, 9);
-        nums.push(A);
-        let curr = A;
-        let ops = [];
-        for (let i = 0; i < 8; i++) {
-          let op = randomFromArray(['+','-']);
-          let valid;
-          if (i === 0) {
-            valid = getValidB(curr, op);
-          } else {
-            valid = getValidC(curr, ops[ops.length - 1], op);
-          }
-          if (valid.length === 0) break;
-          let n = randomFromArray(valid);
-          nums.push(op, n);
-          ops.push(op);
-          curr = (op === '+') ? curr + n : curr - n;
-          if (curr < 0 || curr > 9) break;
-        }
-        if (nums.length === 17 && curr >= 0 && curr <= 9) {
-          nums.W = curr;
-          return nums;
-        }
+  let tries = 0;
+  while (tries++ < 2000) {
+    // Always create a fresh array, no reuse!
+    let nums = [];
+    // First number A, must be 1-9 (always positive, never signed)
+    let A = randomInt(1, 9);
+    if (A < 1 || A > 9) continue; // Should never trigger, extra safety
+
+    nums.push(A);
+    let curr = A; // Running total, must always stay 0-9
+    let ops = [];
+    let valid = [];
+    let validAllSteps = true;
+
+    for (let i = 0; i < 8; i++) {
+      let op = randomFromArray(['+','-']);
+
+      // Get valid next numbers for this op and position
+      if (i === 0) {
+        valid = getValidB(curr, op);
+      } else {
+        valid = getValidC(curr, ops[ops.length - 1], op);
       }
-      let fallback = [1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1];
-      fallback.W = 9;
-      return fallback;
+
+      // If no valid moves, fail this attempt
+      if (!Array.isArray(valid) || valid.length === 0) {
+        validAllSteps = false;
+        break;
+      }
+
+      let n = randomFromArray(valid);
+
+      // Push operator and number in order
+      nums.push(op, n);
+      ops.push(op);
+
+      // Update the running total
+      curr = (op === '+') ? curr + n : curr - n;
+
+      // If result ever leaves 0-9, abandon attempt
+      if (curr < 0 || curr > 9) {
+        validAllSteps = false;
+        break;
+      }
     }
+
+    // Must be 17 items (A, op1, n1, op2, n2, ..., op8, n8) and result in 0–9
+    if (validAllSteps && nums.length === 17 && curr >= 0 && curr <= 9) {
+      nums.W = curr; // Save answer as .W property
+      // Defensive: deep copy before returning
+      return JSON.parse(JSON.stringify(nums));
+    }
+  }
+  // Fallback in case generation fails after 2000 tries (shouldn't happen)
+  let fallback = [1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1,'+',1];
+  fallback.W = 9;
+  return fallback;
+}
 
     function generateRandomSets(numSets = 30, numbersPerSet = 9, mode = 'addsub', digitType = 'single', multiType = '2x1', divType = '2d1') {
       const sets = [];
